@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:saloon_app/screens/User/flow/appoinment/appoinment_2/appoinment_2_viewmodel.dart';
 import 'package:saloon_app/screens/User/flow/home/home_view.dart';
-import 'package:saloon_app/screens/user/flow/appoinment/appoinment_2/appoinment_2_viewmodel.dart';
 import '../../../../../components/custom/custom_btn.dart';
 
 class Appoinment2View extends StatefulWidget {

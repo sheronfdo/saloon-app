@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:saloon_app/screens/User/auth/forget_password/forget_password_1/forget_password_1_view.dart';
+import 'package:saloon_app/screens/User/auth/signup/signup_view.dart';
 import 'package:saloon_app/screens/User/flow/home/home_view.dart';
 import 'package:saloon_app/screens/splash/splash_4/splash_4_view.dart';
-import 'package:saloon_app/screens/user/auth/forget_password/forget_password_1/forget_password_1_view.dart';
-import 'package:saloon_app/screens/user/auth/signup/signup_view.dart';
 import 'package:saloon_app/services/auth_service.dart';
 
 class LoginViewModel extends ChangeNotifier {

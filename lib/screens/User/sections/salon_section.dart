@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/user/flow/shop/shop_view.dart';
+import 'package:saloon_app/screens/User/flow/shop/shop_view.dart';
 
 class SalonSection extends StatelessWidget {
   const SalonSection({super.key});

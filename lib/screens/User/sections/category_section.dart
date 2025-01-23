@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/user/flow/service/service_view.dart';
+import 'package:saloon_app/screens/User/flow/service/service_view.dart';
 
 class CategorySection extends StatelessWidget {
   const CategorySection({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/other/adminSideMenu/adminSideMenu_ViewModel.dart';
+import 'package:saloon_app/screens/Other/adminSideMenu/adminSideMenu_ViewModel.dart';
 
 class AdminSideMenuView extends StatelessWidget {
   const AdminSideMenuView({super.key});

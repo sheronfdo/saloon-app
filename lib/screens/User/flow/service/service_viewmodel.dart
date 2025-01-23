@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/user/auth/signup/signup_view.dart';
+import 'package:saloon_app/screens/User/auth/signup/signup_view.dart';
 
 class ServiceViewModel extends ChangeNotifier {
   void init() {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/user/flow/appoinment/appoinment_2/appoinment_2_view.dart';
+import 'package:saloon_app/screens/User/flow/appoinment/appoinment_2/appoinment_2_view.dart';
 
 class SaloonCard extends StatelessWidget {
   final String imagePath;

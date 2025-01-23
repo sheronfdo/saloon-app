@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/components/adminProfile_card.dart';
 import 'package:saloon_app/components/feature_card.dart';
+import 'package:saloon_app/screens/User/flow/appoinment/appoinment_1/appoinment_1_view.dart';
+import 'package:saloon_app/screens/User/flow/home/home_viewmodel.dart';
 import 'package:saloon_app/screens/User/flow/profile/my_profile/my_profile_view.dart';
 import 'package:saloon_app/screens/User/sections/banner_section.dart';
 import 'package:saloon_app/screens/User/sections/schedules_section.dart';
-import 'package:saloon_app/screens/user/flow/appoinment/appoinment_1/appoinment_1_view.dart';
-import 'package:saloon_app/screens/user/flow/home/home_viewmodel.dart';
 import '../../../../components/custom/custom-app_bar.dart';
 
 class AdminHomeView extends StatefulWidget {

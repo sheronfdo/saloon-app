@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/other/userSidemenu/userSidemenu_viewmodel.dart';
+import 'package:saloon_app/screens/Other/userSidemenu/userSidemenu_viewmodel.dart';
 
 class UserSideMenuView extends StatelessWidget {
   const UserSideMenuView({super.key});

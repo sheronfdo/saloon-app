@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/CustomAppBarProfile.dart';
 import 'package:saloon_app/components/profile_card.dart';
 import 'package:saloon_app/screens/User/flow/bookings/bookings/booking_header_view.dart';
-import 'package:saloon_app/screens/user/flow/home/home_viewmodel.dart';
+import 'package:saloon_app/screens/User/flow/home/home_viewmodel.dart';
 import '../../sections/banner_section.dart';
 import '../../sections/category_section.dart';
 import '../../sections/salon_section.dart';

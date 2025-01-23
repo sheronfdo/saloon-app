@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:saloon_app/screens/user/auth/signup/signup_viewmodel.dart';
+import 'package:saloon_app/screens/User/auth/signup/signup_viewmodel.dart';
 import 'package:saloon_app/services/auth_service.dart';
 import '../../../../components/custom/custom_btn.dart';
 import '../../../../components/custom/custom_pd_field.dart';

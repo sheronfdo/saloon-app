@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/user/auth/login/login_view.dart';
+import 'package:saloon_app/screens/User/auth/login/login_view.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   bool toggledOn = false;

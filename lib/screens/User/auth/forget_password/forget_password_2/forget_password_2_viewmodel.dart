@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/user/auth/forget_password/forget_password_1/forget_password_1_view.dart';
+import 'package:saloon_app/screens/User/auth/forget_password/forget_password_1/forget_password_1_view.dart';
 
 class ForgetPassword2ViewModel extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();

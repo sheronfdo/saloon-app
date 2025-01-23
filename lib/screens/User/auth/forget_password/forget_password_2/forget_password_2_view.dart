@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_pd_field.dart';
-import 'package:saloon_app/screens/user/auth/forget_password/forget_password_2/forget_password_2_viewmodel.dart';
+import 'package:saloon_app/screens/User/auth/forget_password/forget_password_2/forget_password_2_viewmodel.dart';
 import 'package:saloon_app/themes/app_styles.dart';
 
 class ForgetPassword2View extends StatefulWidget {

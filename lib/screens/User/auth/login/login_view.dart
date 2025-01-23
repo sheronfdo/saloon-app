@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_pd_field.dart';
 import 'package:saloon_app/components/custom/custom_txtfield.dart';
-import 'package:saloon_app/screens/user/auth/login/login_viewmodel.dart';
+import 'package:saloon_app/screens/User/auth/login/login_viewmodel.dart';
 import 'package:saloon_app/services/auth_service.dart';
 import 'package:saloon_app/themes/app_styles.dart';
 

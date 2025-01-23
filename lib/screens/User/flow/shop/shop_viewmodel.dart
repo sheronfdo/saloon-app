@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/user/auth/signup/signup_view.dart';
+
+import '../../auth/signup/signup_view.dart';
 
 class ShopViewModel extends ChangeNotifier {
   void init() {

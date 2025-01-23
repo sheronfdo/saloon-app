@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/user/auth/signup/signup_view.dart';
 
 class AdminHomeViewmodel extends ChangeNotifier {
   void init() {
