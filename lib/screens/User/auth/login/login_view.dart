@@ -4,6 +4,7 @@ import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_pd_field.dart';
 import 'package:saloon_app/components/custom/custom_txtfield.dart';
 import 'package:saloon_app/screens/User/auth/login/login_viewmodel.dart';
+import 'package:saloon_app/NavigationTest.dart';
 import 'package:saloon_app/services/auth_service.dart';
 import 'package:saloon_app/themes/app_styles.dart';
 
@@ -147,12 +148,18 @@ class LoginState extends State<LoginView> {
                     CustomButton(
                       text: 'Log In',
                       onPressed: () async {
-                        AuthService().login(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          context: context,
+                        // await AuthService().login(
+                        //   email: _emailController.text,
+                        //   password: _passwordController.text,
+                        //   context: context,
+                        // );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const NavigationTest()),
                         );
                       },
+
                     ),
 
                     const SizedBox(height: 26),
