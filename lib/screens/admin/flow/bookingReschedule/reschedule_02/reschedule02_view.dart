@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:saloon_app/screens/admin/flow/rejectedBooking/rejectBooking_view.dart';
 
 class BookingReschedule2View extends StatefulWidget {
   const BookingReschedule2View({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class BookingReschedule2State extends State<BookingReschedule2View> {
                     const SizedBox(height: 20),
                     _buildReasonForCancellation(),
                     const SizedBox(height: 20),
-                    _buildConfirmButton(),
+                    _buildConfirmButton(context),
                   ],
                 ),
               ),
@@ -231,11 +232,15 @@ class BookingReschedule2State extends State<BookingReschedule2View> {
     );
   }
 
-  Widget _buildConfirmButton() {
+  Widget _buildConfirmButton(BuildContext context) {
     return Center(
       child: ElevatedButton(
         onPressed: () {
           // Confirm button action
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const RejectBookingView()),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF9E4529),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_02/reschedule02_view.dart';
+import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_view.dart';
+import 'package:saloon_app/screens/admin/flow/jobComplete/jobComplete_view.dart';
 
 class JobDoneView extends StatelessWidget {
   const JobDoneView({super.key});
@@ -29,7 +32,7 @@ class JobDoneView extends StatelessWidget {
                     const SizedBox(height: 30),
                     _buildContactDetails(),
                     const SizedBox(height: 40),
-                    _buildActionButtons(),
+                    _buildActionButtons(context),
                   ],
                 ),
               ),
@@ -234,12 +237,15 @@ class JobDoneView extends StatelessWidget {
   }
 
   /// Action Buttons
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(BuildContext context) {
     return Column(
       children: [
         ElevatedButton(
           onPressed: () {
-            // Confirm button action
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const JobCompleteView()),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 120, 22, 5),
@@ -270,7 +276,12 @@ class JobDoneView extends StatelessWidget {
         const SizedBox(height: 12),
         ElevatedButton(
           onPressed: () {
-            // Reschedule button action
+            // Reschedule action
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BookingRescheduleView()),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 120, 22, 5),
@@ -290,7 +301,12 @@ class JobDoneView extends StatelessWidget {
         const SizedBox(height: 12),
         ElevatedButton(
           onPressed: () {
-            // Cancel button action
+            // Cancel session action
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BookingReschedule2View()),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFFFE5E5),

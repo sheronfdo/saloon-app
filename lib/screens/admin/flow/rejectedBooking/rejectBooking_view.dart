@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:saloon_app/screens/admin/flow/home/admin_home_view.dart';
 
 class RejectBookingView extends StatelessWidget {
   const RejectBookingView({super.key});
@@ -55,7 +56,7 @@ class RejectBookingView extends StatelessWidget {
                         color: const Color.fromARGB(255, 136, 135, 135),
                       ),
                     ),
-                    _buildActionButtons(),
+                    _buildActionButtons(context),
                   ],
                 ),
               ),
@@ -271,13 +272,17 @@ class RejectBookingView extends StatelessWidget {
   }
 
   /// Action Buttons
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: 100),
         ElevatedButton(
           onPressed: () {
             // done button action
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AdminHomeView()),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 120, 22, 5),

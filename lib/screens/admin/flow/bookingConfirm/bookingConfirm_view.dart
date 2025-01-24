@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:saloon_app/screens/User/flow/bookings/booking_reshedule/booking_reshedule_view.dart';
+import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_02/reschedule02_view.dart';
+import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_view.dart';
+import 'package:saloon_app/screens/admin/flow/jobDone/jobDone_view.dart';
 
 class BookingConfirmView extends StatelessWidget {
   const BookingConfirmView({super.key});
@@ -29,7 +33,7 @@ class BookingConfirmView extends StatelessWidget {
                     const SizedBox(height: 30),
                     _buildContactDetails(),
                     const SizedBox(height: 40),
-                    _buildActionButtons(),
+                    _buildActionButtons(context), // Pass context here
                   ],
                 ),
               ),
@@ -40,7 +44,6 @@ class BookingConfirmView extends StatelessWidget {
     );
   }
 
-  //background decorations
   Widget _buildBackground() {
     return Stack(
       children: [
@@ -76,7 +79,6 @@ class BookingConfirmView extends StatelessWidget {
     );
   }
 
-  //header
   Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,10 +90,13 @@ class BookingConfirmView extends StatelessWidget {
         Stack(
           children: [
             IconButton(
-              icon: const Icon(IconlyBold.notification,
-                  color: Color(0xFFB3B3B3), size: 28),
+              icon: const Icon(
+                IconlyBold.notification,
+                color: Color(0xFFB3B3B3),
+                size: 28,
+              ),
               onPressed: () {
-                //write action code
+                // Add notification action
               },
             ),
             Positioned(
@@ -112,7 +117,6 @@ class BookingConfirmView extends StatelessWidget {
     );
   }
 
-  //title
   Widget _buildTitle() {
     return const Center(
       child: Text(
@@ -126,7 +130,6 @@ class BookingConfirmView extends StatelessWidget {
     );
   }
 
-//booking images
   Widget _buildImage() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
@@ -139,7 +142,6 @@ class BookingConfirmView extends StatelessWidget {
     );
   }
 
-  //service Details
   Widget _buildServiceDetails() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,20 +153,22 @@ class BookingConfirmView extends StatelessWidget {
         const SizedBox(height: 10),
         Row(
           children: [
-            Text(
+            const Text(
               'Monday, 28 Oct',
               style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.blue),
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.blue,
+              ),
             ),
             const Spacer(),
-            Text(
+            const Text(
               'AED 220.00',
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ],
         ),
@@ -183,7 +187,6 @@ class BookingConfirmView extends StatelessWidget {
     );
   }
 
-  //contact Details
   Widget _buildContactDetails() {
     return Container(
       padding: const EdgeInsets.all(25.0),
@@ -199,9 +202,7 @@ class BookingConfirmView extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 24,
-            child: Image.asset(
-              'assets/images/icons/avatorface02.png',
-            ),
+            child: Image.asset('assets/images/icons/avatorface02.png'),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -211,9 +212,10 @@ class BookingConfirmView extends StatelessWidget {
                 Text(
                   'Tharindu Theekshan',
                   style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
                 ),
                 Text(
                   'Dusit, Thani, Dubai',
@@ -225,21 +227,23 @@ class BookingConfirmView extends StatelessWidget {
           IconButton(
             icon: Image.asset('assets/images/icons/whatsapp.png'),
             onPressed: () {
-              // Add WhatsApp click action
+              // Add WhatsApp action
             },
-          )
+          ),
         ],
       ),
     );
   }
 
-  /// Action Buttons
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(BuildContext context) {
     return Column(
       children: [
         ElevatedButton(
           onPressed: () {
-            // Confirm button action
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const JobDoneView()),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 120, 22, 5),
@@ -250,17 +254,14 @@ class BookingConfirmView extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.check,
-                color: Colors.white,
-              ),
-              const SizedBox(width: 8),
-              const Text(
+            children: const [
+              Icon(Icons.check, color: Colors.white),
+              SizedBox(width: 8),
+              Text(
                 'Confirm',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Color.fromRGBO(255, 255, 255, 1),
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -270,7 +271,12 @@ class BookingConfirmView extends StatelessWidget {
         const SizedBox(height: 12),
         ElevatedButton(
           onPressed: () {
-            // Reschedule button action
+            // Reschedule action
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BookingRescheduleView()),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 120, 22, 5),
@@ -282,15 +288,21 @@ class BookingConfirmView extends StatelessWidget {
           child: const Text(
             'Reschedule',
             style: TextStyle(
-                fontSize: 18,
-                color: Color.fromRGBO(255, 255, 255, 1),
-                fontWeight: FontWeight.bold),
+              fontSize: 18,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         const SizedBox(height: 12),
         ElevatedButton(
           onPressed: () {
-            // Cancel button action
+            // Cancel session action
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BookingReschedule2View()),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFFFE5E5),
@@ -302,9 +314,10 @@ class BookingConfirmView extends StatelessWidget {
           child: const Text(
             'Cancel Session',
             style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(0, 0, 0, 1)),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ),
       ],
