@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saloon_app/screens/admin/flow/booking/booking_view.dart';
 
 class FeatureCardSection extends StatelessWidget {
   const FeatureCardSection({super.key});
@@ -13,21 +14,31 @@ class FeatureCardSection extends StatelessWidget {
           height: 100,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            children: const [
+            children: [
               CategoryCard(
                 title: 'Bookings',
                 imagePath: 'assets/images/Calendar.png',
-                backgroundColor: Color.fromARGB(255, 121, 40, 10),
+                backgroundColor: const Color.fromARGB(255, 121, 40, 10),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BookingView(),
+                    ),
+                  );
+                },
               ),
               CategoryCard(
                 title: 'Services',
                 imagePath: 'assets/images/Settings.png',
-                backgroundColor: Color.fromARGB(255, 121, 40, 10),
+                backgroundColor: const Color.fromARGB(255, 121, 40, 10),
+                onTap: () {},
               ),
               CategoryCard(
                 title: 'Products',
                 imagePath: 'assets/images/Skincare.png',
-                backgroundColor: Color.fromARGB(255, 121, 40, 10),
+                backgroundColor: const Color.fromARGB(255, 121, 40, 10),
+                onTap: () {},
               ),
             ],
           ),
@@ -41,18 +52,20 @@ class CategoryCard extends StatelessWidget {
   final String title;
   final String imagePath;
   final Color backgroundColor;
+  final VoidCallback onTap;
 
   const CategoryCard({
     super.key,
     required this.title,
     required this.imagePath,
     required this.backgroundColor,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         width: 112,
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
