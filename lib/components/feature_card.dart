@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saloon_app/screens/admin/flow/booking/booking_view.dart';
+import 'package:saloon_app/screens/admin/flow/service/category/category_view.dart';
 
 class FeatureCardSection extends StatelessWidget {
   const FeatureCardSection({super.key});
@@ -32,13 +33,27 @@ class FeatureCardSection extends StatelessWidget {
                 title: 'Services',
                 imagePath: 'assets/images/Settings.png',
                 backgroundColor: const Color.fromARGB(255, 121, 40, 10),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ServiceCategoryView(),
+                    ),
+                  );
+                },
               ),
               CategoryCard(
                 title: 'Products',
                 imagePath: 'assets/images/Skincare.png',
                 backgroundColor: const Color.fromARGB(255, 121, 40, 10),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ServiceCategoryView(),
+                    ),
+                  );
+                },
               ),
             ],
           ),

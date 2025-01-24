@@ -3,6 +3,7 @@ import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_calender.dart';
 import 'package:saloon_app/screens/admin/flow/booking/booking_viewmodel.dart';
+import 'package:saloon_app/screens/admin/flow/bookingConfirm/bookingConfirm_view.dart';
 
 class BookingView extends StatefulWidget {
   const BookingView({super.key});
@@ -192,6 +193,14 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: '',
           statusColor: Colors.transparent,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BookingConfirmView(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
         ScheduleCard(
@@ -201,6 +210,14 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: 'Not Confirmed',
           statusColor: Colors.red,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BookingConfirmView(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
         ScheduleCard(
@@ -210,6 +227,7 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: 'Completed',
           statusColor: Colors.green,
+          onTap: () {},
         ),
         const SizedBox(height: 16),
         ScheduleCard(
@@ -219,6 +237,7 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: 'Not Confirmed',
           statusColor: Colors.red,
+          onTap: () {},
         ),
         const SizedBox(height: 16),
         ScheduleCard(
@@ -228,6 +247,7 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: 'Completed',
           statusColor: Colors.green,
+          onTap: () {},
         ),
         const SizedBox(height: 16),
         ScheduleCard(
@@ -237,6 +257,7 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: 'Not Confirmed',
           statusColor: Colors.red,
+          onTap: () {},
         ),
         const SizedBox(height: 16),
       ],
@@ -251,6 +272,7 @@ class ScheduleCard extends StatelessWidget {
   final String imagePath;
   final String status;
   final Color statusColor;
+  final VoidCallback onTap;
 
   const ScheduleCard({
     super.key,
@@ -260,89 +282,93 @@ class ScheduleCard extends StatelessWidget {
     required this.imagePath,
     required this.status,
     required this.statusColor,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 240, 248, 255),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color.fromARGB(255, 150, 50, 50),
-          width: 1.5,
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundImage: AssetImage(imagePath),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 240, 248, 255),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color.fromARGB(255, 150, 50, 50),
+            width: 1.5,
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 24,
+              backgroundImage: AssetImage(imagePath),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.access_time,
+                          size: 16, color: Colors.black54),
+                      const SizedBox(width: 4),
+                      Text(
+                        time,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  name,
+                  price,
                   style: const TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
+                    color: Colors.black54,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.access_time,
-                        size: 16, color: Colors.black54),
-                    const SizedBox(width: 4),
-                    Text(
-                      time,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
+                if (status.isNotEmpty)
+                  Container(
+                    margin: const EdgeInsets.only(top: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: statusColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      status,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: statusColor,
                       ),
                     ),
-                  ],
-                ),
+                  ),
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                price,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black54,
-                ),
-              ),
-              if (status.isNotEmpty)
-                Container(
-                  margin: const EdgeInsets.only(top: 4),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: statusColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    status,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: statusColor,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
