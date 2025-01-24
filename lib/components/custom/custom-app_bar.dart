@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/User/flow/profile/notification/notification/notification_view.dart';
 
+import '../../screens/Other/adminSideMenu/adminSideMenu_view.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
@@ -18,6 +20,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: const Icon(Icons.menu, color: Colors.black, size: 30),
               onPressed: () {
                 //handle menu action
+                print("Menu button clicked");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AdminSideMenuView(),
+                  ),
+                );
               },
             ),
 

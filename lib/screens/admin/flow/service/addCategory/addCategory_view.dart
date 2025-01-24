@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 
-class AddNewCategoryView extends StatelessWidget {
+class AddNewCategoryView extends StatefulWidget {
   const AddNewCategoryView({super.key});
 
   @override
+  State<AddNewCategoryView> createState() => _AddNewCategoryViewState();
+}
+
+class _AddNewCategoryViewState extends State<AddNewCategoryView> {
+  String? selectedCategory; // State to hold the selected category
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor:
-          Colors.black, // Set the background color to match your design
-      body: Center(
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      backgroundColor: Colors.transparent,
+      child: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.85,
           padding: const EdgeInsets.all(20),
@@ -24,7 +33,7 @@ class AddNewCategoryView extends StatelessWidget {
               Center(
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       "NEW CATEGORY",
                       style: TextStyle(
                         fontSize: 22,
@@ -32,8 +41,8 @@ class AddNewCategoryView extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Text(
+                    const SizedBox(height: 5),
+                    const Text(
                       "You can add services in the category",
                       style: TextStyle(
                         fontSize: 14,
@@ -44,10 +53,10 @@ class AddNewCategoryView extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Category Dropdown
-              Text(
+              const Text(
                 "Category",
                 style: TextStyle(
                   fontSize: 16,
@@ -55,9 +64,9 @@ class AddNewCategoryView extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.blue,
@@ -67,11 +76,12 @@ class AddNewCategoryView extends StatelessWidget {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     isExpanded: true,
-                    hint: Text(
+                    value: selectedCategory,
+                    hint: const Text(
                       "Select service category",
                       style: TextStyle(color: Colors.grey),
                     ),
-                    items: [
+                    items: const [
                       DropdownMenuItem(
                         value: "Category 1",
                         child: Text("Category 1"),
@@ -86,23 +96,27 @@ class AddNewCategoryView extends StatelessWidget {
                       ),
                     ],
                     onChanged: (value) {
-                      // Handle dropdown selection
+                      setState(() {
+                        selectedCategory = value;
+                      });
                     },
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Confirm Button
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle confirm action
+                    if (selectedCategory != null) {
+                      print("Selected category: $selectedCategory");
+                    }
+                    Navigator.of(context).pop(); // Close the popup
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Color.fromARGB(255, 199, 66, 9), // Button color
-                    padding: EdgeInsets.symmetric(
+                    backgroundColor: const Color.fromARGB(255, 199, 66, 9),
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 50,
                       vertical: 15,
                     ),
@@ -111,7 +125,7 @@ class AddNewCategoryView extends StatelessWidget {
                     ),
                     elevation: 5,
                   ),
-                  child: Text(
+                  child: const Text(
                     "Confirm",
                     style: TextStyle(
                       fontSize: 16,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:saloon_app/screens/admin/flow/service/addCategory/addCategory_view.dart';
 
 class ServiceCategoryView extends StatelessWidget {
   const ServiceCategoryView({super.key});
@@ -40,7 +41,7 @@ class ServiceCategoryView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    _buildServiceGrid(),
+                    _buildServiceGrid(context),
                   ],
                 ),
               ),
@@ -138,7 +139,7 @@ class ServiceCategoryView extends StatelessWidget {
   }
 
   // Service Grid
-  Widget _buildServiceGrid() {
+  Widget _buildServiceGrid(BuildContext context) {
     final services = [
       {
         'icon': Icons.content_cut,
@@ -192,7 +193,12 @@ class ServiceCategoryView extends StatelessWidget {
         } else {
           return GestureDetector(
             onTap: () {
-              print("Add new category");
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const AddNewCategoryView();
+                },
+              );
             },
             child: Container(
               decoration: BoxDecoration(
