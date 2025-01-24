@@ -6,6 +6,8 @@ import 'package:saloon_app/screens/User/auth/login/login_view.dart';
 import 'package:saloon_app/screens/User/flow/home/home_view.dart';
 
 class AuthService {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   //signup
   Future<void> signup({
     required String name,
@@ -17,8 +19,9 @@ class AuthService {
   }) async {
     try {
       //create user with email & password
-      UserCredential userCredential = await FirebaseAuth.instance
+      UserCredential userCredential = await auth
           .createUserWithEmailAndPassword(email: email, password: password);
+
 
       //UID user
       String uid = userCredential.user!.uid;
