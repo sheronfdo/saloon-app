@@ -22,6 +22,13 @@ class AuthService {
       UserCredential userCredential = await auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
+      await auth.verifyPhoneNumber(
+        phoneNumber: '+94770470323',
+        verificationCompleted: (PhoneAuthCredential credential) {},
+        verificationFailed: (FirebaseAuthException e) {},
+        codeSent: (String verificationId, int? resendToken) {},
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
 
       //UID user
       String uid = userCredential.user!.uid;
