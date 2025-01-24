@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/screens/User/flow/notifications/notification_view.dart';
-import 'package:saloon_app/screens/user/flow/shop/shop_viewmodel.dart';
+import 'package:saloon_app/screens/User/flow/shop/shop_viewmodel.dart';
 import '../../../../components/custom/custom_bottomNavBar.dart';
 import '../../../../components/salon_card.dart';
 import '../../../../data/saloon_data.dart';

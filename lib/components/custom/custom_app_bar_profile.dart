@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/User/flow/profile/notification/notification/notification_view.dart';
-import 'package:saloon_app/screens/other/userSidemenu/userSidemunu_view.dart';
+import 'package:saloon_app/screens/Other/userSidemenu/userSidemunu_view.dart';
 
 class CustomAppBarProfile extends StatelessWidget
     implements PreferredSizeWidget {
