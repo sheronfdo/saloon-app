@@ -52,12 +52,12 @@ class LoginState extends State<AdminLoginView> {
           children: [
             Positioned.fill(
               child: Opacity(
-                opacity: 0.1,
+                opacity: 0.8,
                 child: Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(
-                          'assets/images/Portrait of handsome looking man.png'),
+                          'assets/images/adminloginscreen image.png'),
                       fit: BoxFit.cover,
                       alignment: Alignment.bottomRight,
                     ),
@@ -71,13 +71,13 @@ class LoginState extends State<AdminLoginView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Title
-                  const Text(
-                    'LOGO HERE',
-                    style: AppStyles.heading,
-                    textAlign: TextAlign.center,
+                  // logo
+                  Image.asset(
+                    'assets/images/logo_qatar.jpeg',
+                    height: 80,
+                    fit: BoxFit.contain,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 40),
                   Text(
                     'LOG IN',
                     style: AppStyles.mainHeading.copyWith(fontSize: 30),
@@ -88,7 +88,7 @@ class LoginState extends State<AdminLoginView> {
                     style: AppStyles.subheading,
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 30),
 
                   // Email TextField
                   CustomTextField(

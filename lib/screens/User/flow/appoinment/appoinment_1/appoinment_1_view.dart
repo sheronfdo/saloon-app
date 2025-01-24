@@ -3,6 +3,8 @@ import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_calender.dart';
+import 'package:saloon_app/screens/User/flow/appoinment/appoinment_2/appoinment_2_view.dart';
+import 'package:saloon_app/screens/User/flow/notifications/notification_view.dart';
 import 'appoinment_1_viewmodel.dart';
 
 class Appoinment1View extends StatefulWidget {
@@ -108,9 +110,32 @@ class Appoinment1State extends State<Appoinment1View> {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        IconButton(
-          icon: const Icon(IconlyBold.notification, color: Color(0xFFB3B3B3)),
-          onPressed: () {},
+        Stack(
+          children: [
+            IconButton(
+              icon: const Icon(IconlyBold.notification,
+                  color: Color(0xFFB3B3B3), size: 28),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationView()),
+                );
+              },
+            ),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                height: 8,
+                width: 8,
+                decoration: const BoxDecoration(
+                  color: Colors.pink,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -254,7 +279,10 @@ class Appoinment1State extends State<Appoinment1View> {
       child: CustomButton(
         text: 'Confirm',
         onPressed: () {
-          viewModel.onBookAppointmentClick(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Appoinment2View()),
+          );
         },
       ),
     );

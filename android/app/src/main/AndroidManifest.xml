@@ -4,6 +4,10 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true">
+        <!-- add the google maps api key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDHNigM88XPgCq7Jk7rywr9xaIWdYGZM6s" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

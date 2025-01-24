@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saloon_app/screens/admin/flow/booking/booking_view.dart';
 
 class ScheduleCardSection extends StatelessWidget {
   const ScheduleCardSection({super.key});
@@ -23,7 +24,12 @@ class ScheduleCardSection extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  //add the logic here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BookingView(),
+                    ),
+                  );
                 },
                 child: const Text(
                   'See all',

@@ -49,5 +49,15 @@
 	<string>We need access to your photo library to upload images.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to take photos.</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+	<!-- Add Location Permissions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location for maps</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location for maps</string>
+	<!-- Google Maps API Key -->
+	<key>GMSAPIKey</key>
+	<string>AIzaSyDHNigM88XPgCq7Jk7rywr9xaIWdYGZM6s</string>
 </dict>
 </plist>

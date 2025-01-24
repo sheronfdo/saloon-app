@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_bottomNavBar.dart';
 import 'package:saloon_app/components/salon_detailsCard.dart';
 import 'package:saloon_app/data/saloon_details.dart';
-import 'details1_viewmodel.dart';
+import 'package:saloon_app/screens/User/flow/saloonDetails/details1/details1_viewmodel.dart';
+import 'package:saloon_app/screens/User/flow/saloonDetails/details2/details2_view.dart';
+import 'package:saloon_app/screens/other/userSidemenu/userSidemunu_view.dart';
 
 class Details1view extends StatelessWidget {
   const Details1view({super.key});
@@ -45,8 +47,11 @@ class Details1view extends StatelessWidget {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        Provider.of<Details1ViewModel>(context, listen: false)
-                            .navigateBack(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const UserSideMenuView()),
+                        );
                       },
                     ),
                   ),

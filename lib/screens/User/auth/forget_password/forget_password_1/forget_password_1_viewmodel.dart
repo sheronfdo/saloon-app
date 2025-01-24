@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:saloon_app/screens/User/auth/forget_password/forget_password_2/forget_password_2_view.dart';
 import 'package:saloon_app/screens/User/auth/login/login_view.dart';
 import 'package:saloon_app/screens/admin/login/admin_login_view.dart';
+import 'package:saloon_app/screens/User/auth/Popup/otpPopUp/otpPopUp_view.dart';
 
 class ForgetPassword1ViewModel extends ChangeNotifier {
   void init() {
@@ -11,8 +12,7 @@ class ForgetPassword1ViewModel extends ChangeNotifier {
   void onSubmitButtonClick(BuildContext context, String userType) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-          builder: (context) => ForgetPassword2View(userType: userType)),
+      MaterialPageRoute(builder: (context) => OtpPopupView(userType: userType)),
     );
   }
 

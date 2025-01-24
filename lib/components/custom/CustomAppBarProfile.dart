@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:saloon_app/screens/Other/side_menu.dart';
 import 'package:saloon_app/screens/User/flow/profile/notification/notification/notification_view.dart';
+import 'package:saloon_app/screens/other/userSidemenu/userSidemunu_view.dart';
 
 class CustomAppBarProfile extends StatelessWidget
     implements PreferredSizeWidget {
@@ -19,14 +19,23 @@ class CustomAppBarProfile extends StatelessWidget
             IconButton(
               icon: const Icon(Icons.menu, color: Colors.black, size: 28),
               onPressed: () {
-                print("Menu button clicked");
+                //print("Menu button clicked");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const SideMenuScreen(),
+                    builder: (context) => const UserSideMenuView(),
                   ),
                 );
               },
+            ),
+
+            Expanded(
+              child: Center(
+                child: Image.asset(
+                  'assets/images/logo_qatar.jpeg',
+                  height: 60,
+                ),
+              ),
             ),
 
             // Notification Icon with Badge

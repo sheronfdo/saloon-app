@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/CustomAppBarProfile.dart';
 import 'package:saloon_app/components/profile_card.dart';
 import 'package:saloon_app/screens/User/flow/bookings/bookings/booking_header_view.dart';
-import 'package:saloon_app/screens/User/flow/home/home_viewmodel.dart';
+import 'package:saloon_app/screens/User/sections/allsaloo_section.dart';
+import 'package:saloon_app/screens/user/flow/home/home_viewmodel.dart';
 import '../../sections/banner_section.dart';
 import '../../sections/category_section.dart';
 import '../../sections/salon_section.dart';
@@ -112,21 +113,16 @@ class _HomeContentViewState extends State<HomeContentView> {
             ),
           ),
         ),
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: CustomAppBarProfile(),
-        ),
         Padding(
-          padding: const EdgeInsets.only(top: 60),
+          padding: const EdgeInsets.only(top: 1),
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 60),
+                  CustomAppBarProfile(),
+                  const SizedBox(height: 10),
                   ProfileCard(),
                   const SizedBox(height: 10),
                   SizedBox(
@@ -167,8 +163,10 @@ class _HomeContentViewState extends State<HomeContentView> {
                   ),
                   const SizedBox(height: 16),
                   const CategorySection(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   const SalonSection(),
+                  const SizedBox(height: 20),
+                  const AllSalonSection(),
                 ],
               ),
             ),

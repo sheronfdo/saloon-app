@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/admin/flow/service/addCategory/addCategory_view.dart';
+import 'package:saloon_app/screens/admin/flow/notifications/notification_view.dart';
+import 'package:saloon_app/screens/admin/flow/service/addNewPackage/addNewPackage_view.dart';
+import 'package:saloon_app/screens/other/adminSideMenu/adminSideMenu_view.dart';
 
 class ServiceCategoryView extends StatelessWidget {
   const ServiceCategoryView({super.key});
@@ -95,7 +98,15 @@ class ServiceCategoryView extends StatelessWidget {
       children: [
         IconButton(
           icon: const Icon(Icons.menu, color: Colors.black),
-          onPressed: () {},
+          onPressed: () {
+            print('admin side menu');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AdminSideMenuView(),
+              ),
+            );
+          },
         ),
         Stack(
           children: [
@@ -104,6 +115,13 @@ class ServiceCategoryView extends StatelessWidget {
                   color: Color(0xFFB3B3B3), size: 28),
               onPressed: () {
                 // Notification action
+                print('notification menu');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationView(),
+                  ),
+                );
               },
             ),
             Positioned(
@@ -193,11 +211,12 @@ class ServiceCategoryView extends StatelessWidget {
         } else {
           return GestureDetector(
             onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const AddNewCategoryView();
-                },
+              print("Add new category");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddNewPackageView(),
+                ),
               );
             },
             child: Container(

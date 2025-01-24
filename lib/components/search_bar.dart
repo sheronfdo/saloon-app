@@ -37,8 +37,7 @@ class SearchAppBar extends StatelessWidget {
               IconlyLight.search,
               color: Color(0xFFBF4011),
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ],
       ),

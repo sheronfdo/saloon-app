@@ -4,7 +4,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 class CustomPhoneField extends StatefulWidget {
   final TextEditingController? phoneController;
   final Function(PhoneNumber)? onPhoneChanged;
-  final String label; // Added a label parameter for the "Phone Number" label
+  final String label;
 
   const CustomPhoneField({
     super.key,
@@ -19,6 +19,7 @@ class CustomPhoneField extends StatefulWidget {
 
 class _CustomPhoneFieldState extends State<CustomPhoneField> {
   PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'LK');
+  String selectedCountry = 'Sri Lanka'; // Default to Sri Lanka
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +35,7 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
             color: Colors.black,
           ),
         ),
-        const SizedBox(height: 8), // Space between label and input field
-
+        const SizedBox(height: 8),
         // Input Field for Phone Number
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -48,6 +48,12 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
             onInputChanged: (PhoneNumber number) {
               setState(() {
                 _phoneNumber = number;
+                // Determine selected country based on ISO code
+                selectedCountry = number.isoCode == 'QA'
+                    ? 'Qatar'
+                    : number.isoCode == 'LK'
+                        ? 'Sri Lanka'
+                        : 'Unknown';
               });
               if (widget.onPhoneChanged != null) {
                 widget.onPhoneChanged!(number);
@@ -68,13 +74,21 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
               border: InputBorder.none,
             ),
             countries: const [
-              'US',
-              'GB',
-              'LK',
-              'IN'
-            ], // List of supported countries
+              'QA', // Qatar
+              'LK', // Sri Lanka
+            ],
           ),
         ),
+        const SizedBox(height: 10),
+        // Display Selected Country
+        // Text(
+        //   '$selectedCountry',
+        //   style: const TextStyle(
+        //     fontSize: 14,
+        //     fontWeight: FontWeight.w500,
+        //     color: Colors.black54,
+        //   ),
+        // ),
       ],
     );
   }

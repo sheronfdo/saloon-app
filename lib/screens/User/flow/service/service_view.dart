@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:saloon_app/screens/User/flow/service/service_viewmodel.dart';
-import 'package:saloon_app/screens/User/flow/shop/shop_view.dart';
+import 'package:saloon_app/screens/User/flow/notifications/notification_view.dart';
+import 'package:saloon_app/screens/user/flow/service/service_viewmodel.dart';
+import 'package:saloon_app/screens/user/flow/shop/shop_view.dart';
 
 class ServiceView extends StatefulWidget {
   const ServiceView({super.key});
@@ -79,7 +80,13 @@ class ServiceState extends State<ServiceView> {
                       IconButton(
                         icon: const Icon(Icons.notifications,
                             color: Colors.black),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const NotificationView()),
+                          );
+                        },
                       ),
                     ],
                   ),

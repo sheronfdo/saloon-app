@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
 import 'saloon_location_view_model.dart';
 
-class SaloonLocationView extends StatelessWidget {
+class SaloonLocationView extends StatefulWidget {
   const SaloonLocationView({super.key});
+
+  @override
+  _SaloonLocationViewState createState() => _SaloonLocationViewState();
+}
+
+class _SaloonLocationViewState extends State<SaloonLocationView> {
+  late GoogleMapController _mapController;
+  late LatLng _saloonLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _saloonLocation = LatLng(25.085598, 55.139360); // Saloon location
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,28 +40,21 @@ class SaloonLocationView extends StatelessWidget {
             body: Column(
               children: [
                 Expanded(
-                  child: FlutterMap(
-                    options: MapOptions(
-                      
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: _saloonLocation,
+                      zoom: 15.0, // Adjust the zoom level as needed
                     ),
-                    children: [
-                      TileLayer(
-                        urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        subdomains: ['a', 'b', 'c'],
+                    onMapCreated: (GoogleMapController controller) {
+                      _mapController = controller;
+                    },
+                    markers: {
+                      Marker(
+                        markerId: MarkerId('saloon_location'),
+                        position: _saloonLocation,
+                        infoWindow: InfoWindow(title: 'Saloon Location'),
                       ),
-                      MarkerLayer(
-                        markers: [
-                          Marker(
-                            point: LatLng(25.085598, 55.139360),
-                            child: const Icon(
-                              Icons.location_on,
-                              color: Colors.red,
-                              size: 40,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    },
                   ),
                 ),
                 Padding(

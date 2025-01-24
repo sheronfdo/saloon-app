@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saloon_app/screens/User/flow/appoinment/appoinment_2/appoinment_2_view.dart';
+import 'package:saloon_app/screens/User/flow/saloonDetails/details1/details1_view.dart';
 
 class SaloonCard extends StatelessWidget {
   final String imagePath;
@@ -23,7 +24,7 @@ class SaloonCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Appoinment2View()),
+          MaterialPageRoute(builder: (context) => const Details1view()),
         );
       },
       child: Container(

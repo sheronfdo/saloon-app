@@ -112,27 +112,22 @@ class _AdminHomeContentViewState extends State<AdminHomeContentView> {
             ),
           ),
         ),
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: CustomAppBar(),
-        ),
         Padding(
-          padding: const EdgeInsets.only(top: 60),
+          padding: const EdgeInsets.only(top: 2),
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 60),
+                  CustomAppBar(),
+                  const SizedBox(height: 10),
                   AdminProfileCard(),
                   const SizedBox(height: 10),
                   BannerSection(),
                   const SizedBox(height: 8),
                   const FeatureCardSection(),
-                  //const SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   ScheduleCardSection(),
                 ],
               ),

@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_bottomNavBar.dart';
 import 'package:saloon_app/components/salon_detailsCard.dart';
 import 'package:saloon_app/data/saloon_details.dart';
-import 'details2_viewmodel.dart';
+import 'package:saloon_app/screens/User/flow/saloonDetails/details2/details2_viewmodel.dart';
+import 'package:saloon_app/screens/User/flow/shop/shop_view.dart';
 
 class Details2View extends StatelessWidget {
   const Details2View({super.key});
@@ -46,8 +47,11 @@ class Details2View extends StatelessWidget {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        Provider.of<Details2ViewModel>(context, listen: false)
-                            .navigateBack(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ShopView()),
+                        );
                       },
                     ),
                   ),

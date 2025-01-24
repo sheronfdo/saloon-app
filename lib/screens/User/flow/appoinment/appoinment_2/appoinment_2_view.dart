@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/screens/User/flow/appoinment/appoinment_2/appoinment_2_viewmodel.dart';
-import 'package:saloon_app/screens/User/flow/home/home_view.dart';
 import '../../../../../components/custom/custom_btn.dart';
 
 class Appoinment2View extends StatefulWidget {
@@ -36,7 +35,6 @@ class Appoinment2State extends State<Appoinment2View> {
                 height: 210,
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 255, 239, 239),
-                  //color: Color.fromARGB(255, 112, 31, 31),
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(130),
                   ),
@@ -57,7 +55,7 @@ class Appoinment2State extends State<Appoinment2View> {
                 ),
               ),
             ),
-            //appBar
+            // appBar
             Positioned(
               top: 0,
               left: 0,
@@ -79,13 +77,11 @@ class Appoinment2State extends State<Appoinment2View> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 120),
-                 
-                    const Icon(
-                      Icons.check_circle,
-                      color: Color(0xFFBF4011),
-                      size: 80,
-                    ),
-                    
+                  const Icon(
+                    Icons.check_circle,
+                    color: Color(0xFFBF4011),
+                    size: 80,
+                  ),
                   const SizedBox(height: 20),
                   const Text(
                     'Successfully placed',
@@ -124,12 +120,11 @@ class Appoinment2State extends State<Appoinment2View> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  buildDetailRow('Customer name', 'Alveera Aliba'),
-                buildDetailRow('Service name', 'Pro Hair Cut'),
-                buildDetailRow('Price', '50 USD'),
-                buildDetailRow('Appointment time', '8.30 am - 9.30 am'),
-                buildDetailRow('Appointment date', '2024 April 14'),
-                
+                  Image.asset(
+                    'assets/images/qr.png',
+                    width: 250,
+                    height: 250,
+                  ),
                   const SizedBox(height: 30),
                   const Text(
                     'Order Reference',
@@ -150,7 +145,7 @@ class Appoinment2State extends State<Appoinment2View> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    'You’ll be notify when saloon administrator\nconfirmed your order',
+                    'You’ll be notified when the salon administrator\nconfirms your order',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
@@ -158,23 +153,15 @@ class Appoinment2State extends State<Appoinment2View> {
                       color: Colors.black54,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 20),
-                    child: Builder(
-                      builder: (BuildContext context) {
-                        return CustomButton(
-                          text: 'HOME',
-                          onPressed: () {
-                            Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                        HomeView()),
-                                );
-                          },
-                        );
+                    child: CustomButton(
+                      text: 'HOME',
+                      onPressed: () {
+                        //navigate home page
+                        Navigator.pop(context);
                       },
                     ),
                   ),
@@ -186,9 +173,9 @@ class Appoinment2State extends State<Appoinment2View> {
       ),
     );
   }
-}
 
- Widget buildDetailRow(String label, String value) {
+  // Updated method to build detail rows consistently
+  Widget buildDetailRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 25.0),
       child: Row(
@@ -207,3 +194,4 @@ class Appoinment2State extends State<Appoinment2View> {
       ),
     );
   }
+}

@@ -2,11 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_image_uploader.dart';
+import 'package:saloon_app/components/custom/custom_pd_field.dart';
 import 'package:saloon_app/screens/admin/registration/admin_signup_viewmodel.dart';
 import '../../../components/custom/custom_btn.dart';
 import '../../../components/custom/custom_phone_field.dart';
 import '../../../components/custom/custom_txtfield.dart';
 import '../../../themes/app_styles.dart';
+import 'package:pinput/pinput.dart';
 
 class AdminSignUpView extends StatefulWidget {
   const AdminSignUpView({super.key});
@@ -19,6 +21,29 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
   late AdminSignUpViewModel viewModel;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
+
+  //controllers
+  final TextEditingController _saloonNameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
+  final TextEditingController _registrationNoController =
+      TextEditingController();
+  final TextEditingController _personInChargeController =
+      TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _reEnterPasswordController =
+      TextEditingController();
+  final TextEditingController _workingDaysController = TextEditingController();
+  final TextEditingController _workingHoursController = TextEditingController();
+
+  String crImageUrl = '';
+  String profilePhotoUrl = '';
+
+  String selectedCountryCode = "+94";
+  String formattedPhone = "";
+
   int initialSeconds = 59;
   final GlobalKey<CountdownTimerState> _countdownTimerKey =
       GlobalKey<CountdownTimerState>();
@@ -33,6 +58,17 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
   @override
   void dispose() {
     _pageController.dispose();
+    _saloonNameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    _otpController.dispose();
+    _registrationNoController.dispose();
+    _personInChargeController.dispose();
+    _passwordController.dispose();
+    _reEnterPasswordController.dispose();
+    _workingDaysController.dispose();
+    _workingHoursController.dispose();
     super.dispose();
   }
 
@@ -152,7 +188,7 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
           ),
           const SizedBox(height: 15),
           CustomPhoneField(
-            onPhoneChanged: (phone) {}, label: '',
+            onPhoneChanged: (phone) {},
           ),
           const SizedBox(height: 20),
           const CustomTextField(
@@ -215,60 +251,51 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Enter 4 - Digit Code',
+            'Enter 6-Digit Code',
             style: AppStyles.mainHeading.copyWith(fontSize: 22),
             textAlign: TextAlign.start,
           ),
           SizedBox(height: 10),
           Text(
-            '4 digit One-time password has been sent to your phone number and email',
+            '4-digit One-time password has been sent to your phone number and email',
             style: AppStyles.subheading,
             textAlign: TextAlign.start,
           ),
           SizedBox(height: 50),
+
+          // Pinput for OTP input
           Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(4, (index) {
-                return SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.number,
-                    maxLength: 1,
-                    style: TextStyle(
-                      height: 1.5,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    decoration: InputDecoration(
-                      counterText: '',
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: const Color(0xFF3182CE), width: 2),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: const Color(0xFF3182CE), width: 2),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      if (value.isNotEmpty && index < 3) {
-                        FocusScope.of(context).nextFocus();
-                      } else if (value.isEmpty && index > 0) {
-                        FocusScope.of(context).previousFocus();
-                      }
-                    },
-                  ),
-                );
-              }),
+            child: Pinput(
+              length: 6,
+              autofocus: true,
+              pinAnimationType: PinAnimationType.fade,
+              defaultPinTheme: PinTheme(
+                width: 50,
+                height: 50,
+                textStyle: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xFF3182CE), width: 2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onChanged: (value) {
+                // Handle OTP value change if necessary
+                print(value); // You can replace this with your actual logic
+              },
+              onCompleted: (value) {
+                // This gets called when all OTP digits are entered
+                print("OTP completed: $value");
+              },
             ),
           ),
+
           SizedBox(height: 30),
+
+          // Resend code timer
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -287,11 +314,15 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
               ),
             ],
           ),
+
           Spacer(),
+
+          // Verify button
           CustomButton(
             text: 'Verify',
             onPressed: _onNextButtonPressed,
           ),
+
           SizedBox(height: 50),
         ],
       ),
@@ -317,9 +348,15 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
             textAlign: TextAlign.start,
           ),
           SizedBox(height: 30),
-          CustomTextField(label: 'Registration No', hintText: '123456'),
+          CustomTextField(
+              controller: _registrationNoController,
+              label: 'Registration No',
+              hintText: '123456'),
           SizedBox(height: 15),
-          CustomTextField(label: 'Person in charge', hintText: 'Enter Name'),
+          CustomTextField(
+              controller: _personInChargeController,
+              label: 'Person in charge',
+              hintText: 'Enter Name'),
           SizedBox(height: 15),
           CustomImagePicker(
             label: 'CR Copy',
@@ -362,11 +399,15 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
             textAlign: TextAlign.start,
           ),
           SizedBox(height: 30),
-          // const CustomPasswordField(label: 'Password', controller: '',),
-          // SizedBox(height: 15),
-          // const CustomPasswordField(label: 'Re-Enter Password'),
-          // SizedBox(height: 30),
-          // Password Requirements
+          CustomPasswordField(
+              label: 'Password', controller: _passwordController),
+          SizedBox(height: 15),
+          CustomPasswordField(
+            label: 'Re-Enter Password',
+            controller: _reEnterPasswordController,
+          ),
+          SizedBox(height: 30),
+          //Password Requirements
           Text(
             'Your password must have:',
             style: TextStyle(
@@ -410,24 +451,6 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
     List<String> selectedDays = ['Mon'];
     bool isAllDay = false;
 
-    Future<void> selectTime({required bool isStartTime}) async {
-      TimeOfDay initialTime = isStartTime ? startTime : endTime;
-      TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: initialTime,
-      );
-
-      if (pickedTime != null) {
-        setState(() {
-          if (isStartTime) {
-            startTime = pickedTime;
-          } else {
-            endTime = pickedTime;
-          }
-        });
-      }
-    }
-
     return Padding(
       padding: const EdgeInsets.only(left: 22.0, right: 22.0),
       child: Column(
@@ -455,8 +478,8 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
           ),
           SizedBox(height: 10),
           Wrap(
-            spacing: -12,
-            runSpacing: 10,
+            spacing: -10,
+            runSpacing: 12,
             children:
                 ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) {
               bool isSelected = selectedDays.contains(day);
@@ -518,7 +541,7 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () => {selectTime(isStartTime: true)},
+                    onTap: () => {(isStartTime: true)},
                     child: Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 15, vertical: 12),
@@ -540,7 +563,7 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
                 SizedBox(width: 10),
                 Expanded(
                   child: GestureDetector(
-                    onTap: () => {selectTime(isStartTime: false)},
+                    onTap: () => {(isStartTime: false)},
                     child: Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 15, vertical: 12),

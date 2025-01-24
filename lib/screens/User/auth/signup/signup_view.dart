@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:saloon_app/screens/User/auth/signup/signup_viewmodel.dart';
-import 'package:saloon_app/services/auth_service.dart';
+import 'package:saloon_app/screens/user/auth/signup/signup_viewmodel.dart';
+import 'package:saloon_app/services/users/userAuthService.dart';
 import '../../../../components/custom/custom_btn.dart';
 import '../../../../components/custom/custom_pd_field.dart';
 import '../../../../components/custom/custom_phone_field.dart';
@@ -23,6 +23,9 @@ class SignUpViewState extends State<SignUpView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+
+  String selectedCountryCode = "+94";
+  String formattedPhone = "";
 
   @override
   void initState() {
@@ -97,9 +100,15 @@ class SignUpViewState extends State<SignUpView> {
                       CustomPhoneField(
                         label: 'Phone Number',
                         phoneController: _phoneController,
-                        onPhoneChanged: (phone) {},
+                        onPhoneChanged: (phone) {
+                          setState(() {
+                            selectedCountryCode = phone.dialCode!;
+                            formattedPhone = phone.phoneNumber!;
+                          });
+                        },
                       ),
                       const SizedBox(height: 20),
+
                       // Email Field
                       CustomTextField(
                         label: 'Email',
@@ -149,12 +158,21 @@ class SignUpViewState extends State<SignUpView> {
                       CustomButton(
                         text: 'Sign up',
                         onPressed: () async {
+                          if (formattedPhone.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    "Please provide a valid phone number."),
+                              ),
+                            );
+                            return;
+                          }
                           // Handle sign up action
-                          AuthService().signup(
+                          await UserAuthService().signup(
                             name: _nameController.text,
                             email: _emailController.text,
                             password: _passwordController.text,
-                            phone: _phoneController.text,
+                            phone: formattedPhone,
                             context: context,
                             role: 'user',
                           );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:saloon_app/screens/User/flow/shop/shop_viewmodel.dart';
+import 'package:saloon_app/screens/User/flow/notifications/notification_view.dart';
+import 'package:saloon_app/screens/user/flow/shop/shop_viewmodel.dart';
 import '../../../../components/custom/custom_bottomNavBar.dart';
 import '../../../../components/salon_card.dart';
 import '../../../../data/saloon_data.dart';
@@ -80,18 +81,25 @@ class ShopState extends State<ShopView> {
                         icon: const Icon(Icons.menu, color: Colors.black),
                         onPressed: () {},
                       ),
+                      //const SizedBox(height: 50),
                       const Text(
                         'CUTTING',
                         style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w900,
                           color: Colors.black,
                         ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.notifications,
                             color: Colors.black),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const NotificationView()),
+                          );
+                        },
                       ),
                     ],
                   ),

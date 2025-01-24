@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:saloon_app/screens/User/auth/Popup/otpPopUp/otpPopUp_viewmodel.dart';
 
 class OtpPopupView extends StatefulWidget {
-  const OtpPopupView({super.key});
+  const OtpPopupView({super.key, required String userType});
 
   @override
   State<OtpPopupView> createState() => _OtpPopupViewState();
@@ -107,6 +107,8 @@ class _OtpPopupViewState extends State<OtpPopupView> {
 void showOtpPopup(BuildContext context) {
   showDialog(
     context: context,
-    builder: (context) => const OtpPopupView(),
+    builder: (context) => const OtpPopupView(
+      userType: '',
+    ),
   );
 }

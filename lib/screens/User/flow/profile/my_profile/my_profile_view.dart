@@ -9,6 +9,7 @@ import 'package:saloon_app/screens/User/flow/profile/notification_setting/notifi
 import 'package:saloon_app/screens/User/flow/profile/privacy/privacy_view.dart';
 import '../../../../../themes/app_colors.dart';
 import '../../../../../themes/app_styles.dart';
+
 class MyProfileView extends StatefulWidget {
   const MyProfileView({super.key});
 
@@ -32,7 +33,6 @@ class MyProfileState extends State<MyProfileView> {
     return ChangeNotifierProvider(
       create: (_) => MyProfileViewmodel(),
       child: Scaffold(
-        
         body: Stack(
           children: [
             Positioned(
@@ -63,156 +63,139 @@ class MyProfileState extends State<MyProfileView> {
                 ),
               ),
             ),
-            const Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: CustomAppBarProfile(),
-            ),
             Padding(
               padding: const EdgeInsets.only(top: 60),
-             
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 0,),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 30.0),
-                        child: Text(
-                          "MY PROFILE",
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.7,
-                            color: Color(0xFF524B4B),
-                          ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 0,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 30.0),
+                      child: Text(
+                        "MY PROFILE",
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.7,
+                          color: Color(0xFF524B4B),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Stack(
-                        children: [
-                          const CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage('assets/images/profile.png'),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Stack(
+                      children: [
+                        const CircleAvatar(
+                          radius: 50,
+                          backgroundImage:
+                              AssetImage('assets/images/profile.png'),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: CircleAvatar(
+                            radius: 15,
+                            backgroundColor: AppColors.primaryColor,
+                            child: IconButton(
+                              icon: const Icon(Icons.edit,
+                                  size: 15, color: Colors.white),
+                              onPressed: () {
+                                // Action to edit profile picture
+                              },
+                            ),
                           ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: CircleAvatar(
-                              radius: 15,
-                              backgroundColor: AppColors.primaryColor,
-                              child: IconButton(
-                                icon: const Icon(Icons.edit,
-                                    size: 15, color: Colors.white),
-                                onPressed: () {
-                                  // Action to edit profile picture
-                                },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Alveera Ailba',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'youremail@domain.com | +01 234 567 89',
+                      textAlign: TextAlign.center,
+                      style: AppStyles.subheading,
+                    ),
+                    const SizedBox(height: 16),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 2,
+                      child: Column(
+                        children: [
+                          _buildProfileOption(
+                            icon: Icons.qr_code,
+                            title: 'Edit profile information',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EditProfileView()),
+                              );
+                            },
+                          ),
+                          _buildProfileOption(
+                            icon: Icons.notifications_none_outlined,
+                            title: 'Notifications',
+                            trailing: Text(
+                              isNotificationOn ? 'ON' : 'OFF',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue,
                               ),
                             ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const NotificationSettingView()),
+                              );
+
+                              setState(() {
+                                isNotificationOn = !isNotificationOn;
+                              });
+                            },
+                          ),
+                          _buildProfileOption(
+                            icon: Icons.account_circle,
+                            title: 'Help & Support',
+                            onTap: () {},
+                          ),
+                          _buildProfileOption(
+                            icon: Icons.format_quote,
+                            title: 'Contact us',
+                            onTap: () {},
+                          ),
+                          _buildProfileOption(
+                            icon: Icons.lock,
+                            title: 'Privacy policy',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const PrivacyView()),
+                              );
+                            },
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        'Alveera Ailba',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      const Text(
-                        'youremail@domain.com | +01 234 567 89',
-                        textAlign: TextAlign.center,
-                        style: AppStyles.subheading,
-                      ),
-                      const SizedBox(height: 16),
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 2,
-                        child: Column(
-                          children: [
-                            _buildProfileOption(
-                              icon: Icons.qr_code,
-                              title: 'Edit profile information',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const EditProfileView()),
-                                );
-                              },
-                            ),
-                            _buildProfileOption(
-                              icon: Icons.notifications_none_outlined,
-                              title: 'Notifications',
-                          
-                        trailing: Text(
-                          isNotificationOn ? 'ON' : 'OFF',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                          ),
-                        ),
-                              
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const NotificationSettingView()),
-                                );
-                            
-                                setState(() {
-                                  isNotificationOn = !isNotificationOn;
-                                });
-                              },
-                            ),
-                            _buildProfileOption(
-                              icon: Icons.account_circle,
-                              title: 'Help & Support',
-                              onTap: () {
-                              },
-                            ),
-                            _buildProfileOption(
-                              icon: Icons.format_quote,
-                              title: 'Contact us',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          BookingSuccessPage()),
-                                );
-                              },
-                              
-                            ),
-                            _buildProfileOption(
-                              icon: Icons.lock,
-                              title: 'Privacy policy',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PrivacyView()),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-          
+            ),
           ],
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:saloon_app/components/custom/custom_bottomNavBar.dart';
 import 'package:saloon_app/components/custom/custom_btn.dart';
+import 'package:saloon_app/screens/User/flow/appoinment/appoinment_1/appoinment_1_view.dart';
 import 'serviceDetails_viewmodel.dart';
 
 class ServiceDetailsView extends StatelessWidget {
@@ -39,7 +40,11 @@ class ServiceDetailsView extends StatelessWidget {
                   CustomButton(
                     text: 'Book An Appointment',
                     onPressed: () {
-                      viewModel.onBookAppointmentClick(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Appoinment1View()),
+                      );
                     },
                   ),
                   const SizedBox(height: 24),

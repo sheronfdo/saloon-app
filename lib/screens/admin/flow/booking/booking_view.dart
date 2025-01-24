@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_calender.dart';
+import 'package:saloon_app/components/search_bar.dart';
 import 'package:saloon_app/screens/admin/flow/booking/booking_viewmodel.dart';
 import 'package:saloon_app/screens/admin/flow/bookingConfirm/bookingConfirm_view.dart';
 
@@ -186,6 +187,8 @@ class BookingState extends State<BookingView> {
           ],
         ),
         const SizedBox(height: 8),
+        const SearchAppBar(),
+        const SizedBox(height: 8),
         ScheduleCard(
           name: 'Wenuri De Silva',
           time: '8.00 am - 11.00 am',
@@ -227,7 +230,14 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: 'Completed',
           statusColor: Colors.green,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BookingConfirmView(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
         ScheduleCard(
@@ -237,7 +247,14 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: 'Not Confirmed',
           statusColor: Colors.red,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BookingConfirmView(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
         ScheduleCard(
@@ -247,7 +264,14 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: 'Completed',
           statusColor: Colors.green,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BookingConfirmView(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
         ScheduleCard(
@@ -257,7 +281,14 @@ class BookingState extends State<BookingView> {
           imagePath: 'assets/images/icons/avatorface01.png',
           status: 'Not Confirmed',
           statusColor: Colors.red,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BookingConfirmView(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
       ],
@@ -288,7 +319,7 @@ class ScheduleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap, // Trigger the onTap callback when pressed
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(

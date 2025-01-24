@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:saloon_app/screens/User/flow/bookings/bookings/booking_header_view.dart';
+import 'package:saloon_app/screens/User/flow/home/home_view.dart';
+import 'package:saloon_app/screens/User/flow/profile/my_profile/my_profile_view.dart';
+import 'package:saloon_app/screens/User/flow/saloonDetails/details1/details1_view.dart';
+import 'package:saloon_app/screens/User/flow/service/service_view.dart';
+import 'package:saloon_app/screens/splash/splash_4/splash_4_view.dart';
 
 class MenuItemModel {
   final IconData icon;
   final String title;
-  final VoidCallback onTap;
+  final void Function() onTap;
 
   MenuItemModel({
     required this.icon,
@@ -19,8 +25,10 @@ class UsersidemenuViewmodel {
         icon: Icons.home,
         title: 'Home',
         onTap: () {
-          print('Home tapped');
-          // Add navigation logic here
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeView()),
+          );
         },
       ),
       MenuItemModel(
@@ -28,6 +36,10 @@ class UsersidemenuViewmodel {
         title: 'Saloons',
         onTap: () {
           print('Saloons tapped');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Details1view()),
+          );
         },
       ),
       MenuItemModel(
@@ -35,6 +47,10 @@ class UsersidemenuViewmodel {
         title: 'Services',
         onTap: () {
           print('Services tapped');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ServiceView()),
+          );
         },
       ),
       MenuItemModel(
@@ -42,6 +58,10 @@ class UsersidemenuViewmodel {
         title: 'Bookings',
         onTap: () {
           print('Bookings tapped');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const BookingheaderView()),
+          );
         },
       ),
       MenuItemModel(
@@ -49,6 +69,10 @@ class UsersidemenuViewmodel {
         title: 'Profile Settings',
         onTap: () {
           print('Profile Settings tapped');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MyProfileView()),
+          );
         },
       ),
       MenuItemModel(
@@ -56,7 +80,11 @@ class UsersidemenuViewmodel {
         title: 'Logout',
         onTap: () {
           print('Logout tapped');
-          Navigator.pop(context);
+          //Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Splash4View()),
+          );
         },
       ),
     ];

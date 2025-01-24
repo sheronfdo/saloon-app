@@ -3,9 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_pd_field.dart';
 import 'package:saloon_app/components/custom/custom_txtfield.dart';
-import 'package:saloon_app/screens/User/auth/login/login_viewmodel.dart';
-import 'package:saloon_app/NavigationTest.dart';
-import 'package:saloon_app/services/auth_service.dart';
+import 'package:saloon_app/screens/user/auth/login/login_viewmodel.dart';
+import 'package:saloon_app/services/users/userAuthService.dart';
 import 'package:saloon_app/themes/app_styles.dart';
 
 class LoginView extends StatefulWidget {
@@ -18,7 +17,7 @@ class LoginView extends StatefulWidget {
 class LoginState extends State<LoginView> {
   late LoginViewModel viewModel;
 
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailOrPhoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -90,7 +89,7 @@ class LoginState extends State<LoginView> {
                     CustomTextField(
                       label: 'Email or mobile number',
                       hintText: 'Enter your email or mobile number',
-                      controller: _emailController,
+                      controller: _emailOrPhoneController,
                     ),
                     const SizedBox(height: 18),
 
@@ -148,15 +147,10 @@ class LoginState extends State<LoginView> {
                     CustomButton(
                       text: 'Log In',
                       onPressed: () async {
-                        // await AuthService().login(
-                        //   email: _emailController.text,
-                        //   password: _passwordController.text,
-                        //   context: context,
-                        // );
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const NavigationTest()),
+                        UserAuthService().login(
+                          emailOrPhone: _emailOrPhoneController.text,
+                          password: _passwordController.text,
+                          context: context,
                         );
                       },
 

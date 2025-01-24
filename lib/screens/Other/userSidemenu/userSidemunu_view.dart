@@ -31,7 +31,7 @@ class UserSideMenuView extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.close, color: Colors.black),
                     onPressed: () {
-                      Navigator.pop(context); // Close the side menu
+                      Navigator.pop(context);
                     },
                   ),
                 ],

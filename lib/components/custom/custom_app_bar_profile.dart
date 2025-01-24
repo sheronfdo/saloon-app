@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/User/flow/profile/notification/notification/notification_view.dart';
+import 'package:saloon_app/screens/other/userSidemenu/userSidemunu_view.dart';
 
 class CustomAppBarProfile extends StatelessWidget
     implements PreferredSizeWidget {
@@ -18,7 +19,12 @@ class CustomAppBarProfile extends StatelessWidget
             IconButton(
               icon: const Icon(Icons.menu, color: Colors.black, size: 28),
               onPressed: () {
-                Scaffold.of(context).openDrawer();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UserSideMenuView(),
+                  ),
+                );
               },
             ),
 
@@ -28,7 +34,8 @@ class CustomAppBarProfile extends StatelessWidget
                   icon: const Icon(IconlyBold.notification,
                       color: Color(0xFFB3B3B3), size: 28),
                   onPressed: () {
-                   Navigator.push(
+                    print("Notification button clicked");
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const NotificationView()),

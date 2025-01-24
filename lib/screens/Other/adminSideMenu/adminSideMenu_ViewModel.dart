@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:saloon_app/screens/admin/flow/availability/changeAvailability/changeAvailability_view.dart';
+import 'package:saloon_app/screens/admin/flow/changeLocation/changeLocation_view.dart';
+import 'package:saloon_app/screens/admin/flow/home/admin_home_view.dart';
+import 'package:saloon_app/screens/admin/flow/service/addNewPackage/addNewPackage_view.dart';
+import 'package:saloon_app/screens/admin/flow/service/category/category_view.dart';
+import 'package:saloon_app/screens/splash/splash_4/splash_4_view.dart';
 
 class MenuItemModel {
   final IconData icon;
@@ -21,7 +27,10 @@ class AdminSideMenuViewModel {
         title: 'Home',
         onTap: () {
           print('Home tapped');
-          // Add navigation logic here
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AdminHomeView()),
+          );
         },
       ),
       MenuItemModel(
@@ -29,6 +38,11 @@ class AdminSideMenuViewModel {
         title: 'Availability',
         onTap: () {
           print('Saloons Availability');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ChangeavailabilityView()),
+          );
         },
       ),
       MenuItemModel(
@@ -36,6 +50,10 @@ class AdminSideMenuViewModel {
         title: 'Your Location',
         onTap: () {
           print('Services Location');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ChangeLocationView()),
+          );
         },
       ),
       MenuItemModel(
@@ -43,6 +61,11 @@ class AdminSideMenuViewModel {
         title: 'My Services',
         onTap: () {
           print('My Services');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ServiceCategoryView()),
+          );
         },
       ),
       MenuItemModel(
@@ -50,6 +73,10 @@ class AdminSideMenuViewModel {
         title: 'Profile Settings',
         onTap: () {
           print('Profile Settings tapped');
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const ),
+          // );
         },
       ),
       MenuItemModel(
@@ -58,6 +85,10 @@ class AdminSideMenuViewModel {
         onTap: () {
           print('Logout tapped');
           Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Splash4View()),
+          );
         },
       ),
     ];
