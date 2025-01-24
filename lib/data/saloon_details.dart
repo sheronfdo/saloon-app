@@ -2,8 +2,7 @@ final List<Map<String, dynamic>> saloonDetailsData = [
   {
     'imagePath': 'assets/images/cuthair.jpeg',
     'name': 'Pro Hair Cut',
-    'description':
-        'Experience precision and style with our professional haircuts',
+    'description': 'Experience precision and style with our professional haircuts',
     'rating': 4.8,
     'reviews': 319,
     'price': '50 USD',
