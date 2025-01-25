@@ -18,10 +18,14 @@ class AddCategoryService {
     return tempList;
   }
 
-  Future<void> addUserCategory({required String catId, required String catName})async {
+  Future<void> addUserCategory(
+      {required String catId, required String catName}) async {
     // print("user "+ _auth.currentUser!.uid.toString());
-    await _firestore.collection('admins').doc(_auth.currentUser?.uid).collection("categories").doc(catId).set({
-      'categoryName': catName
-    });
+    await _firestore
+        .collection('admins')
+        .doc(_auth.currentUser?.uid)
+        .collection("categories")
+        .doc(catId)
+        .set({'categoryName': catName});
   }
 }

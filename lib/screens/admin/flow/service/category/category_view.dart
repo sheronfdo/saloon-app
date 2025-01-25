@@ -178,9 +178,9 @@ class ServiceCategoryView extends StatelessWidget {
       ),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: 8,
+      itemCount: services.length+1,
       itemBuilder: (context, index) {
-        if (index < 7) {
+        if (index < services.length) {
           final service = services[index % services.length];
           return GestureDetector(
             onTap: () {
