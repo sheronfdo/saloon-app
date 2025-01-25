@@ -1,11 +1,28 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class CategoryService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  getIcon(String icon) {
+    switch (icon) {
+      case 'content_cut':
+        return Icons.content_cut;
+        break;
+      case 'spa':
+        return Icons.spa;
+        break;
+      case 'face':
+        return Icons.face;
+        break;
+    }
+  }
 
   Future<List<Map<String, dynamic>>> collectCategories() async {
     CollectionReference userCategories = _firestore
@@ -17,15 +34,17 @@ class CategoryService {
     CollectionReference generalCategories = _firestore
         .collection('categories');
     for (QueryDocumentSnapshot userCategoryDoc in userCategoriesSnapshot.docs) {
-      DocumentSnapshot generalCategoryDoc = await generalCategories.doc(userCategoryDoc.id).get();
+      DocumentSnapshot generalCategoryDoc = await generalCategories.doc(
+          userCategoryDoc.id).get();
       if (generalCategoryDoc.exists) {
-        Map<String, dynamic> generalCategoryData = generalCategoryDoc.data() as Map<String, dynamic>;
+        Map<String, dynamic> generalCategoryData = generalCategoryDoc
+            .data() as Map<String, dynamic>;
         tempCategories.add({
           'id': userCategoryDoc.id,
           'name': generalCategoryData['name'],
           'label': generalCategoryData['label'],
-          'icon': generalCategoryData['icon'],
-          'color': generalCategoryData['color']
+          'icon': getIcon(generalCategoryData['icon']),
+          'color': Color(generalCategoryData['color'])
         });
       }
     }
