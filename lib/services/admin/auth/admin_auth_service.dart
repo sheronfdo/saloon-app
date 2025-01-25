@@ -179,7 +179,7 @@ class AdminAuthService {
 
       // need to link phone auth credential with this user credentials
 
-      await FirebaseFirestore.instance.collection('admins').doc(userCredential.user?.uid).set({
+      await _firestore.collection('admins').doc(userCredential.user?.uid).set({
         'saloonName': adminRegistrationDTO.saloonName,
         'phoneNumber': adminRegistrationDTO.phoneNumber,
         'email': adminRegistrationDTO.email,
