@@ -207,6 +207,11 @@ class _ServiceCategoryViewState extends State<ServiceCategoryView> {
           return GestureDetector(
             onTap: () {
               print("Service tapped: ${service['label']}");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddNewPackageView()),
+              );
+
             },
             child: Container(
               decoration: BoxDecoration(

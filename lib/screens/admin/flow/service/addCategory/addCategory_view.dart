@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saloon_app/services/admin/flow/service/addCategory/add_category_service.dart';
+import 'package:saloon_app/services/admin/flow/service/category/category_service.dart';
 
 
 class AddNewCategoryView extends StatefulWidget {
@@ -11,32 +12,35 @@ class AddNewCategoryView extends StatefulWidget {
 
 class _AddNewCategoryViewState extends State<AddNewCategoryView> {
      String? selectedCategory; // Selected category ID
-  // final AddNewCategoryViewmodel _viewModel = AddNewCategoryViewmodel();
+     final CategoryService _categoryService = CategoryService();
+     List<Map<String, dynamic>> _services = [];
+     bool _isLoading = true;
+
 // Dummy category
   List<Map<String, String>> serviceCategories = [];
   bool isLoading = true; // Loading state
-  //
+
+
   @override
   void initState() {
     super.initState();
-    fetchCategories();
+    _fetchCategories();
   }
 
-  // Function to fetch categories and update state
-  void fetchCategories() async {
-    // setState(() {
-    //   isLoading = true; // Show loading indicator
-    // });
-
-    final List<Map<String, String>> categories = await AddCategoryService().collectGeneralCategories();
-
-    setState(() {
-      serviceCategories = categories; // Update category list
-      // isLoading = false; // Hide loading indicator
-    });
+  Future<void> _fetchCategories() async {
+    try {
+      final categories = await _categoryService.collectCategories();
+      setState(() {
+        _services = categories;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching categories: $e");
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
-
-
 
 
   @override
@@ -142,6 +146,9 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
                       );
 
                       print("Category added: ID = $selectedCategory, Name = $selectedCategoryName");
+
+                      // Fetch updated categories after adding a new category
+                      await _fetchCategories();
                     } else {
                       print("No category selected");
                     }
