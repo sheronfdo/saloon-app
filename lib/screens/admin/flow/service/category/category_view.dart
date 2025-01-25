@@ -5,10 +5,14 @@ import 'package:saloon_app/screens/admin/flow/service/addCategory/addCategory_vi
 import 'package:saloon_app/screens/admin/flow/notifications/notification_view.dart';
 import 'package:saloon_app/screens/admin/flow/service/addNewPackage/addNewPackage_view.dart';
 
-
-class ServiceCategoryView extends StatelessWidget {
+class ServiceCategoryView extends StatefulWidget {
   const ServiceCategoryView({super.key});
 
+  @override
+  State<ServiceCategoryView> createState() => _ServiceCategoryViewState();
+}
+
+class _ServiceCategoryViewState extends State<ServiceCategoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,7 +182,7 @@ class ServiceCategoryView extends StatelessWidget {
       ),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: services.length+1,
+      itemCount: services.length + 1,
       itemBuilder: (context, index) {
         if (index < services.length) {
           final service = services[index % services.length];
