@@ -4,6 +4,7 @@ import 'package:saloon_app/screens/Other/adminSideMenu/adminSideMenu_view.dart';
 import 'package:saloon_app/screens/admin/flow/service/addCategory/addCategory_view.dart';
 import 'package:saloon_app/screens/admin/flow/notifications/notification_view.dart';
 import 'package:saloon_app/screens/admin/flow/service/addNewPackage/addNewPackage_view.dart';
+import 'package:saloon_app/services/admin/flow/service/category/category_service.dart';
 
 class ServiceCategoryView extends StatefulWidget {
   const ServiceCategoryView({super.key});
@@ -13,6 +14,33 @@ class ServiceCategoryView extends StatefulWidget {
 }
 
 class _ServiceCategoryViewState extends State<ServiceCategoryView> {
+
+  final CategoryService _categoryService = CategoryService();
+  List<Map<String, dynamic>> _services = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
+  }
+
+  Future<void> _fetchCategories() async {
+    try {
+      final categories = await _categoryService.collectCategories();
+      setState(() {
+        _services = categories;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching categories: $e");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,16 +191,6 @@ class _ServiceCategoryViewState extends State<ServiceCategoryView> {
 
   // Service Grid
   Widget _buildServiceGrid(BuildContext context) {
-    final services = [
-      {
-        'icon': Icons.content_cut,
-        'label': 'Cutting',
-        'color': const Color(0xFFF5A369)
-      },
-      {'icon': Icons.spa, 'label': 'Shaving', 'color': const Color(0xFFFA6199)},
-      {'icon': Icons.face, 'label': 'Facial', 'color': const Color(0xFF792242)},
-    ];
-
     return GridView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -182,10 +200,10 @@ class _ServiceCategoryViewState extends State<ServiceCategoryView> {
       ),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: services.length + 1,
+      itemCount: _services.length + 1,
       itemBuilder: (context, index) {
-        if (index < services.length) {
-          final service = services[index % services.length];
+        if (index < _services.length) {
+          final service = _services[index];
           return GestureDetector(
             onTap: () {
               print("Service tapped: ${service['label']}");
