@@ -26,7 +26,7 @@ class CategoryService {
 
   Future<List<Map<String, dynamic>>> collectCategories() async {
     CollectionReference userCategories = _firestore
-        .collection('users')
+        .collection('admins')
         .doc(_auth.currentUser?.uid)
         .collection('categories');
     QuerySnapshot userCategoriesSnapshot = await userCategories.get();

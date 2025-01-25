@@ -12,9 +12,6 @@ class AddNewCategoryView extends StatefulWidget {
 
 class _AddNewCategoryViewState extends State<AddNewCategoryView> {
      String? selectedCategory; // Selected category ID
-     final CategoryService _categoryService = CategoryService();
-     List<Map<String, dynamic>> _services = [];
-     bool _isLoading = true;
 
 // Dummy category
   List<Map<String, String>> serviceCategories = [];
@@ -29,16 +26,14 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
 
   Future<void> _fetchCategories() async {
     try {
-      final categories = await _categoryService.collectCategories();
+      final categories = await AddCategoryService().collectGeneralCategories();
       setState(() {
-        _services = categories;
-        _isLoading = false;
+        serviceCategories = categories;
+        print("cate =========  ");
+        print(serviceCategories);
       });
     } catch (e) {
       print("Error fetching categories: $e");
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
