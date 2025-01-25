@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class AddNewCategoryView extends StatefulWidget {
   const AddNewCategoryView({super.key});
 
@@ -8,7 +9,40 @@ class AddNewCategoryView extends StatefulWidget {
 }
 
 class _AddNewCategoryViewState extends State<AddNewCategoryView> {
-  String? selectedCategory; // State to hold the selected category
+     String? selectedCategory; // Selected category ID
+  // final AddNewCategoryViewmodel _viewModel = AddNewCategoryViewmodel();
+  // List<Map<String, String>> serviceCategories = [];
+  // bool isLoading = true; // Loading state
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   fetchCategories();
+  // }
+  //
+  // // Function to fetch categories and update state
+  // void fetchCategories() async {
+  //   setState(() {
+  //     isLoading = true; // Show loading indicator
+  //   });
+  //
+  //   final categories = await _viewModel.fetchServiceCategories();
+  //
+  //   setState(() {
+  //     serviceCategories = categories; // Update category list
+  //     isLoading = false; // Hide loading indicator
+  //   });
+  // }
+
+  // Dummy category
+  final List<Map<String, String>> serviceCategories = [
+    {"id": "1", "name": "Haircuts"},
+    {"id": "2", "name": "Manicures"},
+    {"id": "3", "name": "Pedicures"},
+    {"id": "4", "name": "Facials"},
+    {"id": "5", "name": "Massage"},
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,20 +115,12 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
                       "Select service category",
                       style: TextStyle(color: Colors.grey),
                     ),
-                    items: const [
-                      DropdownMenuItem(
-                        value: "Category 1",
-                        child: Text("Category 1"),
-                      ),
-                      DropdownMenuItem(
-                        value: "Category 2",
-                        child: Text("Category 2"),
-                      ),
-                      DropdownMenuItem(
-                        value: "Category 3",
-                        child: Text("Category 3"),
-                      ),
-                    ],
+                    items: serviceCategories
+                        .map((category) => DropdownMenuItem<String>(
+                      value: category["id"],
+                      child: Text(category["name"]!),
+                    ))
+                        .toList(),
                     onChanged: (value) {
                       setState(() {
                         selectedCategory = value;

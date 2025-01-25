@@ -216,7 +216,7 @@ class ServiceCategoryView extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddNewPackageView(),
+                  builder: (context) => const AddNewCategoryView(),
                 ),
               );
             },
