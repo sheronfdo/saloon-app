@@ -4,6 +4,7 @@ import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_pd_field.dart';
 import 'package:saloon_app/components/custom/custom_txtfield.dart';
 import 'package:saloon_app/screens/admin/login/admin_login_viewmodel.dart';
+import 'package:saloon_app/services/admin/admin_authService.dart';
 import 'package:saloon_app/themes/app_styles.dart';
 
 class AdminLoginView extends StatefulWidget {
@@ -148,8 +149,13 @@ class LoginState extends State<AdminLoginView> {
                   // Login Button
                   CustomButton(
                     text: 'Log In',
-                    onPressed: () {
-                      viewModel.onLogInButtonClick(context);
+                    onPressed: () async {
+                      AdminAuthService().login(
+                        emailOrPhone: emailController.text,
+                        password: passwordController.text,
+                        context: context,
+                      );
+
                     },
                   ),
                   const SizedBox(height: 24),

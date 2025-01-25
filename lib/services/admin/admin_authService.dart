@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:saloon_app/screens/admin/flow/home/admin_home_view.dart';
 import 'package:saloon_app/services/admin/dto/admin_registration_dto.dart';
 
 class AdminAuthService {
@@ -326,6 +327,75 @@ class AdminAuthService {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 14.0,
+      );
+    }
+
+  }
+
+
+  //login (support email and phone No)
+  Future<void> login({
+    required String emailOrPhone,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      String email = emailOrPhone;
+
+      // Check if the input is a phone number
+      if (!emailOrPhone.contains('@')) {
+        // Query Firestore for the phone number
+        QuerySnapshot phoneCheck = await _firestore
+            .collection('admins')
+            .where('phone', isEqualTo: emailOrPhone)
+            .get();
+
+        if (phoneCheck.docs.isNotEmpty) {
+          // Extract email from Firestore if phone exists
+          email = phoneCheck.docs.first.get('email');
+        } else {
+          // Throw error if phone number is not found
+          throw FirebaseAuthException(
+            code: 'user-not-found',
+            message: 'No user found with this phone number.',
+          );
+        }
+      }
+
+      // Authenticate using email and password
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      // Show success message
+      Fluttertoast.showToast(
+        msg: "Login successful!",
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+
+      // Navigate to the home screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const AdminHomeView()),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Handle specific FirebaseAuth exceptions
+      String errorMessage = e.message ?? 'An error occurred.';
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found with this email or phone number.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Incorrect password.';
+      }
+      Fluttertoast.showToast(
+        msg: errorMessage,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    } catch (e) {
+      // Handle unexpected errors
+      Fluttertoast.showToast(
+        msg: "An unexpected error occurred: ${e.toString()}",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
       );
     }
   }
