@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:saloon_app/screens/admin/flow/service/editeDeletePackage/editeDeletePack_view.dart';
 import 'addNewPackage_viewmodel.dart';
 
 class AddNewPackageView extends StatefulWidget {
@@ -146,6 +147,12 @@ class AddNewPackageState extends State<AddNewPackageView> {
                     child: ElevatedButton(
                       onPressed: () {
                         //add new package functionality
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>  EditeDeletePackageView(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF842400),

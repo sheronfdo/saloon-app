@@ -3,6 +3,7 @@ import 'package:iconly/iconly.dart';
 import 'package:saloon_app/components/custom/custom_bottomNavBar.dart';
 import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/screens/admin/flow/service/editeDeletePackage/editeDeletePack_viewmodel.dart';
+import 'package:saloon_app/screens/admin/flow/service/savePackage/savePackage_view.dart';
 
 class EditeDeletePackageView extends StatelessWidget {
   final EditeDeletePackageViewModel viewModel = EditeDeletePackageViewModel();
@@ -36,6 +37,12 @@ class EditeDeletePackageView extends StatelessWidget {
                     text: 'Edite',
                     onPressed: () {
                       viewModel.onBookAppointmentClick(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  SavePackageView(),
+                        ),
+                      );
                     },
                   ),
                   const SizedBox(height: 16),

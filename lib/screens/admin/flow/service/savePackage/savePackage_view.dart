@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:saloon_app/screens/admin/flow/home/admin_home_view.dart';
 
 class SavePackageView extends StatelessWidget {
   const SavePackageView({super.key});
@@ -25,7 +26,7 @@ class SavePackageView extends StatelessWidget {
                     const SizedBox(height: 40),
                     _buildFormFields(),
                     const SizedBox(height: 40),
-                    _buildActionButtons(),
+                    _buildActionButtons(context),
                   ],
                 ),
               ),
@@ -246,12 +247,18 @@ class SavePackageView extends StatelessWidget {
   }
 
   // Action buttons for Save and Deactivate
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(BuildContext context) {
     return Column(
       children: [
         ElevatedButton(
           onPressed: () {
             // Save action
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>  AdminHomeView(),
+              ),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFAA2008),
