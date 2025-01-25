@@ -39,6 +39,7 @@ class UserAuthService {
         password: password,
       );
 
+
       await _auth.verifyPhoneNumber(
         phoneNumber: '+94770470323',
         verificationCompleted: (PhoneAuthCredential credential) {},

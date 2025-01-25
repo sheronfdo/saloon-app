@@ -1,15 +1,17 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_image_uploader.dart';
 import 'package:saloon_app/components/custom/custom_pd_field.dart';
 import 'package:saloon_app/screens/admin/registration/admin_signup_viewmodel.dart';
 import 'package:saloon_app/services/admin/admin_authService.dart';
+
 import '../../../components/custom/custom_btn.dart';
 import '../../../components/custom/custom_phone_field.dart';
 import '../../../components/custom/custom_txtfield.dart';
 import '../../../themes/app_styles.dart';
-import 'package:pinput/pinput.dart';
 
 class AdminSignUpView extends StatefulWidget {
   const AdminSignUpView({super.key});
@@ -74,41 +76,54 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
   }
 
   void _onNextButtonPressed() async {
+    if (_currentPage < 7) {
+      _pageController.animateToPage(
+        _currentPage + 1,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+      _countdownTimerKey.currentState?.resetTimer();
+    }
+  }
+
+  void _onRegisterButtonPressed() async {
     await AdminAuthService().registerAdminStep1(
       saloonName: _saloonNameController.text.trim(),
       phone: "$selectedCountryCode${_phoneController.text.trim()}",
       email: _emailController.text.trim(),
       address: _addressController.text.trim(),
-      role: 'admin', // Assuming the role is 'admin'
       context: context,
     );
-
-    if (_currentPage < 7) {
-      _pageController.animateToPage(
-        _currentPage + 1,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-      _countdownTimerKey.currentState?.resetTimer();
-    }
+    _onNextButtonPressed();
   }
 
   void _onOTPVerityButtonPressed() async {
     await AdminAuthService().verifyOtp(
-      otp:_otpController.text.trim(),
+      otp: _otpController.text.trim(),
       context: context,
     );
-
-    if (_currentPage < 7) {
-      _pageController.animateToPage(
-        _currentPage + 1,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-      _countdownTimerKey.currentState?.resetTimer();
-    }
+    _onNextButtonPressed();
   }
 
+  void _onBusinessDocButtonPressed() async {
+    await AdminAuthService().uploadDocuments(
+      registrationNo: _registrationNoController.text.trim(),
+      personInCharge: _personInChargeController.text,
+      crImageUrl: "",
+      context: context,
+    );
+    _onNextButtonPressed();
+  }
+
+  void _onSetPasswordButtonPressed() async {
+    if (_passwordController.text == _reEnterPasswordController.text) {
+      await AdminAuthService().setPassword(
+        password: _passwordController.text.trim(),
+        context: context,
+      );
+      _onNextButtonPressed();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -212,19 +227,19 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
             label: 'Saloon Name',
             hintText: 'Enter saloon name',
             keyboardType: TextInputType.name,
-            controller:_saloonNameController,
+            controller: _saloonNameController,
           ),
           const SizedBox(height: 15),
           CustomPhoneField(
             onPhoneChanged: (phone) {},
-            controller:_phoneController,
+            controller: _phoneController,
           ),
           const SizedBox(height: 20),
           CustomTextField(
             label: 'Email',
             hintText: 'Enter your email',
             keyboardType: TextInputType.emailAddress,
-            controller:_emailController ,
+            controller: _emailController,
           ),
           const SizedBox(height: 15),
           CustomTextField(
@@ -232,12 +247,12 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
             hintText: 'Select on map',
             keyboardType: TextInputType.name,
             suffixIcon: Icons.location_on,
-            controller:_addressController,
+            controller: _addressController,
           ),
           const SizedBox(height: 40),
           CustomButton(
             text: 'Next',
-            onPressed: _onNextButtonPressed,
+            onPressed: _onRegisterButtonPressed,
           ),
           const SizedBox(height: 40),
           Center(
@@ -404,7 +419,7 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
           Spacer(),
           CustomButton(
             text: 'Next',
-            onPressed: _onNextButtonPressed,
+            onPressed: _onBusinessDocButtonPressed,
           ),
           SizedBox(height: 50),
         ],
@@ -469,7 +484,7 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
           Spacer(),
           CustomButton(
             text: 'Next',
-            onPressed: _onNextButtonPressed,
+            onPressed: _onSetPasswordButtonPressed,
           ),
           SizedBox(height: 50),
         ],

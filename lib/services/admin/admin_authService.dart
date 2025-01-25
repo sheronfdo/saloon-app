@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:saloon_app/services/admin/dto/admin_registration_dto.dart';
 
 class AdminAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  static AdminRegistrationDTO adminRegistrationDTO = new AdminRegistrationDTO();
 
   //step 1 basic details
   Future<void> registerAdminStep1({
@@ -13,34 +15,46 @@ class AdminAuthService {
     required String phone,
     required String email,
     required String address,
-    required String role,
     required BuildContext context,
   }) async {
     try {
-      DocumentReference adminDoc = _firestore.collection('admins').doc();
-      await adminDoc.set({
-        'saloonName': saloonName,
-        'phone': phone,
-        'email': email,
-        'address': address,
-        'step': 1,
-        'role': role,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+      // DocumentReference adminDoc = _firestore.collection('admins').doc();
+      // await adminDoc.set({
+      //   'saloonName': saloonName,
+      //   'phone': phone,
+      //   'email': email,
+      //   'address': address,
+      //   'step': 1,
+      //   'role': role,
+      //   'createdAt': FieldValue.serverTimestamp(),
+      // });
+      //
+      // //show alert
+      // Fluttertoast.showToast(
+      //   msg: "Step 1 completed. Proceed to the next step!",
+      //   toastLength: Toast.LENGTH_LONG,
+      //   gravity: ToastGravity.BOTTOM,
+      //   backgroundColor: Colors.green,
+      //   textColor: Colors.white,
+      //   fontSize: 14.0,
+      // );
+      adminRegistrationDTO.saloonName = saloonName;
+      adminRegistrationDTO.phoneNumber = phone;
+      adminRegistrationDTO.email = email;
+      adminRegistrationDTO.address = address;
 
-      //show alert
-      Fluttertoast.showToast(
-        msg: "Step 1 completed. Proceed to the next step!",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 14.0,
+      await _auth.verifyPhoneNumber(
+        phoneNumber: adminRegistrationDTO.phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) {},
+        verificationFailed: (FirebaseAuthException e) {},
+        codeSent: (String verificationId, int? resendToken) {
+          adminRegistrationDTO.otpVerificationId = verificationId;
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
       );
-
+      print("step 1 ==== "+ adminRegistrationDTO.email+" "+adminRegistrationDTO.saloonName);
       //navigate to OTP
-      Navigator.pushNamed(context, '/buildOTPVerifyPage',
-          arguments: adminDoc.id);
+      // Navigator.pushNamed(context, '/buildOTPVerifyPage');
     } catch (e) {
 
       print("firabase exception ===== ======= "+e.toString());
@@ -63,25 +77,33 @@ class AdminAuthService {
     required BuildContext context,
   }) async {
     try {
-      if (otp == "111222") {
-        await _firestore.collection('admins').doc().update({
-          'otpVerified': true,
-          'step': 2,
-        });
+      if (otp != "000000") {
+        // await _firestore.collection('admins').doc().update({
+        //   'otpVerified': true,
+        //   'step': 2,
+        // });
+        //
+        // Fluttertoast.showToast(
+        //   msg: "OTP verified. Proceed to the next step!",
+        //   toastLength: Toast.LENGTH_LONG,
+        //   gravity: ToastGravity.BOTTOM,
+        //   backgroundColor: Colors.green,
+        //   textColor: Colors.white,
+        //   fontSize: 14.0,
+        // );
 
-        Fluttertoast.showToast(
-          msg: "OTP verified. Proceed to the next step!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: adminRegistrationDTO.otpVerificationId, smsCode: otp);
+        try {
+          await FirebaseAuth.instance.signInWithCredential(credential);
+          print('Successfully signed in!');
+        } catch (e) {
+          print('Error signing in: $e');
+        }
 
         //navigate
-        Navigator.pushNamed(context, '/buildBusinessDocsPage',
-            );
+        // Navigator.pushNamed(context, '/buildBusinessDocsPage');
       } else {
+        // Navigator.pushNamed(context, '/buildBusinessDocsPage');
         throw Exception("Invalid OTP");
       }
     } catch (e) {
@@ -98,31 +120,34 @@ class AdminAuthService {
 
   //step 3
   Future<void> uploadDocuments({
-    required String adminId,
     required String registrationNo,
     required String personInCharge,
     required String crImageUrl,
     required BuildContext context,
   }) async {
     try {
-      await _firestore.collection('admins').doc(adminId).update({
-        'registrationNo': registrationNo,
-        'personInCharge': personInCharge,
-        'crImageUrl': crImageUrl,
-        'step': 3,
-      });
+      // await _firestore.collection('admins').doc(adminId).update({
+      //   'registrationNo': registrationNo,
+      //   'personInCharge': personInCharge,
+      //   'crImageUrl': crImageUrl,
+      //   'step': 3,
+      // });
+      //
+      // Fluttertoast.showToast(
+      //   msg: "Documents uploaded successfully!",
+      //   toastLength: Toast.LENGTH_LONG,
+      //   gravity: ToastGravity.BOTTOM,
+      //   backgroundColor: Colors.green,
+      //   textColor: Colors.white,
+      //   fontSize: 14.0,
+      // );
 
-      Fluttertoast.showToast(
-        msg: "Documents uploaded successfully!",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      adminRegistrationDTO.registrationNumber = registrationNo;
+      adminRegistrationDTO.personInCharge = personInCharge;
 
+      print("step 3 ==== "+ adminRegistrationDTO.registrationNumber+" "+adminRegistrationDTO.personInCharge);
       //navigate to screen
-      Navigator.pushNamed(context, '/buildSetPasswordPage', arguments: adminId);
+      // Navigator.pushNamed(context, '/buildSetPasswordPage');
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Failed to upload documents: ${e.toString()}",
@@ -137,24 +162,33 @@ class AdminAuthService {
 
   //step 4
   Future<void> setPassword({
-    required String adminId,
     required String password,
     required BuildContext context,
   }) async {
     try {
-      DocumentSnapshot adminSnapshot =
-          await _firestore.collection('admins').doc(adminId).get();
-      String email = adminSnapshot['email'];
+      adminRegistrationDTO.password = password;
 
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+
+      print("step 4 ==== "+ adminRegistrationDTO.password);
+
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: adminRegistrationDTO.email,
+        password: adminRegistrationDTO.password,
       );
-      await _firestore.collection('admins').doc(adminId).update({
-        'uid': userCredential.user!.uid,
-        'step': 4,
+
+      // need to link phone auth credential with this user credentials
+
+      await FirebaseFirestore.instance.collection('admins').doc(userCredential.user?.uid).set({
+        'saloonName': adminRegistrationDTO.saloonName,
+        'phoneNumber': adminRegistrationDTO.phoneNumber,
+        'email': adminRegistrationDTO.email,
+        'address': adminRegistrationDTO.address,
+        'registrationNumber': adminRegistrationDTO.registrationNumber,
+        'personInCharge': adminRegistrationDTO.personInCharge,
+        'role' : "admin"
       });
+
+      adminRegistrationDTO.userCredential = userCredential;
 
       Fluttertoast.showToast(
         msg: "Password set successfully!",
@@ -166,8 +200,7 @@ class AdminAuthService {
       );
 
       //navigate
-      Navigator.pushNamed(context, '/buildAddAvailabilityPage',
-          arguments: adminId);
+      // Navigator.pushNamed(context, '/buildAddAvailabilityPage');
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
         msg: "Password setup failed: ${e.message}",
