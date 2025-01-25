@@ -19,26 +19,6 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
 
 
   @override
-  void initState() {
-    super.initState();
-    _fetchCategories();
-  }
-
-  Future<void> _fetchCategories() async {
-    try {
-      final categories = await AddCategoryService().collectGeneralCategories();
-      setState(() {
-        serviceCategories = categories;
-        print("cate =========  ");
-        print(serviceCategories);
-      });
-    } catch (e) {
-      print("Error fetching categories: $e");
-    }
-  }
-
-
-  @override
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -142,8 +122,7 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
 
                       print("Category added: ID = $selectedCategory, Name = $selectedCategoryName");
 
-                      // Fetch updated categories after adding a new category
-                      await _fetchCategories();
+
                     } else {
                       print("No category selected");
                     }
