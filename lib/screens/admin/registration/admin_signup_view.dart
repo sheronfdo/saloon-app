@@ -192,27 +192,31 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 28),
-          const CustomTextField(
+          CustomTextField(
             label: 'Saloon Name',
             hintText: 'Enter saloon name',
             keyboardType: TextInputType.name,
+            controller:_saloonNameController,
           ),
           const SizedBox(height: 15),
           CustomPhoneField(
             onPhoneChanged: (phone) {},
+            controller:_phoneController,
           ),
           const SizedBox(height: 20),
-          const CustomTextField(
+          CustomTextField(
             label: 'Email',
             hintText: 'Enter your email',
             keyboardType: TextInputType.emailAddress,
+            controller:_emailController ,
           ),
           const SizedBox(height: 15),
-          const CustomTextField(
+          CustomTextField(
             label: 'Address',
             hintText: 'Select on map',
             keyboardType: TextInputType.name,
             suffixIcon: Icons.location_on,
+            controller:_addressController,
           ),
           const SizedBox(height: 40),
           CustomButton(

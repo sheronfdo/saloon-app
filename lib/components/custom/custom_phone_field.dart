@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class CustomPhoneField extends StatefulWidget {
-  final TextEditingController? phoneController;
+  final TextEditingController?  controller;
   final Function(PhoneNumber)? onPhoneChanged;
   final String label;
 
   const CustomPhoneField({
-    super.key,
-    this.phoneController,
+    Key? key,
+    this.controller,
     this.onPhoneChanged,
     this.label = '',
-  });
+  }) : super(key: key);
 
   @override
   _CustomPhoneFieldState createState() => _CustomPhoneFieldState();
 }
 
 class _CustomPhoneFieldState extends State<CustomPhoneField> {
-  PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'LK');
-  String selectedCountry = 'Sri Lanka'; // Default to Sri Lanka
+  PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'LK'); // Default country code
+  String selectedCountry = 'Sri Lanka'; // Default country
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +48,19 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
             onInputChanged: (PhoneNumber number) {
               setState(() {
                 _phoneNumber = number;
-                // Determine selected country based on ISO code
+                // Update selected country
                 selectedCountry = number.isoCode == 'QA'
                     ? 'Qatar'
                     : number.isoCode == 'LK'
-                        ? 'Sri Lanka'
-                        : 'Unknown';
+                    ? 'Sri Lanka'
+                    : 'Unknown';
               });
               if (widget.onPhoneChanged != null) {
                 widget.onPhoneChanged!(number);
               }
             },
             initialValue: _phoneNumber,
-            textFieldController: widget.phoneController,
+            textFieldController: widget.controller,
             selectorConfig: const SelectorConfig(
               selectorType: PhoneInputSelectorType.DROPDOWN,
               leadingPadding: 10,
@@ -81,14 +81,14 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
         ),
         const SizedBox(height: 10),
         // Display Selected Country
-        // Text(
-        //   '$selectedCountry',
-        //   style: const TextStyle(
-        //     fontSize: 14,
-        //     fontWeight: FontWeight.w500,
-        //     color: Colors.black54,
-        //   ),
-        // ),
+        Text(
+          selectedCountry,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Colors.black54,
+          ),
+        ),
       ],
     );
   }
