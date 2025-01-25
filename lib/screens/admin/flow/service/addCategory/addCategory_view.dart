@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saloon_app/services/admin/flow/service/addCategory/add_category_service.dart';
 
 
 class AddNewCategoryView extends StatefulWidget {
@@ -11,37 +12,31 @@ class AddNewCategoryView extends StatefulWidget {
 class _AddNewCategoryViewState extends State<AddNewCategoryView> {
      String? selectedCategory; // Selected category ID
   // final AddNewCategoryViewmodel _viewModel = AddNewCategoryViewmodel();
-  // List<Map<String, String>> serviceCategories = [];
-  // bool isLoading = true; // Loading state
+// Dummy category
+  List<Map<String, String>> serviceCategories = [];
+  bool isLoading = true; // Loading state
   //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   fetchCategories();
-  // }
-  //
-  // // Function to fetch categories and update state
-  // void fetchCategories() async {
-  //   setState(() {
-  //     isLoading = true; // Show loading indicator
-  //   });
-  //
-  //   final categories = await _viewModel.fetchServiceCategories();
-  //
-  //   setState(() {
-  //     serviceCategories = categories; // Update category list
-  //     isLoading = false; // Hide loading indicator
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
 
-  // Dummy category
-  final List<Map<String, String>> serviceCategories = [
-    {"id": "1", "name": "Haircuts"},
-    {"id": "2", "name": "Manicures"},
-    {"id": "3", "name": "Pedicures"},
-    {"id": "4", "name": "Facials"},
-    {"id": "5", "name": "Massage"},
-  ];
+  // Function to fetch categories and update state
+  void fetchCategories() async {
+    // setState(() {
+    //   isLoading = true; // Show loading indicator
+    // });
+
+    final List<Map<String, String>> categories = await AddCategoryService().collectGeneralCategories();
+
+    setState(() {
+      serviceCategories = categories; // Update category list
+      // isLoading = false; // Hide loading indicator
+    });
+  }
+
+
 
 
   @override

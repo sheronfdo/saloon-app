@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_image_uploader.dart';
 import 'package:saloon_app/components/custom/custom_pd_field.dart';
 import 'package:saloon_app/screens/admin/registration/admin_signup_viewmodel.dart';
-import 'package:saloon_app/services/admin/admin_authService.dart';
+import 'package:saloon_app/services/admin/auth/admin_auth_service.dart';
 
 import '../../../components/custom/custom_btn.dart';
 import '../../../components/custom/custom_phone_field.dart';
