@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_image_uploader.dart';
 import 'package:saloon_app/components/custom/custom_pd_field.dart';
 import 'package:saloon_app/screens/admin/registration/admin_signup_viewmodel.dart';
+import 'package:saloon_app/services/admin/admin_authService.dart';
 import '../../../components/custom/custom_btn.dart';
 import '../../../components/custom/custom_phone_field.dart';
 import '../../../components/custom/custom_txtfield.dart';
@@ -72,7 +73,16 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
     super.dispose();
   }
 
-  void _onNextButtonPressed() {
+  void _onNextButtonPressed() async {
+    await AdminAuthService().registerAdminStep1(
+      saloonName: _saloonNameController.text.trim(),
+      phone: "$selectedCountryCode${_phoneController.text.trim()}",
+      email: _emailController.text.trim(),
+      address: _addressController.text.trim(),
+      role: 'admin', // Assuming the role is 'admin'
+      context: context,
+    );
+
     if (_currentPage < 7) {
       _pageController.animateToPage(
         _currentPage + 1,
@@ -82,6 +92,7 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
       _countdownTimerKey.currentState?.resetTimer();
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
