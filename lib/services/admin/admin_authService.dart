@@ -58,13 +58,13 @@ class AdminAuthService {
 
   //step 2
   Future<void> verifyOtp({
-    required String adminId,
+    // required String adminId,
     required String otp,
     required BuildContext context,
   }) async {
     try {
       if (otp == "111222") {
-        await _firestore.collection('admins').doc(adminId).update({
+        await _firestore.collection('admins').doc().update({
           'otpVerified': true,
           'step': 2,
         });
@@ -80,7 +80,7 @@ class AdminAuthService {
 
         //navigate
         Navigator.pushNamed(context, '/buildBusinessDocsPage',
-            arguments: adminId);
+            );
       } else {
         throw Exception("Invalid OTP");
       }

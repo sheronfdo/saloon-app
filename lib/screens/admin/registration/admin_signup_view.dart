@@ -93,6 +93,22 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
     }
   }
 
+  void _onOTPVerityButtonPressed() async {
+    await AdminAuthService().verifyOtp(
+      otp:_otpController.text.trim(),
+      context: context,
+    );
+
+    if (_currentPage < 7) {
+      _pageController.animateToPage(
+        _currentPage + 1,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+      _countdownTimerKey.currentState?.resetTimer();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -285,6 +301,7 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
               length: 6,
               autofocus: true,
               pinAnimationType: PinAnimationType.fade,
+              controller: _otpController,
               defaultPinTheme: PinTheme(
                 width: 50,
                 height: 50,
@@ -335,7 +352,7 @@ class AdminSignUpViewState extends State<AdminSignUpView> {
           // Verify button
           CustomButton(
             text: 'Verify',
-            onPressed: _onNextButtonPressed,
+            onPressed: _onOTPVerityButtonPressed,
           ),
 
           SizedBox(height: 50),
