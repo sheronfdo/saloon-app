@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/Other/adminSideMenu/adminSideMenu_view.dart';
-import 'package:saloon_app/screens/admin/flow/service/addCategory/addCategory_view.dart';
 import 'package:saloon_app/screens/admin/flow/notifications/notification_view.dart';
-import 'package:saloon_app/screens/admin/flow/service/addNewPackage/addNewPackage_view.dart';
-
+import 'package:saloon_app/screens/admin/flow/service/addCategory/addCategory_view.dart';
 
 class ServiceCategoryView extends StatelessWidget {
   const ServiceCategoryView({super.key});
@@ -165,7 +163,7 @@ class ServiceCategoryView extends StatelessWidget {
         'label': 'Cutting',
         'color': const Color(0xFFF5A369)
       },
-      {'icon': Icons.spa, 'label': 'Shaving', 'color': const Color(0xFFFA6199)},
+      {'icon': Icons.spa, 'label': 'Shaving', 'color': const Color(4294599065)},
       {'icon': Icons.face, 'label': 'Facial', 'color': const Color(0xFF792242)},
     ];
 
@@ -178,7 +176,7 @@ class ServiceCategoryView extends StatelessWidget {
       ),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: services.length+1,
+      itemCount: services.length + 1,
       itemBuilder: (context, index) {
         if (index < services.length) {
           final service = services[index % services.length];
