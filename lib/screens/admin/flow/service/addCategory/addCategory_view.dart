@@ -129,9 +129,21 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
               // Confirm Button
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (selectedCategory != null) {
-                      print("Selected category: $selectedCategory");
+                      // Retrieve selected category name
+                      String selectedCategoryName = serviceCategories
+                          .firstWhere((category) => category["id"] == selectedCategory)["name"]!;
+
+                      // Call addUserCategory method
+                      await AddCategoryService().addUserCategory(
+                        catId: selectedCategory!,
+                        catName: selectedCategoryName,
+                      );
+
+                      print("Category added: ID = $selectedCategory, Name = $selectedCategoryName");
+                    } else {
+                      print("No category selected");
                     }
                     Navigator.of(context).pop(); // Close the popup
                   },
