@@ -99,7 +99,7 @@ class SignUpViewState extends State<SignUpView> {
                       // Phone Field
                       CustomPhoneField(
                         label: 'Phone Number',
-                        phoneController: _phoneController,
+                        controller: _phoneController,
                         onPhoneChanged: (phone) {
                           setState(() {
                             selectedCountryCode = phone.dialCode!;

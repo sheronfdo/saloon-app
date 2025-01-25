@@ -42,6 +42,8 @@ class AdminAuthService {
       Navigator.pushNamed(context, '/buildOTPVerifyPage',
           arguments: adminDoc.id);
     } catch (e) {
+
+      print("firabase exception ===== ======= "+e.toString());
       // Handle general errors
       Fluttertoast.showToast(
         msg: "An error occurred: ${e.toString()}",
