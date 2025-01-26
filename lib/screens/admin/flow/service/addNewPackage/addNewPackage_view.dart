@@ -4,7 +4,9 @@ import 'package:saloon_app/screens/admin/flow/service/editeDeletePackage/editeDe
 import 'addNewPackage_viewmodel.dart';
 
 class AddNewPackageView extends StatefulWidget {
-  const AddNewPackageView({super.key});
+  final String serviceId;
+
+  const AddNewPackageView({Key? key, required this.serviceId}) : super(key: key);
 
   @override
   AddNewPackageState createState() => AddNewPackageState();
