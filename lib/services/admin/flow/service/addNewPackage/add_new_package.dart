@@ -27,10 +27,10 @@ class AddNewPackageService {
 
   Future<void> editPackage(
       {required String catId,
-        required String packageId,
-        required String title,
-        required double price,
-        required String description}) async {
+      required String packageId,
+      required String title,
+      required double price,
+      required String description}) async {
     await _firestore
         .collection('admins')
         .doc(_auth.currentUser?.uid)
@@ -44,5 +44,17 @@ class AddNewPackageService {
       'description': description,
       'status': 'active'
     });
+  }
+
+  Future<void> deactivatePackage(
+      {required String catId, required String packageId}) async {
+    await _firestore
+        .collection('admins')
+        .doc(_auth.currentUser?.uid)
+        .collection("categories")
+        .doc(catId)
+        .collection("packages")
+        .doc(packageId)
+        .set({'status': 'deactivate'});
   }
 }
