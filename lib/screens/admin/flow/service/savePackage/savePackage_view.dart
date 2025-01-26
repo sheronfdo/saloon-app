@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/admin/flow/home/admin_home_view.dart';
+import 'package:saloon_app/services/admin/flow/service/package/package_service.dart';
 
 class SavePackageView extends StatelessWidget {
   final String serviceId;
@@ -8,6 +9,13 @@ class SavePackageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController priceController = TextEditingController();
+    final TextEditingController descriptionController = TextEditingController();
+
+    final PackageService packageService = PackageService();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -25,9 +33,9 @@ class SavePackageView extends StatelessWidget {
                     const SizedBox(height: 30),
                     _buildTitle(),
                     const SizedBox(height: 40),
-                    _buildFormFields(),
+                    _buildFormFields(titleController, priceController, descriptionController),
                     const SizedBox(height: 40),
-                    _buildActionButtons(context),
+                    _buildActionButtons(context, packageService, titleController, priceController, descriptionController),
                   ],
                 ),
               ),
@@ -125,7 +133,11 @@ class SavePackageView extends StatelessWidget {
   }
 
   // Form fields for input
-  Widget _buildFormFields() {
+  Widget _buildFormFields(
+      TextEditingController titleController,
+      TextEditingController priceController,
+      TextEditingController descriptionController,
+      ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -135,6 +147,7 @@ class SavePackageView extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          controller: titleController,
           decoration: InputDecoration(
             hintText: 'Hair Cut for Adult',
             hintStyle: const TextStyle(color: Colors.grey),
@@ -166,6 +179,7 @@ class SavePackageView extends StatelessWidget {
             // Input field for the price
             Expanded(
               child: TextFormField(
+                controller: priceController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   filled: true,
@@ -215,6 +229,7 @@ class SavePackageView extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          controller: descriptionController,
           maxLines: 8,
           decoration: InputDecoration(
             filled: true,
@@ -248,18 +263,44 @@ class SavePackageView extends StatelessWidget {
   }
 
   // Action buttons for Save and Deactivate
-  Widget _buildActionButtons(BuildContext context) {
+  Widget _buildActionButtons(
+      BuildContext context,
+      PackageService packageService,
+      TextEditingController titleController,
+      TextEditingController priceController,
+      TextEditingController descriptionController,
+      ) {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () {
-            // Save action
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>  AdminHomeView(),
-              ),
-            );
+          onPressed: () async {
+            final String title = titleController.text.trim();
+            final double? price = double.tryParse(priceController.text.trim());
+            final String description = descriptionController.text.trim();
+
+            if (title.isEmpty || price == null || description.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Please fill all fields')),
+              );
+              return;
+            }
+
+            try {
+              await packageService.addNewPackage(
+                catId: serviceId,
+                title: title,
+                price: price,
+                description: description,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Package saved successfully')),
+              );
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminHomeView()));
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Failed to save package: $e')),
+              );
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFAA2008),
@@ -279,8 +320,17 @@ class SavePackageView extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         TextButton(
-          onPressed: () {
-            // Deactivate action
+          onPressed: () async {
+            try {
+              await packageService.deactivatePackage(catId: serviceId, packageId: "PACKAGE_ID_HERE");
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Package deactivated successfully')),
+              );
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Failed to deactivate package: $e')),
+              );
+            }
           },
           child: const Text(
             'Deactivate Service',
