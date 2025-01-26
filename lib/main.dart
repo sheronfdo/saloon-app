@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Beauty Qatar',
       debugShowCheckedModeBanner: false,
-      home: AdminLoginView(),
+      home: AdminHomeView(),
      
     );
   }

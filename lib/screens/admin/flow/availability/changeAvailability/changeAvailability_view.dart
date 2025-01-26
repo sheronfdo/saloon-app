@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:saloon_app/services/admin/flow/availability/availability_service.dart';
 
 class ChangeavailabilityView extends StatelessWidget {
   const ChangeavailabilityView({super.key});
@@ -264,6 +265,7 @@ class ChangeavailabilityView extends StatelessWidget {
       children: [
         ElevatedButton(
           onPressed: () {
+            AvailabilityService().setAvailability();
             // Save Changes button action
           },
           style: ElevatedButton.styleFrom(
