@@ -39,12 +39,14 @@ EditeDeletePackageView({Key? key, required this.serviceId}) : super(key: key);
                     text: 'Edite',
                     onPressed: () {
                       viewModel.onBookAppointmentClick(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  SavePackageView(),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>  SavePackageView(
+                      //       serviceId:serviceId,
+                      //     ),
+                      //   ),
+                      // );
                     },
                   ),
                   const SizedBox(height: 16),
