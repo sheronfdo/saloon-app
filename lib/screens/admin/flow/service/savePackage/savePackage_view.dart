@@ -3,7 +3,8 @@ import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/admin/flow/home/admin_home_view.dart';
 
 class SavePackageView extends StatelessWidget {
-  const SavePackageView({super.key});
+  final String serviceId;
+  const SavePackageView({Key? key, required this.serviceId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

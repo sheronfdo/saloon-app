@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/screens/admin/flow/service/editeDeletePackage/editeDeletePack_view.dart';
+import 'package:saloon_app/screens/admin/flow/service/savePackage/savePackage_view.dart';
 import 'addNewPackage_viewmodel.dart';
 
 class AddNewPackageView extends StatefulWidget {
@@ -131,9 +132,19 @@ class AddNewPackageState extends State<AddNewPackageView> {
                             price: package['price'],
                             imagePath: package['imagePath'],
                             isDeactivated: package['isDeactivated'],
+                            serviceId: widget.serviceId, // Pass the serviceId from AddNewPackageView
                             onPressed: () {
                               // Print all package details when a card is clicked
-                              print('hello');
+                              print('Show Package card');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>  EditeDeletePackageView(
+                                    serviceId: widget.serviceId, // Pass the serviceId
+                                  ),
+                                ),
+                              );
+
                             },
                           );
                         },
@@ -152,7 +163,9 @@ class AddNewPackageState extends State<AddNewPackageView> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>  EditeDeletePackageView(),
+                            builder: (context) =>  SavePackageView(
+                              serviceId: widget.serviceId, // Pass the serviceId
+                            ),
                           ),
                         );
                       },
@@ -189,6 +202,7 @@ class PackageCard extends StatelessWidget {
   final String imagePath;
   final bool isDeactivated;
   final VoidCallback onPressed;
+  final String serviceId ;
 
   const PackageCard({
     Key? key,
@@ -197,6 +211,7 @@ class PackageCard extends StatelessWidget {
     required this.imagePath,
     this.isDeactivated = false,
     required this.onPressed,
+    required this.serviceId,
   }) : super(key: key);
 
   @override

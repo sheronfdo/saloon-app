@@ -7,8 +7,10 @@ import 'package:saloon_app/screens/admin/flow/service/savePackage/savePackage_vi
 
 class EditeDeletePackageView extends StatelessWidget {
   final EditeDeletePackageViewModel viewModel = EditeDeletePackageViewModel();
+  final String serviceId;
 
-  EditeDeletePackageView({super.key});
+EditeDeletePackageView({Key? key, required this.serviceId}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +39,14 @@ class EditeDeletePackageView extends StatelessWidget {
                     text: 'Edite',
                     onPressed: () {
                       viewModel.onBookAppointmentClick(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  SavePackageView(),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>  SavePackageView(
+                      //       serviceId:serviceId,
+                      //     ),
+                      //   ),
+                      // );
                     },
                   ),
                   const SizedBox(height: 16),
