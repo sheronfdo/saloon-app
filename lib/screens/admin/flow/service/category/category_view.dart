@@ -211,7 +211,9 @@ class _ServiceCategoryViewState extends State<ServiceCategoryView> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddNewPackageView(),
+                  builder: (context) => AddNewPackageView(
+                    serviceId: service['id'], // Pass the service ID here
+                  ),
                 ),
               ).then((_) {
                 // This block runs when the AddNewPackageView is closed
