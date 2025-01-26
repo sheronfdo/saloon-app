@@ -57,4 +57,15 @@ class AddNewPackageService {
         .doc(packageId)
         .set({'status': 'deactivate'});
   }
+
+  Future<void> deletePackage(
+      {required String catId, required String packageId}) async {
+    await _firestore
+        .collection('admins')
+        .doc(_auth.currentUser?.uid)
+        .collection("categories")
+        .doc(catId)
+        .collection("packages")
+        .doc(packageId).delete();
+  }
 }
