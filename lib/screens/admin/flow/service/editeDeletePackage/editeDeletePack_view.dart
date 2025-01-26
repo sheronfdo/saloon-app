@@ -4,12 +4,15 @@ import 'package:saloon_app/components/custom/custom_bottomNavBar.dart';
 import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/screens/admin/flow/service/editeDeletePackage/editeDeletePack_viewmodel.dart';
 import 'package:saloon_app/screens/admin/flow/service/savePackage/savePackage_view.dart';
+import 'package:saloon_app/services/admin/flow/service/package/package_service.dart';
 
 class EditeDeletePackageView extends StatelessWidget {
   final EditeDeletePackageViewModel viewModel = EditeDeletePackageViewModel();
   final String serviceId;
+  final String packageId; // New parameter for the package ID
+  final PackageService _packageService = PackageService(); // Instance of PackageService
 
-EditeDeletePackageView({Key? key, required this.serviceId}) : super(key: key);
+  EditeDeletePackageView({Key? key, required this.serviceId, required this.packageId}) : super(key: key);
 
 
   @override
@@ -52,8 +55,19 @@ EditeDeletePackageView({Key? key, required this.serviceId}) : super(key: key);
                   const SizedBox(height: 16),
                   Center(
                     child: GestureDetector(
-                      onTap: () {
-                        viewModel.onDeletePackageClick(context);
+                      onTap: () async {
+                        try {
+                          final packageService = PackageService(); // Create an instance of PackageService
+                          await packageService.deletePackage(catId: serviceId, packageId: packageId);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Package deleted successfully')),
+                          );
+                          Navigator.pop(context); // Navigate back after deletion
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to delete package: $e')),
+                          );
+                        }
                       },
                       child: const Text(
                         'Delete Package',

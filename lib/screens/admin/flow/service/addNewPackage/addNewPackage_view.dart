@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/screens/admin/flow/service/editeDeletePackage/editeDeletePack_view.dart';
 import 'package:saloon_app/screens/admin/flow/service/savePackage/savePackage_view.dart';
+import 'package:saloon_app/services/admin/flow/service/package/package_service.dart';
 import 'addNewPackage_viewmodel.dart';
 
 class AddNewPackageView extends StatefulWidget {
@@ -120,35 +121,45 @@ class AddNewPackageState extends State<AddNewPackageView> {
 
                 // Package Cards
                 Expanded(
-                  child: Consumer<AddNewPackageViewModel>(
-                    builder: (context, viewModel, child) {
-                      return ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                        itemCount: viewModel.packages.length,
-                        itemBuilder: (context, index) {
-                          final package = viewModel.packages[index];
-                          return PackageCard(
-                            title: package['title'],
-                            price: package['price'],
-                            imagePath: package['imagePath'],
-                            isDeactivated: package['isDeactivated'],
-                            serviceId: widget.serviceId, // Pass the serviceId from AddNewPackageView
-                            onPressed: () {
-                              // Print all package details when a card is clicked
-                              print('Show Package card');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>  EditeDeletePackageView(
-                                    serviceId: widget.serviceId, // Pass the serviceId
+                  child: FutureBuilder<List<Map<String, dynamic>>>(
+                    future: PackageService().collectUserCategoryPackages(catId: widget.serviceId), // Fetch data
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(child: Text('No packages found.'));
+                      } else {
+                        final packages = snapshot.data!;
+                        return ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          itemCount: packages.length,
+                          itemBuilder: (context, index) {
+                            final package = packages[index];
+                            return PackageCard(
+                              title: package['title'],
+                              price: package['price'],
+                              imagePath: package['imagePath'],
+                              isDeactivated: package['isDeactivated'],
+                              serviceId: widget.serviceId, // Pass the serviceId from AddNewPackageView
+                              onPressed: () {
+                                // Print all package details when a card is clicked
+                                print('Show Package card');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditeDeletePackageView(
+                                      serviceId: widget.serviceId, // Pass the serviceId
+                                      packageId: package['id'], // Pass the packageId dynamically
+                                    ),
                                   ),
-                                ),
-                              );
-
-                            },
-                          );
-                        },
-                      );
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }
                     },
                   ),
                 ),
