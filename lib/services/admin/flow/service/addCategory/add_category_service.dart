@@ -6,8 +6,7 @@ class AddCategoryService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<List<Map<String, String>>> collectGeneralCategories() async {
-    CollectionReference categories =
-        FirebaseFirestore.instance.collection('categories');
+    CollectionReference categories = _firestore.collection('categories');
     QuerySnapshot querySnapshot = await categories.get();
     List<Map<String, String>> tempList = querySnapshot.docs.map((doc) {
       return {

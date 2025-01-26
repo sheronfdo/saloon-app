@@ -21,7 +21,7 @@ class PackageService {
       'title': title,
       'price': price,
       'description': description,
-      'status': 'active'
+      'isDeactivated': false
     });
   }
 
@@ -42,7 +42,7 @@ class PackageService {
       'title': title,
       'price': price,
       'description': description,
-      'status': 'active'
+      'isDeactivated': false
     });
   }
 
@@ -55,7 +55,7 @@ class PackageService {
         .doc(catId)
         .collection("packages")
         .doc(packageId)
-        .set({'status': 'deactivate'});
+        .set({'isDeactivated': true});
   }
 
   Future<void> deletePackage(
@@ -66,6 +66,30 @@ class PackageService {
         .collection("categories")
         .doc(catId)
         .collection("packages")
-        .doc(packageId).delete();
+        .doc(packageId)
+        .delete();
+  }
+
+  Future<List<Map<String, dynamic>>> collectUserCategoryPackages(
+      {required String catId}) async {
+    CollectionReference packages = _firestore
+        .collection('admins')
+        .doc(_auth.currentUser?.uid)
+        .collection("categories")
+        .doc(catId)
+        .collection("packages");
+    QuerySnapshot packagesSnapshot = await packages.get();
+    List<Map<String, dynamic>> tempPackages = [];
+    for (QueryDocumentSnapshot packageDoc in packagesSnapshot.docs) {
+      tempPackages.add({
+        'id': packageDoc.id,
+        'title': packageDoc["title"],
+        'price': packageDoc['price'],
+        'description': packageDoc['description'],
+        'imagePath': 'assets/images/cutbead.png',
+        'isDeactivated': packageDoc['isDeactivated']
+      });
+    }
+    return tempPackages;
   }
 }
