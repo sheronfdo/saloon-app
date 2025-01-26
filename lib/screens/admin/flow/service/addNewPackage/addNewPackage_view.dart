@@ -145,7 +145,8 @@ class AddNewPackageState extends State<AddNewPackageView> {
                               serviceId: widget.serviceId, // Pass the serviceId from AddNewPackageView
                               onPressed: () {
                                 // Print all package details when a card is clicked
-                                print('Show Package card');
+                                print('Show Package card---------------------------------------------------------------------------');
+                                print('Package ID: ${package['id']}');
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
