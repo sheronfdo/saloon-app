@@ -8,7 +8,7 @@ class PackageService {
   Future<void> addNewPackage(
       {required String catId,
       required String title,
-      required double price,
+      required String price,
       required String description}) async {
     await _firestore
         .collection('admins')
@@ -29,7 +29,7 @@ class PackageService {
       {required String catId,
       required String packageId,
       required String title,
-      required double price,
+      required String price,
       required String description}) async {
     await _firestore
         .collection('admins')

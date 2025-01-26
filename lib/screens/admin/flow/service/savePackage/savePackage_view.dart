@@ -289,7 +289,7 @@ class SavePackageView extends StatelessWidget {
               await packageService.addNewPackage(
                 catId: serviceId,
                 title: title,
-                price: price,
+                price: price.toString(),
                 description: description,
               );
               ScaffoldMessenger.of(context).showSnackBar(
