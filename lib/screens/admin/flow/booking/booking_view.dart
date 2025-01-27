@@ -28,16 +28,14 @@ class BookingState extends State<BookingView> {
 
   Future<void> _fetchAppointmentsForSelectedDate() async {
     try {
-      // Convert DateTime to String in 'yyyy-MM-dd' format
       // String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
       final allAppointments = await ScheduleService().getAppointmentsByDate(
         day: _selectedDate.toIso8601String(),
       );
-
-      // Map appointments to the desired structure
       setState(() {
         _appointments = allAppointments.map((appointment) {
           return {
+            'id':appointment['appointmentId'],
             'name': appointment['customerName'] ?? 'Unknown',
             'time': appointment['timeslot'],
             'price': "\$${appointment['price']}",
@@ -223,7 +221,7 @@ class BookingState extends State<BookingView> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BookingConfirmView( appointmentId: appointment["id"],),
+                  builder: (context) => BookingConfirmView( appointmentId: appointment['id']),
                 ),
               );
             },
