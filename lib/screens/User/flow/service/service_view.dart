@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/screens/User/flow/notifications/notification_view.dart';
 import 'package:saloon_app/screens/User/flow/service/service_viewmodel.dart';
 import 'package:saloon_app/screens/User/flow/shop/shop_view.dart';
+import 'package:saloon_app/services/admin/flow/service/addCategory/add_category_service.dart';
 import 'package:saloon_app/services/admin/flow/service/category/category_service.dart';
 
 
@@ -14,8 +15,9 @@ class ServiceView extends StatefulWidget {
 }
 
 class ServiceState extends State<ServiceView> {
+
   late ServiceViewModel viewModel;
-  final CategoryService categoryService = CategoryService();
+  late AddCategoryService addCategoryService;
 
   @override
   void initState() {
@@ -101,8 +103,8 @@ class ServiceState extends State<ServiceView> {
                 ),
                 const SizedBox(height: 20),
                 Expanded(
-                  child: FutureBuilder<List<Map<String, dynamic>>>(
-                    future: categoryService.collectCategories(), // Fetch categories
+                  child: FutureBuilder<List<Map<String, String>>>(
+                    future: addCategoryService.collectGeneralCategories(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -129,7 +131,8 @@ class ServiceState extends State<ServiceView> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ShopView()),
+                                MaterialPageRoute(
+                                    builder: (context) => const ShopView()),
                               );
                             },
                             child: Container(
