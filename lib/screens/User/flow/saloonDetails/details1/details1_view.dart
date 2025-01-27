@@ -8,7 +8,22 @@ import 'package:saloon_app/screens/User/flow/saloonDetails/details1/details1_vie
 import 'package:saloon_app/screens/User/flow/saloonDetails/details2/details2_view.dart';
 
 class Details1view extends StatelessWidget {
-  const Details1view({super.key});
+
+  final String serviceId;
+  final String serviceName;
+  final String serviceAddress;
+  final double serviceRating;
+  final int serviceReviews;
+  final String serviceImagePath;
+  const Details1view({
+    Key? key,
+    required this.serviceId,
+    required this.serviceName,
+    required this.serviceAddress,
+    required this.serviceRating,
+    required this.serviceReviews,
+    required this.serviceImagePath,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

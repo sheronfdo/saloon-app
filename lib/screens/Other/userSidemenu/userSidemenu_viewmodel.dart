@@ -36,10 +36,10 @@ class UsersidemenuViewmodel {
         title: 'Saloons',
         onTap: () {
           print('Saloons tapped');
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Details1view()),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const Details1view()),
+          // );
         },
       ),
       MenuItemModel(

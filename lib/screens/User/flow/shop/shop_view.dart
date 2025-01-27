@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:saloon_app/components/custom/custom_bottomNavBar.dart';
 import 'package:saloon_app/components/salon_card.dart';
 import 'package:saloon_app/screens/User/flow/notifications/notification_view.dart';
+import 'package:saloon_app/screens/User/flow/saloonDetails/details1/details1_view.dart';
 import 'package:saloon_app/services/users/flow/shop/shop_view_service.dart';
 
 
@@ -140,6 +141,17 @@ class ShopState extends State<ShopView> {
                             address: saloon['address'] as String,
                             rating: saloon['rating'] as double,
                             reviews: saloon['reviews'] as int,
+                            onPressed: (){ Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Details1view(
+                                serviceId: saloon['id'] as String,
+                                serviceImagePath: saloon['imagePath'] as String,
+                                serviceName: saloon['name'] as String,
+                                serviceAddress: saloon['address'] as String,
+                                serviceRating: saloon['rating'] as double,
+                                serviceReviews: saloon['reviews'] as int,
+                              )),
+                            );},
                           );
                         },
                       );
