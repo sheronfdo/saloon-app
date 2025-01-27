@@ -3,9 +3,43 @@ import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_02/reschedule02_view.dart';
 import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_view.dart';
 import 'package:saloon_app/screens/admin/flow/jobComplete/jobComplete_view.dart';
+import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
 
-class JobDoneView extends StatelessWidget {
-  const JobDoneView({super.key});
+class JobDoneView extends StatefulWidget {
+  final String appointmentId;
+
+  const JobDoneView({Key? key, required this.appointmentId}) : super(key: key);
+
+  @override
+  State<JobDoneView> createState() => _JobDoneViewState();
+}
+
+class _JobDoneViewState extends State<JobDoneView> {
+  Map<String, dynamic> appointmentDetails = {};
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAppointmentDetails();
+  }
+
+  Future<void> fetchAppointmentDetails() async {
+    try {
+      final data = await ScheduleService().getAppointmentDetails(
+        appointmentId: widget.appointmentId,
+      );
+      setState(() {
+        appointmentDetails = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching appointment details: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +52,9 @@ class JobDoneView extends StatelessWidget {
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
+                child: isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 30),
@@ -43,7 +79,6 @@ class JobDoneView extends StatelessWidget {
     );
   }
 
-  //background decorations
   Widget _buildBackground() {
     return Stack(
       children: [
@@ -79,7 +114,6 @@ class JobDoneView extends StatelessWidget {
     );
   }
 
-  //header
   Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,10 +125,13 @@ class JobDoneView extends StatelessWidget {
         Stack(
           children: [
             IconButton(
-              icon: const Icon(IconlyBold.notification,
-                  color: Color(0xFFB3B3B3), size: 28),
+              icon: const Icon(
+                IconlyBold.notification,
+                color: Color(0xFFB3B3B3),
+                size: 28,
+              ),
               onPressed: () {
-                //write action code
+                // Add notification action
               },
             ),
             Positioned(
@@ -115,11 +152,10 @@ class JobDoneView extends StatelessWidget {
     );
   }
 
-  //title
   Widget _buildTitle() {
     return const Center(
       child: Text(
-        'Booking Details',
+        'Job Details',
         style: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
@@ -129,7 +165,6 @@ class JobDoneView extends StatelessWidget {
     );
   }
 
-//booking images
   Widget _buildImage() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
@@ -142,43 +177,44 @@ class JobDoneView extends StatelessWidget {
     );
   }
 
-  //service Details
   Widget _buildServiceDetails() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Pro Hair Cut 01',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        Text(
+          appointmentDetails['packageData']?['title'] ?? 'N/A',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         Row(
           children: [
             Text(
-              'Monday, 28 Oct',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.blue),
+              appointmentDetails['date'] ?? 'N/A',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.blue,
+              ),
             ),
             const Spacer(),
             Text(
-              'AED 220.00',
+              '${appointmentDetails['packageData']?['price'] ?? 'N/A'}',
               style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ],
         ),
         const SizedBox(height: 8),
         Row(
-          children: const [
-            Icon(Icons.access_time, size: 16, color: Colors.black54),
-            SizedBox(width: 4),
+          children: [
+            const Icon(Icons.access_time, size: 16, color: Colors.black54),
+            const SizedBox(width: 4),
             Text(
-              '8.00 am - 11.00 am',
-              style: TextStyle(fontSize: 14, color: Colors.black54),
+              appointmentDetails['timeSlot'] ?? 'Time Slot',
+              style: const TextStyle(fontSize: 14, color: Colors.black54),
             ),
           ],
         ),
@@ -186,7 +222,6 @@ class JobDoneView extends StatelessWidget {
     );
   }
 
-  //contact Details
   Widget _buildContactDetails() {
     return Container(
       padding: const EdgeInsets.all(25.0),
@@ -202,25 +237,24 @@ class JobDoneView extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 24,
-            child: Image.asset(
-              'assets/images/icons/avatorface02.png',
-            ),
+            child: Image.asset('assets/images/icons/avatorface02.png'),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  'Tharindu Theekshan',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
+                  appointmentDetails['customerData']?['name'] ?? 'N/A',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
                 ),
                 Text(
-                  'Dusit, Thani, Dubai',
-                  style: TextStyle(fontSize: 14, color: Colors.black),
+                  appointmentDetails['customerData']?['address'] ?? 'N/A',
+                  style: const TextStyle(fontSize: 14, color: Colors.black),
                 ),
               ],
             ),
@@ -228,15 +262,14 @@ class JobDoneView extends StatelessWidget {
           IconButton(
             icon: Image.asset('assets/images/icons/whatsapp.png'),
             onPressed: () {
-              // Add WhatsApp click action
+              // Add WhatsApp action
             },
-          )
+          ),
         ],
       ),
     );
   }
 
-  /// Action Buttons
   Widget _buildActionButtons(BuildContext context) {
     return Column(
       children: [
@@ -256,71 +289,18 @@ class JobDoneView extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.check,
-                color: Colors.white,
-              ),
-              const SizedBox(width: 8),
-              const Text(
+            children: const [
+              Icon(Icons.check, color: Colors.white),
+              SizedBox(width: 8),
+              Text(
                 'Mark as Done',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Color.fromRGBO(255, 255, 255, 1),
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        ElevatedButton(
-          onPressed: () {
-            // Reschedule action
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const BookingRescheduleView()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 120, 22, 5),
-            minimumSize: const Size(double.infinity, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
-            ),
-          ),
-          child: const Text(
-            'Reschedule',
-            style: TextStyle(
-                fontSize: 18,
-                color: Color.fromRGBO(255, 255, 255, 1),
-                fontWeight: FontWeight.bold),
-          ),
-        ),
-        const SizedBox(height: 12),
-        ElevatedButton(
-          onPressed: () {
-            // Cancel session action
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const BookingReschedule2View()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFFE5E5),
-            minimumSize: const Size(double.infinity, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-          child: const Text(
-            'Cancel Session',
-            style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(0, 0, 0, 1)),
           ),
         ),
       ],
