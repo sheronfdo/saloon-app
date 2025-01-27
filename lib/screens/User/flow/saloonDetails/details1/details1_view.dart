@@ -2,28 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_bottomNavBar.dart';
 import 'package:saloon_app/components/salon_detailsCard.dart';
-import 'package:saloon_app/data/saloon_details.dart';
 import 'package:saloon_app/screens/Other/userSidemenu/userSidemunu_view.dart';
 import 'package:saloon_app/screens/User/flow/saloonDetails/details1/details1_viewmodel.dart';
-import 'package:saloon_app/screens/User/flow/saloonDetails/details2/details2_view.dart';
+import 'package:saloon_app/services/users/flow/shop/shop_view_service.dart';
 
-class Details1view extends StatelessWidget {
-
+class Details1view extends StatefulWidget {
   final String serviceId;
+  final String saloonId;
   final String serviceName;
   final String serviceAddress;
   final double serviceRating;
   final int serviceReviews;
   final String serviceImagePath;
+
   const Details1view({
     Key? key,
     required this.serviceId,
+    required this.saloonId,
     required this.serviceName,
     required this.serviceAddress,
     required this.serviceRating,
     required this.serviceReviews,
     required this.serviceImagePath,
   }) : super(key: key);
+
+  @override
+  State<Details1view> createState() => _Details1viewState();
+}
+
+class _Details1viewState extends State<Details1view> {
+  List<Map<String, dynamic>> saloonDetailsData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchShopPackages();
+  }
+
+  void _fetchShopPackages() async {
+    List<Map<String, dynamic>> data = await ShopViewService()
+        .getSaloonsPackagesByCategory(
+            saloonId: widget.saloonId, catId: widget.serviceId);
+    setState(() {
+      saloonDetailsData = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +100,8 @@ class Details1view extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Saloon ABC',
+                      Text(
+                        widget.serviceName,
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -101,8 +124,11 @@ class Details1view extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          const Text(
-                            '4.8/5 (319)',
+                          Text(
+                            (widget.serviceRating as double).toString() +
+                                '/5 (' +
+                                (widget.serviceReviews as int).toString() +
+                                ')',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,
@@ -111,7 +137,7 @@ class Details1view extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      const Row(
+                      Row(
                         children: [
                           Icon(
                             Icons.location_on,
@@ -120,7 +146,7 @@ class Details1view extends StatelessWidget {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            'ABC House, 3rd Street, UAE, Dubai',
+                            widget.serviceAddress,
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,

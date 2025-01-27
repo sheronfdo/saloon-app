@@ -40,7 +40,7 @@ class ShopViewService {
     for (QueryDocumentSnapshot packageDoc in packagesSnapshot.docs) {
       tempPackages.add({
         'id': packageDoc.id,
-        'title': packageDoc["title"],
+        'name': packageDoc["title"],
         'price': packageDoc['price'],
         'description': packageDoc['description'],
         'imagePath': 'assets/images/cutbead.png',

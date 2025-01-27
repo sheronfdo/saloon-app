@@ -5,7 +5,6 @@ import 'package:saloon_app/screens/User/flow/notifications/notification_view.dar
 import 'package:saloon_app/screens/User/flow/saloonDetails/details1/details1_view.dart';
 import 'package:saloon_app/services/users/flow/shop/shop_view_service.dart';
 
-
 class ShopView extends StatefulWidget {
   final String serviceId;
   final String serviceName;
@@ -27,7 +26,8 @@ class ShopState extends State<ShopView> {
   @override
   void initState() {
     super.initState();
-    saloonsFuture = shopViewService.getSaloonsByCategory(catId: widget.serviceId);
+    saloonsFuture =
+        shopViewService.getSaloonsByCategory(catId: widget.serviceId);
   }
 
   @override
@@ -95,7 +95,8 @@ class ShopState extends State<ShopView> {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.notifications, color: Colors.black),
+                      icon:
+                          const Icon(Icons.notifications, color: Colors.black),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -141,17 +142,25 @@ class ShopState extends State<ShopView> {
                             address: saloon['address'] as String,
                             rating: saloon['rating'] as double,
                             reviews: saloon['reviews'] as int,
-                            onPressed: (){ Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Details1view(
-                                serviceId: saloon['id'] as String,
-                                serviceImagePath: saloon['imagePath'] as String,
-                                serviceName: saloon['name'] as String,
-                                serviceAddress: saloon['address'] as String,
-                                serviceRating: saloon['rating'] as double,
-                                serviceReviews: saloon['reviews'] as int,
-                              )),
-                            );},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Details1view(
+                                          serviceId: widget.serviceId,
+                                          saloonId: saloon['id'] as String,
+                                          serviceImagePath:
+                                              saloon['imagePath'] as String,
+                                          serviceName: saloon['name'] as String,
+                                          serviceAddress:
+                                              saloon['address'] as String,
+                                          serviceRating:
+                                              saloon['rating'] as double,
+                                          serviceReviews:
+                                              saloon['reviews'] as int,
+                                        )),
+                              );
+                            },
                           );
                         },
                       );
