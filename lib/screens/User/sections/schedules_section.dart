@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:saloon_app/screens/admin/flow/booking/booking_view.dart';
+import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
+
 
 class ScheduleCardSection extends StatelessWidget {
-  const ScheduleCardSection({super.key});
+  final ScheduleService _scheduleService = ScheduleService();
+
+   ScheduleCardSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +27,7 @@ class ScheduleCardSection extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const BookingView(),
-                    ),
-                  );
+                  // Navigate to the booking view (if needed)
                 },
                 child: const Text(
                   'See all',
@@ -42,28 +40,34 @@ class ScheduleCardSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          SingleChildScrollView(
-            child: Column(
-              children: const [
-                ScheduleCard(
-                  day: 'Monday',
-                  date: '28 Oct',
-                  name: 'Tharindu Theekshan',
-                  time: '7.00 am - 10.00 am',
-                  price: 'AED 250.00',
-                  imagePath: 'assets/images/icons/avatorface01.png',
-                ),
-                SizedBox(height: 16),
-                ScheduleCard(
-                  day: 'Tuesday',
-                  date: '29 Oct',
-                  name: 'Wenuri De Silva',
-                  time: '8.00 am - 11.00 am',
-                  price: 'AED 220.00',
-                  imagePath: 'assets/images/icons/avatorface02.png',
-                ),
-              ],
-            ),
+          FutureBuilder<List<Map<String, dynamic>>>(
+            future: _scheduleService.getLatestAppointments(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('No appointments found.'));
+              } else {
+                List<Map<String, dynamic>> appointments = snapshot.data!;
+                return SingleChildScrollView(
+                  child: Column(
+                    children: appointments.map((appointment) {
+                      Map<String, dynamic> userDetails = appointment["userDetails"];
+                      return ScheduleCard(
+                        day: appointment["date"],
+                        date: appointment["date"],
+                        name: userDetails["name"],
+                        time: appointment["timeslot"].toString(),
+                        price: "AED ${appointment["price"] ?? 'N/A'}",
+                        imagePath: 'assets/images/icons/avatorface01.png',
+                      );
+                    }).toList(),
+                  ),
+                );
+              }
+            },
           ),
         ],
       ),
