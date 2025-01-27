@@ -12,8 +12,12 @@ class AddCategoryService {
       return {
         'id': doc.id,
         'name': doc['name'].toString(),
+        'icon' : doc['icon'].toString(),
+        'color' : doc['color'].toString()
       };
     }).toList();
+    print("list   =====  ");
+    print(tempList);
     return tempList;
   }
 

@@ -14,13 +14,10 @@ class CategoryService {
     switch (icon) {
       case 'content_cut':
         return Icons.content_cut;
-        break;
       case 'spa':
         return Icons.spa;
-        break;
       case 'face':
         return Icons.face;
-        break;
     }
   }
 

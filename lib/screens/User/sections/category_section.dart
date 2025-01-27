@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saloon_app/screens/User/flow/service/service_view.dart';
+import 'package:saloon_app/services/admin/flow/service/addCategory/add_category_service.dart';
 import 'package:saloon_app/services/admin/flow/service/category/category_service.dart';
 
 class CategorySection extends StatelessWidget {
@@ -44,7 +45,7 @@ class CategorySection extends StatelessWidget {
         SizedBox(
           height: 100,
           child: FutureBuilder<List<Map<String, dynamic>>>(
-            future: categoryService.collectCategories(),
+            future: AddCategoryService().collectGeneralCategories(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -60,8 +61,8 @@ class CategorySection extends StatelessWidget {
                 children: categories.map((category) {
                   return CategoryCard(
                     title: category['name'],
-                    icon: category['icon'],
-                    backgroundColor: category['color'],
+                    icon: CategoryService().getIcon(category['icon']),
+                    backgroundColor: Color(int.parse(category['color'])),
                   );
                 }).toList(),
               );
