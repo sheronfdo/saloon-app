@@ -65,10 +65,9 @@ class _Details1viewState extends State<Details1view> {
                   ),
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.5,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(
-                            'assets/images/The man cuts his beard in the barbershop.png'),
+                        image: AssetImage(widget.serviceImagePath),
                         fit: BoxFit.cover,
                       ),
                     ),
