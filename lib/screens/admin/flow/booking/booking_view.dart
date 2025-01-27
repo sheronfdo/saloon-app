@@ -223,7 +223,7 @@ class BookingState extends State<BookingView> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const BookingConfirmView(),
+                  builder: (context) => BookingConfirmView( appointmentId: appointment["id"],),
                 ),
               );
             },

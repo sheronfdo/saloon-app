@@ -4,9 +4,45 @@ import 'package:saloon_app/screens/User/flow/bookings/booking_reshedule/booking_
 import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_02/reschedule02_view.dart';
 import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_view.dart';
 import 'package:saloon_app/screens/admin/flow/jobDone/jobDone_view.dart';
+import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
 
-class BookingConfirmView extends StatelessWidget {
-  const BookingConfirmView({super.key});
+
+class BookingConfirmView extends StatefulWidget {
+  final String appointmentId;
+
+  const BookingConfirmView({Key? key, required this.appointmentId}) : super(key: key);
+
+  @override
+  State<BookingConfirmView> createState() => _BookingConfirmViewState();
+}
+
+class _BookingConfirmViewState extends State<BookingConfirmView> {
+  Map<String, dynamic> appointmentDetails = {};
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAppointmentDetails();
+  }
+
+  Future<void> fetchAppointmentDetails() async {
+    try {
+      final data = await ScheduleService().getAppointmentDetails(
+        appointmentId: widget.appointmentId,
+      );
+      print("Fetched Appointment Details: $data");
+      setState(() {
+        appointmentDetails = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching appointment details: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +55,11 @@ class BookingConfirmView extends StatelessWidget {
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
+                child: isLoading
+                    ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+                    : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 30),
@@ -33,7 +73,7 @@ class BookingConfirmView extends StatelessWidget {
                     const SizedBox(height: 30),
                     _buildContactDetails(),
                     const SizedBox(height: 40),
-                    _buildActionButtons(context), // Pass context here
+                    _buildActionButtons(context),
                   ],
                 ),
               ),
@@ -146,25 +186,25 @@ class BookingConfirmView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Pro Hair Cut 01',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        Text(
+          appointmentDetails['packageData']?['title'] ,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         Row(
           children: [
-            const Text(
-              'Monday, 28 Oct',
-              style: TextStyle(
+            Text(
+              appointmentDetails['date'],
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: Colors.blue,
               ),
             ),
             const Spacer(),
-            const Text(
-              'AED 220.00',
-              style: TextStyle(
+            Text(
+              '${appointmentDetails['packageData']?['price']}',
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -174,12 +214,12 @@ class BookingConfirmView extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Row(
-          children: const [
-            Icon(Icons.access_time, size: 16, color: Colors.black54),
-            SizedBox(width: 4),
+          children: [
+            const Icon(Icons.access_time, size: 16, color: Colors.black54),
+            const SizedBox(width: 4),
             Text(
-              '8.00 am - 11.00 am',
-              style: TextStyle(fontSize: 14, color: Colors.black54),
+              appointmentDetails['timeSlot'] ?? 'Time Slot',
+              style: const TextStyle(fontSize: 14, color: Colors.black54),
             ),
           ],
         ),
@@ -208,18 +248,18 @@ class BookingConfirmView extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  'Tharindu Theekshan',
-                  style: TextStyle(
+                  appointmentDetails['customerData']?['name'] ,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue,
                   ),
                 ),
                 Text(
-                  'Dusit, Thani, Dubai',
-                  style: TextStyle(fontSize: 14, color: Colors.black),
+                 " appointmentDetails['customerData']?['address'] ",
+                  style: const TextStyle(fontSize: 14, color: Colors.black),
                 ),
               ],
             ),
@@ -271,7 +311,6 @@ class BookingConfirmView extends StatelessWidget {
         const SizedBox(height: 12),
         ElevatedButton(
           onPressed: () {
-            // Reschedule action
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -297,7 +336,6 @@ class BookingConfirmView extends StatelessWidget {
         const SizedBox(height: 12),
         ElevatedButton(
           onPressed: () {
-            // Cancel session action
             Navigator.push(
               context,
               MaterialPageRoute(
