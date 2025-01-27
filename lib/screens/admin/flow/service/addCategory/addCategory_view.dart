@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:saloon_app/services/admin/flow/service/addCategory/add_category_service.dart';
-import 'package:saloon_app/services/admin/flow/service/category/category_service.dart';
-
 
 class AddNewCategoryView extends StatefulWidget {
   const AddNewCategoryView({super.key});
@@ -11,12 +9,25 @@ class AddNewCategoryView extends StatefulWidget {
 }
 
 class _AddNewCategoryViewState extends State<AddNewCategoryView> {
-     String? selectedCategory; // Selected category ID
+  String? selectedCategory; // Selected category ID
 
 // Dummy category
   List<Map<String, String>> serviceCategories = [];
   bool isLoading = true; // Loading state
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
+  }
+
+  void _fetchCategories() async {
+    List<Map<String, String>> categories =
+        await AddCategoryService().collectGeneralCategories();
+    setState(() {
+      serviceCategories = categories;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +102,9 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
                     ),
                     items: serviceCategories
                         .map((category) => DropdownMenuItem<String>(
-                      value: category["id"],
-                      child: Text(category["name"]!),
-                    ))
+                              value: category["id"],
+                              child: Text(category["name"]!),
+                            ))
                         .toList(),
                     onChanged: (value) {
                       setState(() {
@@ -111,8 +122,9 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
                   onPressed: () async {
                     if (selectedCategory != null) {
                       // Retrieve selected category name
-                      String selectedCategoryName = serviceCategories
-                          .firstWhere((category) => category["id"] == selectedCategory)["name"]!;
+                      String selectedCategoryName =
+                          serviceCategories.firstWhere((category) =>
+                              category["id"] == selectedCategory)["name"]!;
 
                       // Call addUserCategory method
                       await AddCategoryService().addUserCategory(
@@ -120,9 +132,8 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
                         catName: selectedCategoryName,
                       );
 
-                      print("Category added: ID = $selectedCategory, Name = $selectedCategoryName");
-
-
+                      print(
+                          "Category added: ID = $selectedCategory, Name = $selectedCategoryName");
                     } else {
                       print("No category selected");
                     }
