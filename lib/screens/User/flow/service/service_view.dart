@@ -17,7 +17,7 @@ class ServiceView extends StatefulWidget {
 class ServiceState extends State<ServiceView> {
 
   late ServiceViewModel viewModel;
-  late AddCategoryService addCategoryService;
+  late AddCategoryService addCategoryService = new AddCategoryService();
 
   @override
   void initState() {
@@ -137,7 +137,7 @@ class ServiceState extends State<ServiceView> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: category['color'] as Color,
+                                color: Color(int.parse(category['color'].toString())),
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
                                   color: index == 1
@@ -149,7 +149,7 @@ class ServiceState extends State<ServiceView> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(category['icon'] as IconData,
+                                  Icon(CategoryService().getIcon(category['icon'].toString()),
                                       size: 40, color: Colors.white),
                                   const SizedBox(height: 8),
                                   Text(
