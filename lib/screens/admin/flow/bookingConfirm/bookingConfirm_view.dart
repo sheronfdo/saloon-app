@@ -279,11 +279,30 @@ class _BookingConfirmViewState extends State<BookingConfirmView> {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const JobDoneView()),
-            );
+          onPressed: () async {
+            try {
+              // Call the appointmentConfirm method and confirm the appointment
+              await ScheduleService().appointmentConfirm(
+                appointmentId: widget.appointmentId,
+              );
+
+              // Navigate to JobDoneView and pass the appointmentId
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => JobDoneView(
+                    appointmentId: widget.appointmentId,
+                  ),
+                ),
+              );
+            } catch (e) {
+              print("Error confirming appointment: $e");
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Failed to confirm appointment. Please try again.'),
+                ),
+              );
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 120, 22, 5),
@@ -308,6 +327,7 @@ class _BookingConfirmViewState extends State<BookingConfirmView> {
             ],
           ),
         ),
+
         const SizedBox(height: 12),
         ElevatedButton(
           onPressed: () {
