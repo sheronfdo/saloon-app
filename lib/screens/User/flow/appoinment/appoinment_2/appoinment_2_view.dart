@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saloon_app/screens/User/flow/appoinment/appoinment_2/appoinment_2_viewmodel.dart';
+import 'package:saloon_app/screens/User/flow/home/home_view.dart';
+import 'package:saloon_app/screens/admin/flow/home/admin_home_view.dart';
 import '../../../../../components/custom/custom_btn.dart';
 
 class Appoinment2View extends StatefulWidget {
@@ -107,26 +109,26 @@ class Appoinment2State extends State<Appoinment2View> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'PRO HAIR CUT',
-                    style: TextStyle(
+                  Text(
+                    widget.packageTitle,
+                    style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
                       color: Colors.black,
                     ),
                   ),
-                  const Text.rich(
+                  Text.rich(
                     TextSpan(
                       text: 'From ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Colors.black54,
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'MR.SALOON',
-                          style: TextStyle(
+                          text: widget.saloonName,
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
@@ -168,15 +170,19 @@ class Appoinment2State extends State<Appoinment2View> {
                       color: Colors.black54,
                     ),
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 20), // Replaced Spacer with SizedBox
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 20),
                     child: CustomButton(
                       text: 'HOME',
                       onPressed: () {
-                        //navigate home page
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>  HomeView()
+                          ),
+                        );
                       },
                     ),
                   ),

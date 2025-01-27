@@ -245,10 +245,17 @@ class Appoinment1State extends State<Appoinment1View> {
   /// Calendar Section
   Widget _buildCalendar() {
     return CustomCalendar(
-      firstDay: DateTime.utc(2023, 1, 1),
+      firstDay: DateTime.now(), // Only allow dates from today onwards
       lastDay: DateTime.utc(2030, 12, 31),
       focusedDay: _focusedDate,
       onDaySelected: (selectedDate) {
+        if (selectedDate.isBefore(DateTime.now())) {
+          // Show a SnackBar if the selected date is in the past
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('You cannot select a past date.')),
+          );
+          return;
+        }
         setState(() {
           _selectedDate = selectedDate;
         });
@@ -270,44 +277,51 @@ class Appoinment1State extends State<Appoinment1View> {
         if (_timeSlots.isEmpty)
           const Center(child: Text('No slots available for the selected day.'))
         else
-          Wrap(
-            spacing: 20,
-            runSpacing: 10,
-            children: _timeSlots.map((slot) {
-              final String time = slot['start']+" - "+slot['end']; // Assume 'time' contains the slot string
-              final isSelected = selectedTimeSlot == time;
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedTimeSlot = time;
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(255, 218, 218, 1),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: isSelected
-                          ? const Color.fromRGBO(255, 82, 82, 1)
-                          : Colors.transparent,
-                      width: 2,
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 200, // Adjust as needed
+            ),
+            child: SingleChildScrollView(
+              child: Wrap(
+                spacing: 20,
+                runSpacing: 10,
+                children: _timeSlots.map((slot) {
+                  final String time = slot['start'] + " - " + slot['end']; // Assume 'time' contains the slot string
+                  final isSelected = selectedTimeSlot == time;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedTimeSlot = time;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(255, 218, 218, 1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: isSelected
+                              ? const Color.fromRGBO(255, 82, 82, 1)
+                              : Colors.transparent,
+                          width: 2,
+                        ),
+                      ),
+                      child: Text(
+                        time,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: isSelected ? Colors.black : Colors.black,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    time,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: isSelected ? Colors.black : Colors.black,
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
+                  );
+                }).toList(),
+              ),
+            ),
           ),
         const SizedBox(height: 12),
         const Text(
@@ -323,7 +337,6 @@ class Appoinment1State extends State<Appoinment1View> {
   }
 
   /// Confirm Button
-  /// Confirm Button
   Widget _buildConfirmButton() {
     return Center(
       child: CustomButton(
@@ -333,6 +346,14 @@ class Appoinment1State extends State<Appoinment1View> {
             // Show a message if no time slot is selected
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Please select a time slot.')),
+            );
+            return;
+          }
+
+          // Check if the selected date is in the past
+          if (_selectedDate.isBefore(DateTime.now())) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('You cannot select a past date.')),
             );
             return;
           }
@@ -374,5 +395,4 @@ class Appoinment1State extends State<Appoinment1View> {
       ),
     );
   }
-
 }
