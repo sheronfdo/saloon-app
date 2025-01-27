@@ -31,7 +31,7 @@ class BookingState extends State<BookingView> {
       // Convert DateTime to String in 'yyyy-MM-dd' format
       String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
       final appointments = await ScheduleService().getAppointmentsByDate(
-        day: formattedDate,
+        day: _selectedDate.toIso8601String(),
       );
       setState(() {
         _appointments = appointments;
@@ -199,8 +199,8 @@ class BookingState extends State<BookingView> {
         const SizedBox(height: 8),
         for (var appointment in _appointments)
           ScheduleCard(
-            name: appointment['name'],
-            time: appointment['time'],
+            name: appointment['customerName'],
+            time: appointment['timeslot'],
             price: appointment['price'],
             imagePath: appointment['imagePath'],
             status: appointment['status'],

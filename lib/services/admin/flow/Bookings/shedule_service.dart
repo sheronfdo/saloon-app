@@ -84,13 +84,16 @@ class ScheduleService {
   Future<Map<String, dynamic>> getAppointmentDetails(
       {required String appointmentId}) async {
     try {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('appointment')
-          .doc(appointmentId)
+      DocumentSnapshot appointmentDoc =
+          await _firestore.collection('appointment').doc(appointmentId).get();
+      Map<String, dynamic> appointmentData =
+          appointmentDoc.data() as Map<String, dynamic>;
+      DocumentSnapshot userDoc = await _firestore
+          .collection('users')
+          .doc(appointmentData["customerId"])
           .get();
-      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-      
-      return userData;
+      appointmentData["customerData"] = userDoc.data() as Map<String, dynamic>;
+      return appointmentData;
     } catch (e) {
       print("Error fetching appointments: $e");
       rethrow;
