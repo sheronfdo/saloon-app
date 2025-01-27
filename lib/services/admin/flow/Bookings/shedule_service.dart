@@ -88,11 +88,21 @@ class ScheduleService {
           await _firestore.collection('appointment').doc(appointmentId).get();
       Map<String, dynamic> appointmentData =
           appointmentDoc.data() as Map<String, dynamic>;
+      DocumentSnapshot packageDoc = await _firestore
+          .collection("admins")
+          .doc(appointmentData["saloonId"])
+          .collection("categories")
+          .doc(appointmentData["serviceCategory"])
+          .collection("packages")
+          .doc(appointmentData["packageId"])
+          .get();
       DocumentSnapshot userDoc = await _firestore
           .collection('users')
           .doc(appointmentData["customerId"])
           .get();
       appointmentData["customerData"] = userDoc.data() as Map<String, dynamic>;
+      appointmentData["packageData"] =
+          packageDoc.data() as Map<String, dynamic>;
       return appointmentData;
     } catch (e) {
       print("Error fetching appointments: $e");
