@@ -10,14 +10,17 @@ class AppointmentService {
       required String catId,
       required String packageId,
       required String date,
-      required Map<String, String> timeSlot}) async {
+      required Map<String, String> timeSlot,
+      required String price}) async {
     Map<String, dynamic> map = {
       "saloonId": saloonId,
       "customerId": _auth.currentUser!.uid,
       "serviceCategory": catId,
       "packageId": packageId,
       "date": date,
-      "timeslot": timeSlot
+      "timeslot": timeSlot,
+      "status": "NOT_COMFIRMED",
+      "price": price
     };
     _firestore.collection("appointment").doc().set(map);
   }
