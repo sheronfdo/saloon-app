@@ -10,6 +10,7 @@ class ServiceDetailsView extends StatelessWidget {
   final String serviceId;
   final String saloonId;
   final String imageUrl;
+  final String saloonName;
   final String ptitle;
   final String description;
   final double rating;
@@ -21,6 +22,7 @@ class ServiceDetailsView extends StatelessWidget {
     required this.packageID,
     required this.serviceId,
     required this.saloonId,
+    required this.saloonName,
     required this.imageUrl,
     required this.ptitle,
     required this.description,
@@ -61,7 +63,14 @@ class ServiceDetailsView extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const Appoinment1View()),
+                            builder: (context) => Appoinment1View
+                              (serviceId:serviceId,
+                              packageID: packageID,
+                              saloonId: saloonId,
+                              saloonName: saloonName,
+                              packageTitle: ptitle,
+                              price: price,)
+                        ),
                       );
                     },
                   ),

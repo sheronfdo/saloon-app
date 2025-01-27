@@ -10,6 +10,7 @@ import 'package:saloon_app/services/users/flow/shop/shop_view_service.dart';
 class Details1view extends StatefulWidget {
   final String serviceId;
   final String saloonId;
+  final String saloonName;
   final String serviceName;
   final String serviceAddress;
   final double serviceRating;
@@ -21,6 +22,7 @@ class Details1view extends StatefulWidget {
     required this.serviceId,
     required this.saloonId,
     required this.serviceName,
+    required this.saloonName,
     required this.serviceAddress,
     required this.serviceRating,
     required this.serviceReviews,
@@ -183,6 +185,7 @@ class _Details1viewState extends State<Details1view> {
                         packageID:  service['id'],
                         serviceId:widget.serviceId,
                         saloonId:widget.saloonId,
+                        saloonName:widget.saloonName,
                         imageUrl: service['imagePath'],
                         ptitle: service['name'],
                         description: service['description'],

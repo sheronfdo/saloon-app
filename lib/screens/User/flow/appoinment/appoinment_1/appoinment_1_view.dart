@@ -5,32 +5,80 @@ import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_calender.dart';
 import 'package:saloon_app/screens/User/flow/appoinment/appoinment_2/appoinment_2_view.dart';
 import 'package:saloon_app/screens/User/flow/notifications/notification_view.dart';
+import '../../../../../services/users/flow/appointment/availability_service.dart';
 import 'appoinment_1_viewmodel.dart';
 
 class Appoinment1View extends StatefulWidget {
-  const Appoinment1View({super.key});
+  final String packageID;
+  final String serviceId;
+  final String saloonId;
+  final String saloonName;
+  final String packageTitle;
+  final String price;
+
+  const Appoinment1View({
+    super.key,
+    required this.packageID,
+    required this.serviceId,
+    required this.saloonId,
+    required this.saloonName,
+    required this.packageTitle,
+    required this.price,
+  });
 
   @override
   Appoinment1State createState() => Appoinment1State();
 }
 
 class Appoinment1State extends State<Appoinment1View> {
-  late Appoinment1Viewmodel viewModel;
   DateTime _selectedDate = DateTime.now();
   final DateTime _focusedDate = DateTime.now();
   String? selectedTimeSlot;
+  List<Map<String, dynamic>> _timeSlots = [];
+  final AvailabilityService _availabilityService = AvailabilityService();
 
   @override
   void initState() {
     super.initState();
-    viewModel = Appoinment1Viewmodel();
-    viewModel.init();
+    _fetchTimeSlotsForSelectedDay();
+  }
+
+  Future<void> _fetchTimeSlotsForSelectedDay() async {
+    final String dayName = _getDayName(_selectedDate);
+    final String saloonId = widget.saloonId; // Corrected saloonId reference
+    try {
+      final slots = await _availabilityService.getAvailability(
+        saloonId: saloonId,
+        day: dayName,
+      );
+      setState(() {
+        _timeSlots = slots;
+      });
+    } catch (error) {
+      // Handle errors gracefully
+      print("Error fetching time slots: $error");
+      setState(() {
+        _timeSlots = [];
+      });
+    }
+  }
+
+  String _getDayName(DateTime date) {
+    return [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ][date.weekday % 7];
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => Appoinment1Viewmodel(),
+      create: (_) => AvailabilityService(),
       child: Scaffold(
         body: Stack(
           children: [
@@ -161,19 +209,19 @@ class Appoinment1State extends State<Appoinment1View> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '  Pro Hair Cut',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+              widget.packageTitle,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Row(
               children: [
-                Icon(Icons.location_on, color: Colors.red),
-                SizedBox(width: 5),
-                Text('  Saloon Abimantra'),
+                const Icon(Icons.location_on, color: Colors.red),
+                const SizedBox(width: 5),
+                Text(widget.saloonName),
               ],
             ),
           ],
@@ -184,8 +232,8 @@ class Appoinment1State extends State<Appoinment1View> {
             color: Colors.black,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Text(
-            '50 USD',
+          child: Text(
+            '${widget.price} USD',
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -203,6 +251,7 @@ class Appoinment1State extends State<Appoinment1View> {
         setState(() {
           _selectedDate = selectedDate;
         });
+        _fetchTimeSlotsForSelectedDay();
       },
     );
   }
@@ -217,49 +266,48 @@ class Appoinment1State extends State<Appoinment1View> {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 6),
-        Wrap(
-          spacing: 20,
-          runSpacing: 10,
-          children: [
-            ' 7.30 am  -  8.30 am',
-            ' 8.30 am  -  9.30 am',
-            '10.30 am - 11.30 am',
-            '12.00 pm - 01.00 pm',
-          ].map((slot) {
-            final isSelected = selectedTimeSlot == slot;
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedTimeSlot = slot;
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(255, 218, 218, 1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isSelected
-                        ? const Color.fromRGBO(255, 82, 82, 1)
-                        : Colors.transparent,
-                    width: 2,
+        if (_timeSlots.isEmpty)
+          const Center(child: Text('No slots available for the selected day.'))
+        else
+          Wrap(
+            spacing: 20,
+            runSpacing: 10,
+            children: _timeSlots.map((slot) {
+              final String time = slot['time']; // Assume 'time' contains the slot string
+              final isSelected = selectedTimeSlot == time;
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedTimeSlot = time;
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(255, 218, 218, 1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isSelected
+                          ? const Color.fromRGBO(255, 82, 82, 1)
+                          : Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
+                  child: Text(
+                    time,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: isSelected ? Colors.black : Colors.black,
+                    ),
                   ),
                 ),
-                child: Text(
-                  slot,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: isSelected ? Colors.black : Colors.black,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
+              );
+            }).toList(),
+          ),
         const SizedBox(height: 12),
         const Text(
           '   You can re-schedule your appointment before confirmation',

@@ -149,6 +149,7 @@ class ShopState extends State<ShopView> {
                                     builder: (context) => Details1view(
                                           serviceId: widget.serviceId,
                                           saloonId: saloon['id'] as String,
+                                          saloonName:saloon['name'] as String,
                                           serviceImagePath:
                                               saloon['imagePath'] as String,
                                           serviceName: saloon['name'] as String,
