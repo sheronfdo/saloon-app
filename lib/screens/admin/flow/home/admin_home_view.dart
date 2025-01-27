@@ -7,6 +7,7 @@ import 'package:saloon_app/screens/User/flow/home/home_viewmodel.dart';
 import 'package:saloon_app/screens/User/flow/profile/my_profile/my_profile_view.dart';
 import 'package:saloon_app/screens/User/sections/banner_section.dart';
 import 'package:saloon_app/screens/User/sections/schedules_section.dart';
+import 'package:saloon_app/screens/admin/flow/booking/booking_view.dart';
 import '../../../../components/custom/custom-app_bar.dart';
 
 class AdminHomeView extends StatefulWidget {
@@ -35,7 +36,7 @@ class HomeState extends State<AdminHomeView> {
 
   final List<Widget> children = [
     const AdminHomeContentView(),
-    const Appoinment1View(),
+    const BookingView(),
     const MyProfileView(),
   ];
 

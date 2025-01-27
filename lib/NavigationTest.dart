@@ -47,7 +47,7 @@ class NavigationTest extends StatelessWidget {
           Text("User Nav"),
           //**Appointment
           // _buildTextButton(context, 'Appointment 1', const Appoinment1View()),
-          _buildTextButton(context, 'Appointment 2', const Appoinment2View()),
+          // _buildTextButton(context, 'Appointment 2', const Appoinment2View()),
           //**booking
           _buildTextButton(context, 'BookingDetailsView', const BookingDetailsView()),
           _buildTextButton(context, 'BookingResheduleView', const BookingResheduleView()),
