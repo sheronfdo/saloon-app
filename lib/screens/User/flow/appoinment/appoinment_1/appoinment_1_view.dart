@@ -66,13 +66,13 @@ class Appoinment1State extends State<Appoinment1View> {
 
   String _getDayName(DateTime date) {
     return [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday"
     ][date.weekday % 7];
   }
 
@@ -274,7 +274,7 @@ class Appoinment1State extends State<Appoinment1View> {
             spacing: 20,
             runSpacing: 10,
             children: _timeSlots.map((slot) {
-              final String time = slot['time']; // Assume 'time' contains the slot string
+              final String time = slot['start']+" - "+slot['end']; // Assume 'time' contains the slot string
               final isSelected = selectedTimeSlot == time;
               return GestureDetector(
                 onTap: () {

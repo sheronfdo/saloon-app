@@ -17,6 +17,8 @@ class AvailabilityService extends ChangeNotifier {
       timeSlots = List<Map<String, dynamic>>.from(
           (dayDoc.data() as Map<String, dynamic>)['time']);
     }
+    print("timeslot");
+    print(timeSlots);
     return timeSlots;
   }
 }
