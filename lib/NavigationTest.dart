@@ -70,7 +70,7 @@ class NavigationTest extends StatelessWidget {
           _buildTextButton(context, 'Details1view', const Details1view()),
           _buildTextButton(context, 'Details2View', const Details2View()),
           _buildTextButton(context, 'Service', const ServiceView()),
-          _buildTextButton(context, 'Shop', const ShopView()),
+          // _buildTextButton(context, 'Shop', const ShopView()),
         ],
       ),
     );
