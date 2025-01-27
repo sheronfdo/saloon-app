@@ -43,7 +43,7 @@ class ScheduleService {
   }
 
   Future<List<Map<String, dynamic>>> getAppointmentsByDate(
-      String day) async {
+      {required String day}) async {
     try {
       QuerySnapshot querySnapshotNotComple = await _firestore
           .collection("appointment")
@@ -75,6 +75,22 @@ class ScheduleService {
         }
       }
       return appointments;
+    } catch (e) {
+      print("Error fetching appointments: $e");
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> getAppointmentDetails(
+      {required String appointmentId}) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('appointment')
+          .doc(appointmentId)
+          .get();
+      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+      
+      return userData;
     } catch (e) {
       print("Error fetching appointments: $e");
       rethrow;
