@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:saloon_app/screens/User/flow/notifications/notification_view.dart';
 import 'package:saloon_app/screens/User/flow/service/service_viewmodel.dart';
 import 'package:saloon_app/screens/User/flow/shop/shop_view.dart';
+import 'package:saloon_app/services/admin/flow/service/category/category_service.dart';
 
 
 class ServiceView extends StatefulWidget {
@@ -14,6 +15,7 @@ class ServiceView extends StatefulWidget {
 
 class ServiceState extends State<ServiceView> {
   late ServiceViewModel viewModel;
+  final CategoryService categoryService = CategoryService();
 
   @override
   void initState() {
@@ -99,75 +101,72 @@ class ServiceState extends State<ServiceView> {
                 ),
                 const SizedBox(height: 20),
                 Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                    ),
-                    itemCount: 15,
-                    itemBuilder: (context, index) {
-                      final services = [
-                        {
-                          'icon': Icons.content_cut,
-                          'label': 'Cutting',
-                          'color': const Color(0xFFF5A369)
-                        },
-                        {
-                          'icon': Icons.spa,
-                          'label': 'Shaving',
-                          'color': const Color(0xFFFA6199)
-                        },
-                        {
-                          'icon': Icons.face,
-                          'label': 'Facial',
-                          'color': const Color(0xFF792242)
-                        },
-                      ];
-                      final service = services[index % services.length];
+                  child: FutureBuilder<List<Map<String, dynamic>>>(
+                    future: categoryService.collectCategories(), // Fetch categories
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No categories available.'));
+                      }
 
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ShopView()),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: service['color'] as Color,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: index == 1
-                                  ? const Color.fromARGB(255, 145, 164, 182)
-                                  : Colors.transparent,
-                              width: 2,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(service['icon'] as IconData,
-                                  size: 40, color: Colors.white),
-                              const SizedBox(height: 8),
-                              Text(
-                                service['label'] as String,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
+                      final categories = snapshot.data!;
+
+                      return GridView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                        ),
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          final category = categories[index];
+
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ShopView()),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: category['color'] as Color,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: index == 1
+                                      ? const Color.fromARGB(255, 145, 164, 182)
+                                      : Colors.transparent,
+                                  width: 2,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(category['icon'] as IconData,
+                                      size: 40, color: Colors.white),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    category['name'] as String,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
                 ),
+
                 const SizedBox(height: 16),
                 Column(
                   children: [
