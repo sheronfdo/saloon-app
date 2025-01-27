@@ -132,7 +132,8 @@ class ServiceState extends State<ServiceView> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const ShopView()),
+                                    builder: (context) =>   ShopView(serviceId: category['id'] as String
+                                       )),
                               );
                             },
                             child: Container(

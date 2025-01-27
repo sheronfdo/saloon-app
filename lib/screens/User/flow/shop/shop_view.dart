@@ -7,7 +7,8 @@ import '../../../../components/salon_card.dart';
 import '../../../../data/saloon_data.dart';
 
 class ShopView extends StatefulWidget {
-  const ShopView({super.key});
+  final String serviceId;
+  const ShopView({Key? key, required this.serviceId}) : super(key: key);
 
   @override
   ShopState createState() => ShopState();

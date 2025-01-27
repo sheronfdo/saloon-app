@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saloon_app/screens/User/flow/service/service_view.dart';
+import 'package:saloon_app/screens/User/flow/shop/shop_view.dart';
 import 'package:saloon_app/services/admin/flow/service/addCategory/add_category_service.dart';
 import 'package:saloon_app/services/admin/flow/service/category/category_service.dart';
 
@@ -63,6 +64,16 @@ class CategorySection extends StatelessWidget {
                     title: category['name'],
                     icon: CategoryService().getIcon(category['icon']),
                     backgroundColor: Color(int.parse(category['color'])),
+                    onPressed: () {
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ShopView(serviceId: category['id'] ,
+                          ),
+                        ),
+                      );
+                    },
                   );
                 }).toList(),
               );
@@ -78,20 +89,22 @@ class CategoryCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final Color backgroundColor;
+  final VoidCallback onPressed;
+
 
   const CategoryCard({
     super.key,
     required this.title,
     required this.icon,
     required this.backgroundColor,
+    required this.onPressed,
+
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // Handle category card tap
-      },
+      onTap: onPressed,
       child: Container(
         width: 120, // Adjust width as needed
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
