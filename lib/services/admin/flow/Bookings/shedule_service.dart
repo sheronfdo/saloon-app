@@ -42,7 +42,7 @@ class ScheduleService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getLatestAppointmentsByDate(
+  Future<List<Map<String, dynamic>>> getAppointmentsByDate(
       String day) async {
     try {
       QuerySnapshot querySnapshotNotComple = await _firestore
