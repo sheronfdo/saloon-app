@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:saloon_app/screens/User/flow/service/service_view.dart';
+import 'package:saloon_app/services/admin/flow/service/category/category_service.dart';
 
 class CategorySection extends StatelessWidget {
   const CategorySection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final CategoryService categoryService = CategoryService();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -40,30 +43,29 @@ class CategorySection extends StatelessWidget {
         const SizedBox(height: 16),
         SizedBox(
           height: 100,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: const [
-              CategoryCard(
-                title: 'Cutting',
-                icon: Icons.content_cut,
-                backgroundColor: Color(0xFFF5A369),
-              ),
-              CategoryCard(
-                title: 'Shaving',
-                icon: Icons.spa,
-                backgroundColor: Color(0xFFFA6199),
-              ),
-              CategoryCard(
-                title: 'Facial',
-                icon: Icons.face,
-                backgroundColor: Color(0xFF792242),
-              ),
-              CategoryCard(
-                title: 'Nail',
-                icon: Icons.brush,
-                backgroundColor: Color(0xFFCE135A),
-              ),
-            ],
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+            future: categoryService.collectCategories(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('No categories found.'));
+              }
+
+              final categories = snapshot.data!;
+              return ListView(
+                scrollDirection: Axis.horizontal,
+                children: categories.map((category) {
+                  return CategoryCard(
+                    title: category['name'],
+                    icon: category['icon'],
+                    backgroundColor: category['color'],
+                  );
+                }).toList(),
+              );
+            },
           ),
         ),
       ],
@@ -87,6 +89,7 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        // Handle category card tap
       },
       child: Container(
         width: 120, // Adjust width as needed
