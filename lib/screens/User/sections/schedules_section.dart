@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
+import 'package:intl/intl.dart';
 
 
 class ScheduleCardSection extends StatelessWidget {
@@ -56,11 +57,14 @@ class ScheduleCardSection extends StatelessWidget {
                 return SingleChildScrollView(
                   child: Column(
                     children: appointments.map((appointment) {
-                      Map<String, dynamic> userDetails = appointment;
+                      DateTime date = DateTime.parse(appointment["date"]);
+                      String dayName = DateFormat('EEEE').format(date); // Full day name
+                      String formattedDate = DateFormat('MMM d').format(date); // Short month name and date
+
                       return ScheduleCard(
-                        day: appointment["date"],
-                        date: appointment["date"],
-                        name: userDetails["customerName"],
+                        day: dayName,  // Day name (e.g., Monday)
+                        date: formattedDate,  // Shortened month and date (e.g., Jan 28)
+                        name: appointment["customerName"],
                         time: appointment["timeslot"].toString(),
                         price: "AED ${appointment["price"] ?? 'N/A'}",
                         imagePath: 'assets/images/icons/avatorface01.png',
