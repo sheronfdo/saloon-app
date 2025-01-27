@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'package:saloon_app/components/custom/custom_calender.dart';
 import 'package:saloon_app/components/search_bar.dart';
 import 'package:saloon_app/screens/admin/flow/booking/booking_viewmodel.dart';
 import 'package:saloon_app/screens/admin/flow/bookingConfirm/bookingConfirm_view.dart';
+import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
 
 class BookingView extends StatefulWidget {
   const BookingView({super.key});
@@ -14,18 +16,30 @@ class BookingView extends StatefulWidget {
 }
 
 class BookingState extends State<BookingView> {
-  late BookingViewmodel viewModel;
   DateTime _selectedDate = DateTime.now();
   final DateTime _focusedDate = DateTime.now();
-  String? selectedTimeSlot;
+  List<Map<String, dynamic>> _appointments = [];
 
   @override
   void initState() {
     super.initState();
-    viewModel = BookingViewmodel();
-    viewModel.init();
+    _fetchAppointmentsForSelectedDate();
   }
 
+  Future<void> _fetchAppointmentsForSelectedDate() async {
+    try {
+      // Convert DateTime to String in 'yyyy-MM-dd' format
+      String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
+      final appointments = await ScheduleService().getAppointmentsByDate(
+        day: formattedDate,
+      );
+      setState(() {
+        _appointments = appointments;
+      });
+    } catch (e) {
+      print("Error fetching appointments: $e");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -157,140 +171,49 @@ class BookingState extends State<BookingView> {
         setState(() {
           _selectedDate = selectedDate;
         });
+        _fetchAppointmentsForSelectedDate();  // Fetch the appointments for the selected date
       },
     );
   }
 
   /// Schedule List Section
   Widget _buildScheduleList() {
+    if (_appointments.isEmpty) {
+      return const Center(
+        child: Text("No appointments for this date."),
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Thursday',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            Text(
-              '14 Apr',
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-              ),
-            ),
-          ],
+        Text(
+          "${_selectedDate.weekday} ${_selectedDate.day} ${_selectedDate.month}",
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
         const SizedBox(height: 8),
         const SearchAppBar(),
         const SizedBox(height: 8),
-        ScheduleCard(
-          name: 'Wenuri De Silva',
-          time: '8.00 am - 11.00 am',
-          price: 'AED 220.00',
-          imagePath: 'assets/images/icons/avatorface01.png',
-          status: '',
-          statusColor: Colors.transparent,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BookingConfirmView(),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 16),
-        ScheduleCard(
-          name: 'Wenuri De Silva',
-          time: '8.00 am - 11.00 am',
-          price: 'AED 220.00',
-          imagePath: 'assets/images/icons/avatorface01.png',
-          status: 'Not Confirmed',
-          statusColor: Colors.red,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BookingConfirmView(),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 16),
-        ScheduleCard(
-          name: 'Tharindu Theekshan',
-          time: '8.00 am - 11.00 am',
-          price: 'AED 220.00',
-          imagePath: 'assets/images/icons/avatorface01.png',
-          status: 'Completed',
-          statusColor: Colors.green,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BookingConfirmView(),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 16),
-        ScheduleCard(
-          name: 'Wenuri De Silva',
-          time: '8.00 am - 11.00 am',
-          price: 'AED 220.00',
-          imagePath: 'assets/images/icons/avatorface01.png',
-          status: 'Not Confirmed',
-          statusColor: Colors.red,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BookingConfirmView(),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 16),
-        ScheduleCard(
-          name: 'Tharindu Theekshan',
-          time: '8.00 am - 11.00 am',
-          price: 'AED 220.00',
-          imagePath: 'assets/images/icons/avatorface01.png',
-          status: 'Completed',
-          statusColor: Colors.green,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BookingConfirmView(),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 16),
-        ScheduleCard(
-          name: 'Wenuri De Silva',
-          time: '8.00 am - 11.00 am',
-          price: 'AED 220.00',
-          imagePath: 'assets/images/icons/avatorface01.png',
-          status: 'Not Confirmed',
-          statusColor: Colors.red,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BookingConfirmView(),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 16),
+        for (var appointment in _appointments)
+          ScheduleCard(
+            name: appointment['name'],
+            time: appointment['time'],
+            price: appointment['price'],
+            imagePath: appointment['imagePath'],
+            status: appointment['status'],
+            statusColor: appointment['statusColor'],
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BookingConfirmView(),
+                ),
+              );
+            },
+          ),
       ],
     );
   }
