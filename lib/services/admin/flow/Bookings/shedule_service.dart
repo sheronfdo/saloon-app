@@ -7,70 +7,30 @@ class ScheduleService {
 
   Future<List<Map<String, dynamic>>> getLatestAppointments() async {
     try {
-      // Fetch appointments with no status field (null)
-      // QuerySnapshot noStatusSnapshot = await _firestore
-      //     .collection("appointment")
-      //     .where("status", isNull: true) // Appointments with no status field
-      //     .orderBy("date", descending: true)
-      //     // .orderBy("timeslot", descending: true)
-      //     .get();
-
-      // Fetch appointments with status not equal to "complete"
-      // QuerySnapshot notCompleteSnapshot = await _firestore
-      //     .collection("appointment")
-      //     .where("status", isNotEqualTo: "complete") // Appointments with status != "complete"
-      //     .orderBy("date", descending: true)
-      //     // .orderBy("timeslot", descending: true)
-      //     .get();
-      //
-      // // Combine the results
-      // List<Map<String, dynamic>> appointments = [];
-      //
-      // // Process appointments with no status field
-      // for (var doc in noStatusSnapshot.docs) {
-      //   Map<String, dynamic> appointment = doc.data() as Map<String, dynamic>;
-      //   DocumentSnapshot userSnapshot = await _firestore
-      //       .collection("users")
-      //       .doc(appointment["customerId"])
-      //       .get();
-      //   appointment["userDetails"] = userSnapshot.data() as Map<String, dynamic>;
-      //   appointments.add(appointment);
-      // }
-      //
-      // // Process appointments with status not equal to "complete"
-      // for (var doc in notCompleteSnapshot.docs) {
-      //   Map<String, dynamic> appointment = doc.data() as Map<String, dynamic>;
-      //   DocumentSnapshot userSnapshot = await _firestore
-      //       .collection("users")
-      //       .doc(appointment["customerId"])
-      //       .get();
-      //   appointment["userDetails"] = userSnapshot.data() as Map<String, dynamic>;
-      //   appointments.add(appointment);
-      // }
-      //
-      // // Sort combined results by date and time (latest first)
-      // appointments.sort((a, b) {
-      //   int dateComparison = b["date"].compareTo(a["date"]);
-      //   if (dateComparison != 0) return dateComparison;
-      //   return b["timeslot"].compareTo(a["timeslot"]);
-      // });
-      //
-      // return appointments;
-
-      QuerySnapshot querySnapshotNotComple = await _firestore
+         QuerySnapshot querySnapshotNotComple = await _firestore
           .collection("appointment")
           .where("saloonId", isEqualTo: _auth.currentUser!.uid)
-          .where("status", isNotEqualTo: "COMPLETE")
           .get();
-      List<Map<String, dynamic>> list = querySnapshotNotComple.docs.map((doc) {
-
-        return {
-          "date": doc["date"],
-          "timeslot": doc["timeslot"]["time"],
-          "price": doc["price"]
-        };
-      }).toList();
-      return list;
+      List<Map<String, dynamic>> appointments = [];
+      for (QueryDocumentSnapshot appointmentDoc in querySnapshotNotComple.docs) {
+        String customerId = appointmentDoc['customerId'];
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(customerId).get();
+        if (userDoc.exists) {
+          Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+          appointments.add({
+            'appointmentId': appointmentDoc.id,
+            'customerId': customerId,
+            'customerName': userData['name'],
+            'date': appointmentDoc['date'],
+            'packageId': appointmentDoc['packageId'],
+            'serviceCategory': appointmentDoc['serviceCategory'],
+            'status': appointmentDoc['status'],
+            'timeslot': appointmentDoc['timeslot'],
+            'price': appointmentDoc['price']
+          });
+        }
+      }
+      return appointments;
     } catch (e) {
       print("Error fetching appointments: $e");
       rethrow;

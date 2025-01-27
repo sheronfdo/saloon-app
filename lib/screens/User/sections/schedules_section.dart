@@ -51,14 +51,16 @@ class ScheduleCardSection extends StatelessWidget {
                 return const Center(child: Text('No appointments found.'));
               } else {
                 List<Map<String, dynamic>> appointments = snapshot.data!;
+                print("data list");
+                print("Appointments: ${appointments}");
                 return SingleChildScrollView(
                   child: Column(
                     children: appointments.map((appointment) {
-                      Map<String, dynamic> userDetails = appointment["userDetails"];
+                      Map<String, dynamic> userDetails = appointment;
                       return ScheduleCard(
                         day: appointment["date"],
                         date: appointment["date"],
-                        name: userDetails["name"],
+                        name: userDetails["customerName"],
                         time: appointment["timeslot"].toString(),
                         price: "AED ${appointment["price"] ?? 'N/A'}",
                         imagePath: 'assets/images/icons/avatorface01.png',
