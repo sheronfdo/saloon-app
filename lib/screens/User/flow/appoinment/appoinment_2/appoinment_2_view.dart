@@ -4,7 +4,22 @@ import 'package:saloon_app/screens/User/flow/appoinment/appoinment_2/appoinment_
 import '../../../../../components/custom/custom_btn.dart';
 
 class Appoinment2View extends StatefulWidget {
-  const Appoinment2View({super.key});
+  final String packageID;
+  final String serviceId;
+  final String saloonId;
+  final String saloonName;
+  final String packageTitle;
+  final String price;
+
+  const Appoinment2View({
+    super.key,
+    required this.packageID,
+    required this.serviceId,
+    required this.saloonId,
+    required this.saloonName,
+    required this.packageTitle,
+    required this.price,
+  });
 
   @override
   Appoinment2State createState() => Appoinment2State();

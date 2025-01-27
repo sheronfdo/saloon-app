@@ -5,6 +5,7 @@ import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_calender.dart';
 import 'package:saloon_app/screens/User/flow/appoinment/appoinment_2/appoinment_2_view.dart';
 import 'package:saloon_app/screens/User/flow/notifications/notification_view.dart';
+import 'package:saloon_app/services/users/flow/appointment/appointment_service.dart';
 import '../../../../../services/users/flow/appointment/availability_service.dart';
 import 'appoinment_1_viewmodel.dart';
 
@@ -322,17 +323,56 @@ class Appoinment1State extends State<Appoinment1View> {
   }
 
   /// Confirm Button
+  /// Confirm Button
   Widget _buildConfirmButton() {
     return Center(
       child: CustomButton(
         text: 'Confirm',
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Appoinment2View()),
-          );
+        onPressed: () async {
+          if (selectedTimeSlot == null) {
+            // Show a message if no time slot is selected
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Please select a time slot.')),
+            );
+            return;
+          }
+
+          final AppointmentService appointmentService = AppointmentService();
+
+          try {
+            // Make the appointment
+            await appointmentService.makeAppointment(
+              saloonId: widget.saloonId,
+              catId: widget.serviceId,
+              packageId: widget.packageID,
+              date: _selectedDate.toIso8601String(),
+              timeSlot: {'time': selectedTimeSlot!},
+            );
+
+            // Navigate to Appoinment2View
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Appoinment2View(
+                  packageID: widget.packageID,
+                  serviceId: widget.serviceId,
+                  saloonId: widget.saloonId,
+                  saloonName: widget.saloonName,
+                  packageTitle: widget.packageTitle,
+                  price: widget.price,
+                ),
+              ),
+            );
+          } catch (error) {
+            // Handle errors
+            print('Error making appointment: $error');
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Failed to make an appointment.')),
+            );
+          }
         },
       ),
     );
   }
+
 }
