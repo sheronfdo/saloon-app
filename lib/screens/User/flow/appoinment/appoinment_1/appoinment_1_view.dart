@@ -368,6 +368,7 @@ class Appoinment1State extends State<Appoinment1View> {
               packageId: widget.packageID,
               date: _selectedDate.toIso8601String(),
               timeSlot: {'time': selectedTimeSlot!},
+              price: widget.price,
             );
 
             // Navigate to Appoinment2View
