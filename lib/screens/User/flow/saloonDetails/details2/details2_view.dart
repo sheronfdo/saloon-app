@@ -4,6 +4,7 @@ import 'package:saloon_app/components/custom/custom_bottomNavBar.dart';
 import 'package:saloon_app/components/salon_detailsCard.dart';
 import 'package:saloon_app/data/saloon_details.dart';
 import 'package:saloon_app/screens/User/flow/saloonDetails/details2/details2_viewmodel.dart';
+import 'package:saloon_app/screens/User/flow/serviceDetails/serviceDetails_view.dart';
 import 'package:saloon_app/screens/User/flow/shop/shop_view.dart';
 
 class Details2View extends StatelessWidget {
@@ -135,6 +136,19 @@ class Details2View extends StatelessWidget {
                     rating: service['rating'],
                     reviews: service['reviews'],
                     price: service['price'],
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ServiceDetailsView(
+                          serviceID:  service['id'],
+                          imageUrl: service['imagePath'],
+                          ptitle: service['name'],
+                          description: service['description'],
+                          rating: service['rating'],
+                          price: service['price'],
+                        )),
+                      );
+                    },
                   );
                 },
               ),

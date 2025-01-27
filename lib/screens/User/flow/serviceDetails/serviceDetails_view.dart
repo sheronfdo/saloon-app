@@ -6,19 +6,33 @@ import 'package:saloon_app/screens/User/flow/appoinment/appoinment_1/appoinment_
 import 'serviceDetails_viewmodel.dart';
 
 class ServiceDetailsView extends StatelessWidget {
+  final String serviceID;
+  final String imageUrl;
+  final String ptitle;
+  final String description;
+  final double rating;
+  final String price;
   final ServiceDetailsViewModel viewModel = ServiceDetailsViewModel();
 
-  ServiceDetailsView({super.key});
+  ServiceDetailsView({
+    super.key,
+    required this.serviceID,
+    required this.imageUrl,
+    required this.ptitle,
+    required this.description,
+    required this.rating,
+    required this.price,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          //header Section
+          // Header Section
           _buildHeaderSection(context),
 
-          //details Section
+          // Details Section
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -28,15 +42,15 @@ class ServiceDetailsView extends StatelessWidget {
                   _buildTitleAndPrice(),
                   const SizedBox(height: 8),
 
-                  //rating Section
+                  // Rating Section
                   _buildRatingSection(),
                   const SizedBox(height: 16),
 
-                  //description Section
+                  // Description Section
                   _buildDescriptionSection(),
                   const SizedBox(height: 24),
 
-                  //booking button
+                  // Booking Button
                   CustomButton(
                     text: 'Book An Appointment',
                     onPressed: () {
@@ -55,7 +69,7 @@ class ServiceDetailsView extends StatelessWidget {
         ],
       ),
 
-      //nav bar
+      // Navigation Bar
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: 0,
         onTap: viewModel.onBottomNavTap,
@@ -63,7 +77,7 @@ class ServiceDetailsView extends StatelessWidget {
     );
   }
 
-  //header section
+  // Header Section
   Widget _buildHeaderSection(BuildContext context) {
     return Stack(
       children: [
@@ -74,9 +88,9 @@ class ServiceDetailsView extends StatelessWidget {
           ),
           child: Container(
             height: MediaQuery.of(context).size.height * 0.47,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/mencutbeard.png'),
+                image: AssetImage(imageUrl),
                 fit: BoxFit.cover,
               ),
             ),
@@ -102,24 +116,24 @@ class ServiceDetailsView extends StatelessWidget {
     );
   }
 
-  //title
+  // Title and Price
   Widget _buildTitleAndPrice() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          "Pro Hair Cut",
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+        Text(
+          ptitle,
+          style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 0, 0, 0),
+            color: Colors.black,
             borderRadius: BorderRadius.circular(5),
           ),
-          child: const Text(
-            "50 USD",
-            style: TextStyle(
+          child: Text(
+            '$price USD',
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
@@ -129,16 +143,16 @@ class ServiceDetailsView extends StatelessWidget {
     );
   }
 
-  //rating section
+  // Rating Section
   Widget _buildRatingSection() {
     return Row(
       children: [
         Row(
           children: List.generate(
             5,
-            (index) => Icon(
+                (index) => Icon(
               IconlyBold.star,
-              color: index < 4
+              color: index < rating
                   ? const Color.fromARGB(255, 255, 214, 0)
                   : Colors.grey,
               size: 20,
@@ -146,40 +160,23 @@ class ServiceDetailsView extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        const Text(
-          "Leave a Rating.",
-          style: TextStyle(
-            fontSize: 14,
-            color: Color.fromARGB(255, 27, 26, 26),
-          ),
+        Text(
+          '$rating / 5.0',
+          style: const TextStyle(fontSize: 14, color: Colors.black87),
         ),
       ],
     );
   }
 
-  //description Section
+  // Description Section
   Widget _buildDescriptionSection() {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Experience precision and style with our professional haircuts. Our skilled barbers combine classic\n techniques with modern trends to create a look that\n suits your personality and lifestyle.",
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.black87,
-            height: 1.5,
-          ),
-        ),
-        SizedBox(height: 18),
-        Text(
-          "Whether you're after a clean fade, textured crop, or traditional cut, we'll enhance your features and ensure\n you leave looking sharp. Enjoy a relaxing scalp\n massage and expert styling tips to maintain your new\n look between visits.",
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.black87,
-            height: 1.5,
-          ),
-        ),
-      ],
+    return Text(
+      description,
+      style: const TextStyle(
+        fontSize: 14,
+        color: Colors.black87,
+        height: 1.5,
+      ),
     );
   }
 }

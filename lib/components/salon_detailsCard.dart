@@ -8,6 +8,7 @@ class SaloonDetailsCard extends StatelessWidget {
   final double rating;
   final int reviews;
   final String price;
+  final VoidCallback onPressed;
 
   const SaloonDetailsCard({
     super.key,
@@ -17,17 +18,13 @@ class SaloonDetailsCard extends StatelessWidget {
     required this.rating,
     required this.reviews,
     required this.price,
+    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ServiceDetailsView()),
-        );
-      },
+      onTap: onPressed,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
         padding: const EdgeInsets.all(12),
