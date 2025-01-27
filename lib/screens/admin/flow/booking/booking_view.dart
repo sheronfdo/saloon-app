@@ -29,9 +29,9 @@ class BookingState extends State<BookingView> {
   Future<void> _fetchAppointmentsForSelectedDate() async {
     try {
       // Convert DateTime to String in 'yyyy-MM-dd' format
-      String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
+      // String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
       final allAppointments = await ScheduleService().getAppointmentsByDate(
-        day: formattedDate,
+        day: _selectedDate.toIso8601String(),
       );
 
       // Map appointments to the desired structure
