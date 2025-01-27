@@ -69,9 +69,9 @@ class CategorySection extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ShopView(serviceId: category['id'] ,
-                          ),
-                        ),
+                            builder: (context) =>   ShopView(serviceId: category['id'] as String ,
+                                serviceName:category['name'] as String
+                            )),
                       );
                     },
                   );
