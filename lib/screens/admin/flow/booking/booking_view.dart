@@ -30,16 +30,30 @@ class BookingState extends State<BookingView> {
     try {
       // Convert DateTime to String in 'yyyy-MM-dd' format
       String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
-      final appointments = await ScheduleService().getAppointmentsByDate(
-        day: _selectedDate.toIso8601String(),
+      final allAppointments = await ScheduleService().getAppointmentsByDate(
+        day: formattedDate,
       );
+
+      // Map appointments to the desired structure
       setState(() {
-        _appointments = appointments;
+        _appointments = allAppointments.map((appointment) {
+          return {
+            'name': appointment['customerName'] ?? 'Unknown',
+            'time': appointment['timeslot'],
+            'price': "\$${appointment['price']}",
+            'status': appointment['status'] ?? 'NOT_CONFIRMED',
+            'statusColor': appointment['status'] == 'CONFIRMED'
+                ? Colors.green
+                : Colors.orange,
+            'imagePath': 'assets/default_avatar.png', // Default image
+          };
+        }).toList();
       });
     } catch (e) {
       print("Error fetching appointments: $e");
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -187,7 +201,7 @@ class BookingState extends State<BookingView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "${_selectedDate.weekday} ${_selectedDate.day} ${_selectedDate.month}",
+          "${DateFormat('EEEE, MMM d').format(_selectedDate)}",
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -199,8 +213,8 @@ class BookingState extends State<BookingView> {
         const SizedBox(height: 8),
         for (var appointment in _appointments)
           ScheduleCard(
-            name: appointment['customerName'],
-            time: appointment['timeslot'],
+            name: appointment['name'],
+            time: appointment['time'],
             price: appointment['price'],
             imagePath: appointment['imagePath'],
             status: appointment['status'],
@@ -217,6 +231,7 @@ class BookingState extends State<BookingView> {
       ],
     );
   }
+
 }
 
 class ScheduleCard extends StatelessWidget {
