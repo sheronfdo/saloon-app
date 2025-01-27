@@ -7,16 +7,21 @@ class ScheduleService {
 
   Future<List<Map<String, dynamic>>> getLatestAppointments() async {
     try {
-         QuerySnapshot querySnapshotNotComple = await _firestore
+      QuerySnapshot querySnapshotNotComple = await _firestore
           .collection("appointment")
           .where("saloonId", isEqualTo: _auth.currentUser!.uid)
           .get();
       List<Map<String, dynamic>> appointments = [];
-      for (QueryDocumentSnapshot appointmentDoc in querySnapshotNotComple.docs) {
+      for (QueryDocumentSnapshot appointmentDoc
+          in querySnapshotNotComple.docs) {
         String customerId = appointmentDoc['customerId'];
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(customerId).get();
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(customerId)
+            .get();
         if (userDoc.exists) {
-          Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+          Map<String, dynamic> userData =
+              userDoc.data() as Map<String, dynamic>;
           appointments.add({
             'appointmentId': appointmentDoc.id,
             'customerId': customerId,
@@ -25,7 +30,46 @@ class ScheduleService {
             'packageId': appointmentDoc['packageId'],
             'serviceCategory': appointmentDoc['serviceCategory'],
             'status': appointmentDoc['status'],
-            'timeslot': appointmentDoc['timeslot'],
+            'timeslot': appointmentDoc['timeslot']['time'],
+            'price': appointmentDoc['price']
+          });
+        }
+      }
+      return appointments;
+    } catch (e) {
+      print("Error fetching appointments: $e");
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getLatestAppointmentsByDate(
+      String day) async {
+    try {
+      QuerySnapshot querySnapshotNotComple = await _firestore
+          .collection("appointment")
+          .where("saloonId", isEqualTo: _auth.currentUser!.uid)
+          .where("date", isEqualTo: day)
+          .get();
+      List<Map<String, dynamic>> appointments = [];
+      for (QueryDocumentSnapshot appointmentDoc
+          in querySnapshotNotComple.docs) {
+        String customerId = appointmentDoc['customerId'];
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(customerId)
+            .get();
+        if (userDoc.exists) {
+          Map<String, dynamic> userData =
+              userDoc.data() as Map<String, dynamic>;
+          appointments.add({
+            'appointmentId': appointmentDoc.id,
+            'customerId': customerId,
+            'customerName': userData['name'],
+            'date': appointmentDoc['date'],
+            'packageId': appointmentDoc['packageId'],
+            'serviceCategory': appointmentDoc['serviceCategory'],
+            'status': appointmentDoc['status'],
+            'timeslot': appointmentDoc['timeslot']['time'],
             'price': appointmentDoc['price']
           });
         }
