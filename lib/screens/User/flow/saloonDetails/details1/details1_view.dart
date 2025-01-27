@@ -180,7 +180,9 @@ class _Details1viewState extends State<Details1view> {
                       Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ServiceDetailsView(
-                        serviceID:  service['id'],
+                        packageID:  service['id'],
+                        serviceId:widget.serviceId,
+                        saloonId:widget.saloonId,
                         imageUrl: service['imagePath'],
                         ptitle: service['name'],
                         description: service['description'],

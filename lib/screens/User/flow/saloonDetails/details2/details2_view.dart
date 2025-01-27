@@ -137,17 +137,17 @@ class Details2View extends StatelessWidget {
                     reviews: service['reviews'],
                     price: service['price'],
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ServiceDetailsView(
-                          serviceID:  service['id'],
-                          imageUrl: service['imagePath'],
-                          ptitle: service['name'],
-                          description: service['description'],
-                          rating: service['rating'],
-                          price: service['price'],
-                        )),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => ServiceDetailsView(
+                      //     packageID:  service['id'],
+                      //     imageUrl: service['imagePath'],
+                      //     ptitle: service['name'],
+                      //     description: service['description'],
+                      //     rating: service['rating'],
+                      //     price: service['price'],
+                      //   )),
+                      // );
                     },
                   );
                 },

@@ -6,7 +6,9 @@ import 'package:saloon_app/screens/User/flow/appoinment/appoinment_1/appoinment_
 import 'serviceDetails_viewmodel.dart';
 
 class ServiceDetailsView extends StatelessWidget {
-  final String serviceID;
+  final String packageID;
+  final String serviceId;
+  final String saloonId;
   final String imageUrl;
   final String ptitle;
   final String description;
@@ -16,7 +18,9 @@ class ServiceDetailsView extends StatelessWidget {
 
   ServiceDetailsView({
     super.key,
-    required this.serviceID,
+    required this.packageID,
+    required this.serviceId,
+    required this.saloonId,
     required this.imageUrl,
     required this.ptitle,
     required this.description,
