@@ -109,4 +109,25 @@ class ScheduleService {
       rethrow;
     }
   }
+
+  Future<void> appointmentConfirm(
+      {required String appointmentId}) async {
+    try {
+      await _firestore.collection('appointment').doc(appointmentId).set({"status":"CONFIRMED"});
+    } catch (e) {
+      print("Error fetching appointments: $e");
+      rethrow;
+    }
+  }
+
+
+  Future<void> appointmentCancel(
+      {required String appointmentId}) async {
+    try {
+      await _firestore.collection('appointment').doc(appointmentId).set({"status":"CANCELED"});
+    } catch (e) {
+      print("Error fetching appointments: $e");
+      rethrow;
+    }
+  }
 }
