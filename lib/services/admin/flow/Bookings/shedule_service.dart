@@ -110,21 +110,49 @@ class ScheduleService {
     }
   }
 
-  Future<void> appointmentConfirm(
-      {required String appointmentId}) async {
+  Future<void> appointmentConfirm({required String appointmentId}) async {
     try {
-      await _firestore.collection('appointment').doc(appointmentId).set({"status":"CONFIRMED"});
+      await _firestore
+          .collection('appointment')
+          .doc(appointmentId)
+          .set({"status": "CONFIRMED"});
     } catch (e) {
       print("Error fetching appointments: $e");
       rethrow;
     }
   }
 
+  Future<void> rescheduledAppointment(
+      {required String appointmentId,
+      required String date,
+      required Map<String, String> timeSlot}) async {
+    Map<String, dynamic> map = {
+      "rescheduledDate": date,
+      "rescheduledTimeslot": timeSlot,
+      "status": "RESCHEDULED"
+    };
+    await _firestore.collection('appointment').doc(appointmentId).set(map);
+  }
+
+  Future<void> appointmentJobComplete({required String appointmentId}) async {
+    try {
+      await _firestore
+          .collection('appointment')
+          .doc(appointmentId)
+          .set({"status": "COMPLETED"});
+    } catch (e) {
+      print("Error fetching appointments: $e");
+      rethrow;
+    }
+  }
 
   Future<void> appointmentCancel(
-      {required String appointmentId}) async {
+      {required String appointmentId, required String reason}) async {
     try {
-      await _firestore.collection('appointment').doc(appointmentId).set({"status":"CANCELED"});
+      await _firestore
+          .collection('appointment')
+          .doc(appointmentId)
+          .set({"status": "CANCELED", "cancelReason": reason});
     } catch (e) {
       print("Error fetching appointments: $e");
       rethrow;
