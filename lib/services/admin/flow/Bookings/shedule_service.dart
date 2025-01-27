@@ -115,7 +115,7 @@ class ScheduleService {
       await _firestore
           .collection('appointment')
           .doc(appointmentId)
-          .set({"status": "CONFIRMED"});
+          .update({"status": "CONFIRMED"});
     } catch (e) {
       print("Error fetching appointments: $e");
       rethrow;
@@ -131,7 +131,7 @@ class ScheduleService {
       "rescheduledTimeslot": timeSlot,
       "status": "RESCHEDULED"
     };
-    await _firestore.collection('appointment').doc(appointmentId).set(map);
+    await _firestore.collection('appointment').doc(appointmentId).update(map);
   }
 
   Future<void> appointmentJobComplete({required String appointmentId}) async {
@@ -139,7 +139,7 @@ class ScheduleService {
       await _firestore
           .collection('appointment')
           .doc(appointmentId)
-          .set({"status": "COMPLETED"});
+          .update({"status": "COMPLETED"});
     } catch (e) {
       print("Error fetching appointments: $e");
       rethrow;
@@ -152,7 +152,7 @@ class ScheduleService {
       await _firestore
           .collection('appointment')
           .doc(appointmentId)
-          .set({"status": "CANCELED", "cancelReason": reason});
+          .update({"status": "CANCELED", "cancelReason": reason});
     } catch (e) {
       print("Error fetching appointments: $e");
       rethrow;
