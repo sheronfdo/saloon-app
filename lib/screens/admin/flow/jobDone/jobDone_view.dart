@@ -41,6 +41,25 @@ class _JobDoneViewState extends State<JobDoneView> {
     }
   }
 
+  Future<void> markAsDone() async {
+    try {
+      await ScheduleService().appointmentJobComplete(
+        appointmentId: widget.appointmentId,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const JobCompleteView()),
+      );
+    } catch (e) {
+      print("Error marking appointment as done: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to mark as done: $e"),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -274,12 +293,7 @@ class _JobDoneViewState extends State<JobDoneView> {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const JobCompleteView()),
-            );
-          },
+          onPressed: markAsDone,
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 120, 22, 5),
             minimumSize: const Size(double.infinity, 50),
@@ -301,6 +315,50 @@ class _JobDoneViewState extends State<JobDoneView> {
                 ),
               ),
             ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BookingRescheduleView()),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 120, 22, 5),
+            minimumSize: const Size(double.infinity, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+          ),
+          child: const Text(
+            'Reschedule',
+            style: TextStyle(
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        const SizedBox(height: 12),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BookingReschedule2View()),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFFE5E5),
+            minimumSize: const Size(double.infinity, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          child: const Text(
+            'Cancel Session',
+            style: TextStyle(
+                fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
       ],
