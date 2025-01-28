@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_calender.dart';
+import 'package:saloon_app/screens/admin/flow/jobComplete/jobComplete_view.dart';
 import 'package:saloon_app/screens/admin/flow/rejectedBooking/rejectBooking_view.dart';
 import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
 
@@ -287,7 +288,7 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const RejectBookingView(),
+                builder: (context) => const JobCompleteView(),
               ),
             );
           } else {
