@@ -158,4 +158,22 @@ class ScheduleService {
       rethrow;
     }
   }
+
+  Future<List<Map<String, dynamic>>> getAvailabilityForReschedule(
+      {required String day}) async {
+    DocumentSnapshot dayDoc = await _firestore
+        .collection('admins')
+        .doc(_auth.currentUser!.uid)
+        .collection("availability")
+        .doc(day)
+        .get();
+    List<Map<String, dynamic>> timeSlots = [];
+    if (dayDoc.exists) {
+      timeSlots = List<Map<String, dynamic>>.from(
+          (dayDoc.data() as Map<String, dynamic>)['time']);
+    }
+    print("timeslot");
+    print(timeSlots);
+    return timeSlots;
+  }
 }
