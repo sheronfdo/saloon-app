@@ -1,69 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:provider/provider.dart';
 import 'package:saloon_app/components/custom/custom_btn.dart';
 import 'package:saloon_app/components/custom/custom_calender.dart';
-import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_viewmodel.dart';
+import 'package:saloon_app/screens/admin/flow/rejectedBooking/rejectBooking_view.dart';
+import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
+
 
 class BookingRescheduleView extends StatefulWidget {
-  const BookingRescheduleView({super.key});
+  final String appointmentId;
+
+  const BookingRescheduleView({Key? key, required this.appointmentId}) : super(key: key);
 
   @override
   BookingRescheduleState createState() => BookingRescheduleState();
 }
 
 class BookingRescheduleState extends State<BookingRescheduleView> {
-  late BookingRescheduleViewmodel viewModel;
   DateTime _selectedDate = DateTime.now();
   final DateTime _focusedDate = DateTime.now();
   String? selectedTimeSlot;
 
   @override
-  void initState() {
-    super.initState();
-    viewModel = BookingRescheduleViewmodel();
-    viewModel.init();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => BookingRescheduleViewmodel(),
-      child: Scaffold(
-        body: Stack(
-          children: [
-            _buildBackground(),
-            Positioned.fill(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 30),
-                      _buildHeader(),
-                      const SizedBox(height: 40),
-                      _buildTitle(),
-                      const SizedBox(height: 40),
-                      _buildServiceDetails(),
-                      const SizedBox(height: 8),
-                      _buildCalendar(),
-                      const SizedBox(height: 20),
-                      _buildTimeSlots(),
-                      const SizedBox(height: 20),
-                      _buildConfirmButton(),
-                    ],
-                  ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          _buildBackground(),
+          Positioned.fill(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 30),
+                    _buildHeader(),
+                    const SizedBox(height: 40),
+                    _buildTitle(),
+                    const SizedBox(height: 40),
+                    _buildServiceDetails(),
+                    const SizedBox(height: 8),
+                    _buildCalendar(),
+                    const SizedBox(height: 20),
+                    _buildTimeSlots(),
+                    const SizedBox(height: 20),
+                    _buildConfirmButton(),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  /// Background Decorations
   Widget _buildBackground() {
     return Stack(
       children: [
@@ -99,7 +90,6 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
     );
   }
 
-  /// Header
   Widget _buildHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,7 +125,6 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
     );
   }
 
-  /// Title
   Widget _buildTitle() {
     return const Center(
       child: Text(
@@ -150,7 +139,6 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
     );
   }
 
-  /// Service Details
   Widget _buildServiceDetails() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -179,7 +167,6 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
     );
   }
 
-  /// Calendar Section
   Widget _buildCalendar() {
     return CustomCalendar(
       firstDay: DateTime.utc(2023, 1, 1),
@@ -193,7 +180,6 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
     );
   }
 
-  /// Time Slots
   Widget _buildTimeSlots() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,13 +237,35 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
     );
   }
 
-  /// Confirm Button
   Widget _buildConfirmButton() {
     return Center(
       child: CustomButton(
         text: 'Confirm',
-        onPressed: () {
-          viewModel.onBookAppointmentClick(context);
+        onPressed: () async {
+          if (_selectedDate != null && selectedTimeSlot != null) {
+            // Call rescheduledAppointment from ScheduleService
+            await ScheduleService().rescheduledAppointment(
+              appointmentId: widget.appointmentId,
+              date: _selectedDate.toIso8601String(),
+              timeSlot: {
+                'start': selectedTimeSlot!.split(' - ')[0],
+                'end': selectedTimeSlot!.split(' - ')[1],
+              },
+            );
+
+            // After rescheduling, navigate to RejectBookingView
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RejectBookingView(),
+              ),
+            );
+          } else {
+            // Optionally show a warning if the user hasn't selected a date/time slot
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Please select both date and time slot.')),
+            );
+          }
         },
       ),
     );
