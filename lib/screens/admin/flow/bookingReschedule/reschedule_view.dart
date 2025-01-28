@@ -5,7 +5,6 @@ import 'package:saloon_app/components/custom/custom_calender.dart';
 import 'package:saloon_app/screens/admin/flow/rejectedBooking/rejectBooking_view.dart';
 import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
 
-
 class BookingRescheduleView extends StatefulWidget {
   final String appointmentId;
 
@@ -19,6 +18,23 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
   DateTime _selectedDate = DateTime.now();
   final DateTime _focusedDate = DateTime.now();
   String? selectedTimeSlot;
+  List<Map<String, dynamic>> _timeSlots = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAvailability();
+  }
+
+  // Fetch availability when a new day is selected
+  Future<void> _fetchAvailability() async {
+    List<Map<String, dynamic>> timeSlots = await ScheduleService().getAvailabilityForReschedule(
+      day: _selectedDate.toIso8601String().split('T')[0], // Get date in yyyy-mm-dd format
+    );
+    setState(() {
+      _timeSlots = timeSlots;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,6 +192,7 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
         setState(() {
           _selectedDate = selectedDate;
         });
+        _fetchAvailability(); // Fetch availability when the date changes
       },
     );
   }
@@ -189,49 +206,48 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 6),
-        Wrap(
-          spacing: 20,
-          runSpacing: 10,
-          children: [
-            ' 7.30 am  -  8.30 am',
-            ' 8.30 am  -  9.30 am',
-            '10.30 am - 11.30 am',
-            '12.00 pm - 01.00 pm',
-          ].map((slot) {
-            final isSelected = selectedTimeSlot == slot;
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedTimeSlot = slot;
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(255, 218, 218, 1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isSelected
-                        ? const Color.fromRGBO(255, 82, 82, 1)
-                        : Colors.transparent,
-                    width: 2,
+        if (_timeSlots.isEmpty)
+          const Center(child: Text('No available time slots for this date.')),
+        if (_timeSlots.isNotEmpty)
+          Wrap(
+            spacing: 20,
+            runSpacing: 10,
+            children: _timeSlots.map((slot) {
+              final String time = slot['start'] + " - " + slot['end'];
+              final isSelected = selectedTimeSlot == time;
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedTimeSlot = time;
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(255, 218, 218, 1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isSelected
+                          ? const Color.fromRGBO(255, 82, 82, 1)
+                          : Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
+                  child: Text(
+                    time,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: isSelected ? Colors.black : Colors.black,
+                    ),
                   ),
                 ),
-                child: Text(
-                  slot,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: isSelected ? Colors.black : Colors.black,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
+              );
+            }).toList(),
+          ),
         const SizedBox(height: 12),
       ],
     );
