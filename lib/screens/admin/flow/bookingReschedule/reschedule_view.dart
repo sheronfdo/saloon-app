@@ -26,10 +26,24 @@ class BookingRescheduleState extends State<BookingRescheduleView> {
     _fetchAvailability();
   }
 
+  // Get the day name from the DateTime object
+  String _getDayName(DateTime date) {
+    return [
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday"
+    ][date.weekday % 7];
+  }
+
   // Fetch availability when a new day is selected
   Future<void> _fetchAvailability() async {
+    String dayName = _getDayName(_selectedDate); // Get day name (e.g., "monday")
     List<Map<String, dynamic>> timeSlots = await ScheduleService().getAvailabilityForReschedule(
-      day: _selectedDate.toIso8601String().split('T')[0], // Get date in yyyy-mm-dd format
+      day: dayName, // Pass the day name instead of the date
     );
     setState(() {
       _timeSlots = timeSlots;
