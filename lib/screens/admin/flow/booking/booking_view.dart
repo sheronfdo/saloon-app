@@ -6,6 +6,7 @@ import 'package:saloon_app/components/custom/custom_calender.dart';
 import 'package:saloon_app/components/search_bar.dart';
 import 'package:saloon_app/screens/admin/flow/booking/booking_viewmodel.dart';
 import 'package:saloon_app/screens/admin/flow/bookingConfirm/bookingConfirm_view.dart';
+import 'package:saloon_app/screens/admin/flow/jobDone/jobDone_view.dart';
 import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
 
 class BookingView extends StatefulWidget {
@@ -218,17 +219,29 @@ class BookingState extends State<BookingView> {
             status: appointment['status'],
             statusColor: appointment['statusColor'],
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BookingConfirmView( appointmentId: appointment['id']),
-                ),
-              );
+              if (appointment['status'] == 'CONFIRMED') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        JobDoneView(appointmentId: appointment['id']),
+                  ),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        BookingConfirmView(appointmentId: appointment['id']),
+                  ),
+                );
+              }
             },
           ),
       ],
     );
   }
+
 
 }
 

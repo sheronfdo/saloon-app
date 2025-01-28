@@ -3,6 +3,7 @@ import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/User/flow/bookings/booking_reshedule/booking_reshedule_view.dart';
 import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_02/reschedule02_view.dart';
 import 'package:saloon_app/screens/admin/flow/bookingReschedule/reschedule_view.dart';
+import 'package:saloon_app/screens/admin/flow/jobComplete/jobComplete_view.dart';
 import 'package:saloon_app/screens/admin/flow/jobDone/jobDone_view.dart';
 import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
 
@@ -290,9 +291,11 @@ class _BookingConfirmViewState extends State<BookingConfirmView> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => JobDoneView(
-                    appointmentId: widget.appointmentId,
-                  ),
+                  builder: (context) => JobCompleteView()
+                  //     JobDoneView(
+                  //   appointmentId: widget.appointmentId,
+                  // )
+                ,
                 ),
               );
             } catch (e) {
