@@ -359,7 +359,10 @@ class _BookingConfirmViewState extends State<BookingConfirmView> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const BookingReschedule2View()),
+                builder: (context) => BookingReschedule2View(
+                  appointmentId: widget.appointmentId,
+                ),
+              ),
             );
           },
           style: ElevatedButton.styleFrom(

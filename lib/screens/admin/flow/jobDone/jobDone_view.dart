@@ -345,7 +345,10 @@ class _JobDoneViewState extends State<JobDoneView> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const BookingReschedule2View()),
+                builder: (context) => BookingReschedule2View(
+                  appointmentId: widget.appointmentId,
+                ),
+              ),
             );
           },
           style: ElevatedButton.styleFrom(

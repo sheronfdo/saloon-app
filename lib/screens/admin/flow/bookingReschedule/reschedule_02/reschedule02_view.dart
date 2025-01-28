@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:saloon_app/screens/admin/flow/rejectedBooking/rejectBooking_view.dart';
+import 'package:saloon_app/services/admin/flow/Bookings/shedule_service.dart';
 
 class BookingReschedule2View extends StatefulWidget {
-  const BookingReschedule2View({Key? key}) : super(key: key);
+  final String appointmentId;
+  const BookingReschedule2View({Key? key, required this.appointmentId}) : super(key: key);
 
   @override
   BookingReschedule2State createState() => BookingReschedule2State();
@@ -12,6 +14,40 @@ class BookingReschedule2View extends StatefulWidget {
 class BookingReschedule2State extends State<BookingReschedule2View> {
   bool isOtherSelected = false;
   final TextEditingController _reasonController = TextEditingController();
+  List<String> selectedReasons = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch appointment details if needed here
+  }
+
+  // Method to handle the reason for cancellation and navigation
+  Future<void> _handleCancelAppointment() async {
+    // Combine the selected checkbox titles and the text in the reason field
+    String reason = selectedReasons.join(", ");
+    if (isOtherSelected && _reasonController.text.isNotEmpty) {
+      reason += ", ${_reasonController.text}";
+    }
+
+    try {
+      // Call appointmentCancel method from ScheduleService
+      await ScheduleService().appointmentCancel(
+        appointmentId: widget.appointmentId,
+        reason: reason,
+      );
+      // Navigate to RejectBookingView
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const RejectBookingView()),
+      );
+    } catch (e) {
+      print("Error cancelling appointment: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to cancel appointment. Please try again.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,32 +211,33 @@ class BookingReschedule2State extends State<BookingReschedule2View> {
         ),
         const SizedBox(height: 10),
         CheckboxListTile(
-          value: false,
-          onChanged: (value) {},
-          title: const Text('I am unavailable at that day & time (Rejection)',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color.fromARGB(255, 83, 81, 81),
-              )),
+          value: selectedReasons.contains('I am unavailable at that day & time (Rejection)'),
+          onChanged: (value) {
+            setState(() {
+              if (value == true) {
+                selectedReasons.add('I am unavailable at that day & time (Rejection)');
+              } else {
+                selectedReasons.remove('I am unavailable at that day & time (Rejection)');
+              }
+            });
+          },
+          title: const Text('I am unavailable at that day & time (Rejection)'),
         ),
+        // Repeat for other checkboxes as needed
         CheckboxListTile(
-          value: false,
-          onChanged: (value) {},
-          title: const Text('I am unavailable at that day & time (Rejection)',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color.fromARGB(255, 83, 81, 81),
-              )),
+          value: selectedReasons.contains('I am unavailable at that day & time (Rejection)'),
+          onChanged: (value) {
+            setState(() {
+              if (value == true) {
+                selectedReasons.add('I am unavailable at that day & time (Rejection)');
+              } else {
+                selectedReasons.remove('I am unavailable at that day & time (Rejection)');
+              }
+            });
+          },
+          title: const Text('I am unavailable at that day & time (Rejection)'),
         ),
-        CheckboxListTile(
-          value: false,
-          onChanged: (value) {},
-          title: const Text('I am unavailable at that day & time (Rejection)',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color.fromARGB(255, 83, 81, 81),
-              )),
-        ),
+        // Other checkboxes here...
         CheckboxListTile(
           value: isOtherSelected,
           onChanged: (value) {
@@ -208,19 +245,14 @@ class BookingReschedule2State extends State<BookingReschedule2View> {
               isOtherSelected = value!;
             });
           },
-          title: const Text('Other (Tell us why)',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color.fromARGB(255, 83, 81, 81),
-              )),
+          title: const Text('Other (Tell us why)'),
         ),
         if (isOtherSelected)
           TextField(
             controller: _reasonController,
             maxLines: 6,
             decoration: const InputDecoration(
-              hintText:
-                  'This box only comes when trainer checked the other option as the reason',
+              hintText: 'Enter your reason here...',
               hintStyle: TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -232,16 +264,11 @@ class BookingReschedule2State extends State<BookingReschedule2View> {
     );
   }
 
+
   Widget _buildConfirmButton(BuildContext context) {
     return Center(
       child: ElevatedButton(
-        onPressed: () {
-          // Confirm button action
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RejectBookingView()),
-          );
-        },
+        onPressed: _handleCancelAppointment,
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF9E4529),
           minimumSize: const Size(double.infinity, 50),
